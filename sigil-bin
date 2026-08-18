@@ -1,0 +1,6 @@
+#!/usr/bin/env python3
+
+import sigil.cli
+
+if __name__ == "__main__":
+    sigil.cli.main()
