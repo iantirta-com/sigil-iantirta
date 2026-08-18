@@ -1,53 +1,51 @@
 
-from . import assetsbundle
-
-from . import ir_model
-from . import ir_sequence
-from . import ir_ui_menu
-from . import ir_ui_view
-from . import ir_asset
-from . import ir_actions
-from . import ir_embedded_actions
-from . import ir_actions_report
-from . import ir_attachment
-from . import ir_binary
-from . import ir_cron
-from . import ir_filters
-from . import ir_default
-from . import ir_exports
-from . import ir_rule
-from . import ir_config_parameter
-from . import ir_autovacuum
-from . import ir_mail_server
-from . import ir_fields
-from . import ir_qweb
-from . import ir_qweb_fields
-from . import ir_http
-from . import ir_logging
-from . import ir_module
-from . import ir_demo
-from . import ir_demo_failure
-from . import properties_base_definition
-from . import properties_base_definition_mixin
-from . import report_layout
-from . import report_paperformat
-
-from . import ir_profile
-from . import image_mixin
-from . import avatar_mixin
-
-from . import res_country
-from . import res_lang
-from . import res_partner
-from . import res_bank
-from . import res_config
-from . import res_currency
-from . import res_company
-from . import res_groups_privilege
-from . import res_groups
-from . import res_users
-from . import res_users_settings
-from . import res_users_deletion
-from . import res_device
-
-from . import decimal_precision
+from . import (
+    assetsbundle,  # noqa: F401
+    avatar_mixin,  # noqa: F401
+    decimal_precision,  # noqa: F401
+    image_mixin,  # noqa: F401
+    ir_actions,  # noqa: F401
+    ir_actions_report,  # noqa: F401
+    ir_asset,  # noqa: F401
+    ir_attachment,  # noqa: F401
+    ir_autovacuum,  # noqa: F401
+    ir_binary,  # noqa: F401
+    ir_config_parameter,  # noqa: F401
+    ir_cron,  # noqa: F401
+    ir_default,  # noqa: F401
+    ir_demo,  # noqa: F401
+    ir_demo_failure,  # noqa: F401
+    ir_embedded_actions,  # noqa: F401
+    ir_exports,  # noqa: F401
+    ir_fields,  # noqa: F401
+    ir_filters,  # noqa: F401
+    ir_http,  # noqa: F401
+    ir_logging,  # noqa: F401
+    ir_mail_server,  # noqa: F401
+    ir_model,  # noqa: F401
+    ir_module,  # noqa: F401
+    ir_profile,  # noqa: F401
+    ir_qweb,  # noqa: F401
+    ir_qweb_fields,  # noqa: F401
+    ir_rule,  # noqa: F401
+    ir_sequence,  # noqa: F401
+    ir_ui_menu,  # noqa: F401
+    ir_ui_view,  # noqa: F401
+    properties_base_definition,  # noqa: F401
+    properties_base_definition_mixin,  # noqa: F401
+    report_layout,  # noqa: F401
+    report_paperformat,  # noqa: F401
+    res_bank,  # noqa: F401
+    res_company,  # noqa: F401
+    res_config,  # noqa: F401
+    res_country,  # noqa: F401
+    res_currency,  # noqa: F401
+    res_device,  # noqa: F401
+    res_groups,  # noqa: F401
+    res_groups_privilege,  # noqa: F401
+    res_lang,  # noqa: F401
+    res_partner,  # noqa: F401
+    res_users,  # noqa: F401
+    res_users_deletion,  # noqa: F401
+    res_users_settings,  # noqa: F401
+)

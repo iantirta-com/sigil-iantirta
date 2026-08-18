@@ -1,5 +1,5 @@
 
-{
+{  # noqa: B018
     'name': 'Base',
     'version': '1.3',
     'category': 'Hidden',
