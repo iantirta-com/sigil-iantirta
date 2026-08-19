@@ -1,9 +1,10 @@
 
 import sigil
-from sigil import api, fields, models
-from sigil.http import DEFAULT_MAX_CONTENT_LENGTH, request
+from sigil import api, models, fields
+from sigil.http import request, DEFAULT_MAX_CONTENT_LENGTH
 from sigil.tools import config
 from sigil.tools.misc import hmac, str2bool
+
 
 """
 Debug mode is stored in session and should always be a string.
@@ -25,7 +26,7 @@ ALLOWED_DEBUG_MODES = ['', '1', 'assets', 'tests']
 class IrHttp(models.AbstractModel):
     _inherit = 'ir.http'
 
-    bots = ["bot", "crawl", "slurp", "spider", "curl", "wget", "facebookexternalhit", "whatsapp", "trendsmapresolver", "pinterest", "instagram", "google-pagerenderer", "preview"]  # noqa: RUF012
+    bots = ["bot", "crawl", "slurp", "spider", "curl", "wget", "facebookexternalhit", "whatsapp", "trendsmapresolver", "pinterest", "instagram", "google-pagerenderer", "preview"]
 
     @classmethod
     def is_a_bot(cls):

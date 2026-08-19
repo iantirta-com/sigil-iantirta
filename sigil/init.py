@@ -18,7 +18,7 @@ if gc.get_threshold()[0] in (700, 2000):
 # Import tools to patch code and libraries
 # required to do as early as possible for evented and timezone
 # ----------------------------------------------------------
-from .. import _monkeypatches
+from . import _monkeypatches
 _monkeypatches.patch_init()
 
 from .tools.gc import gc_set_timing

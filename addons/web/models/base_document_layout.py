@@ -1,12 +1,10 @@
-from math import ceil
-
 from markupsafe import Markup
+from math import ceil
 
 from sigil import api, fields, models
 from sigil.addons.base.models.assetsbundle import ScssStylesheetAsset
 from sigil.addons.base.models.ir_qweb_fields import nl2br
-from sigil.tools import html2plaintext, is_html_empty
-from sigil.tools import image as tools
+from sigil.tools import html2plaintext, is_html_empty, image as tools
 
 try:
     from PIL.Image import Resampling

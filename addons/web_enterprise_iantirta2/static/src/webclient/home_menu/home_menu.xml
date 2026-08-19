@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="HomeMenu" t-inherit="web_enterprise.HomeMenu" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('o_apps')]" position="before">
+            <h1 class="ie-home-menu-header">
+                Welcome, <t t-esc="currentUserName"/> 👋
+            </h1>
+            <p class="ie-home-menu-subheader">
+                What would you like to work on today?
+            </p>
+            <div class="ie-home-menu-search">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="search"
+                    autocomplete="off"
+                    placeholder="Search apps..."
+                    t-model="state.searchQuery"/>
+                <span class="ie-home-menu-kbd">⌘ K</span>
+            </div>
+        </xpath>
+        <xpath expr="//div[hasclass('o_draggable')]" position="attributes">
+            <attribute name="class" remove="px-0" add="" separator=" "/>
+        </xpath>
+        <xpath expr="//div[hasclass('o_apps')]" position="attributes">
+            <attribute name="class" add="g-2 g-md-3" separator=" "/>
+        </xpath>
+    </t>
+</templates>

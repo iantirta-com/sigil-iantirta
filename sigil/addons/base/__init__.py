@@ -1,4 +1,6 @@
-from . import models, report, wizard  # noqa: F401
+from . import models
+from . import report
+from . import wizard
 
 
 def post_init(env):

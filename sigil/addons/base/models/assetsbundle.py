@@ -8,7 +8,7 @@ import textwrap
 import uuid
 from collections import OrderedDict
 from contextlib import closing
-from subprocess import PIPE, Popen
+from subprocess import Popen, PIPE
 
 from lxml import etree
 from rjsmin import jsmin as rjsmin

@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 
-{  # noqa: B018
+{
     'name': 'Web',
     'category': 'Hidden',
     'version': '1.0',

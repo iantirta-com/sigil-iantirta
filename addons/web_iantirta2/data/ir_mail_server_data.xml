@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sigil>
+    <data noupdate="1">
+        <!-- <record id="smtp_iantirta_zoho_ian" model="ir.mail_server">
+            <field name="name">Ian Tirta SMTP</field>
+            <field name="smtp_host">smtp.zoho.com</field>
+            <field name="smtp_port">465</field>
+            <field name="smtp_authentication">login</field>
+            <field name="smtp_user">ian@iantirta.com</field>
+            <field name="smtp_pass">5vXR96pAvUKS</field>
+            <field name="smtp_encryption">ssl</field>
+            <field name="from_filter">ian@iantirta.com</field>
+        </record>
+
+        <record id="smtp_iantirta_zoho_ary" model="ir.mail_server">
+            <field name="name">Aryanto SMTP</field>
+            <field name="smtp_host">smtp.zoho.com</field>
+            <field name="smtp_port">465</field>
+            <field name="smtp_authentication">login</field>
+            <field name="smtp_user">ary@iantirta.com</field>
+            <field name="smtp_pass">vX5bkF5yHrf6</field>
+            <field name="smtp_encryption">ssl</field>
+            <field name="from_filter">ary@iantirta.com</field>
+        </record> -->
+    </data>
+</sigil>

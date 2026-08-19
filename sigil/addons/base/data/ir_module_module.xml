@@ -2,7 +2,7 @@
 <sigil>
     <data>
 
-        <record model="ir.module.module" id="base.module_web_studio">
+        <!-- <record model="ir.module.module" id="base.module_web_studio">
             <field name="name">web_studio</field>
             <field name="shortdesc">Studio</field>
             <field name="sequence">75</field>
@@ -14,7 +14,7 @@
             <field name="to_buy" eval="True"/>
             <field name="icon">/base/static/img/icons/web_studio.png</field>
             <field name="website">https://sigil.com/app/studio?utm_source=db&amp;utm_medium=module</field>
-        </record>
+        </record> -->
 
         <!-- <record model="ir.module.module" id="base.module_timesheet_grid">
             <field name="name">timesheet_grid</field>
@@ -30,7 +30,7 @@
             <field name="website">https://www.sigil.com/app/timesheet?utm_source=db&amp;utm_medium=module</field> -->
         <!-- </record> -->
 
-        <record model="ir.module.module" id="base.module_accountant">
+        <!-- <record model="ir.module.module" id="base.module_accountant">
             <field name="name">accountant</field>
             <field name="sequence">30</field>
             <field name="shortdesc">Accounting</field>
@@ -98,7 +98,7 @@
             <field name="to_buy" eval="True"/>
             <field name="icon">/base/static/img/icons/hr_appraisal.png</field>
             <field name="website">https://www.sigil.com/app/appraisals?utm_source=db&amp;utm_medium=module</field>
-        </record>
+        </record> -->
 
         <!-- <record model="ir.module.module" id="base.module_marketing_automation">
             <field name="name">marketing_automation</field>
@@ -114,7 +114,7 @@
             <field name="website">https://www.sigil.com/app/marketing-automation?utm_source=db&amp;utm_medium=module</field>
         </record> -->
 
-        <record model="ir.module.module" id="base.module_mrp_plm">
+        <!-- <record model="ir.module.module" id="base.module_mrp_plm">
             <field name="name">mrp_plm</field>
             <field name="shortdesc">Product Lifecycle Management (PLM)</field>
             <field name="category_id" ref="base.module_category_supply_chain"/>
@@ -140,7 +140,7 @@
             <field name="to_buy" eval="True"/>
             <field name="icon">/base/static/img/icons/quality_control.png</field>
             <field name="website">https://www.sigil.com/app/quality?utm_source=db&amp;utm_medium=module</field>
-        </record>
+        </record> -->
 
         <!-- <record model="ir.module.module" id="base.module_sale_amazon">
             <field name="name">sale_amazon</field>
@@ -184,7 +184,7 @@
             <field name="website">https://www.sigil.com/app/subscriptions?utm_source=db&amp;utm_medium=module</field>
         </record> -->
 
-        <record model="ir.module.module" id="base.module_sign">
+        <!-- <record model="ir.module.module" id="base.module_sign">
             <field name="name">sign</field>
             <field name="shortdesc">Sign</field>
             <field name="sequence">105</field>
@@ -210,7 +210,7 @@
             <field name="to_buy" eval="True"/>
             <field name="icon">/base/static/img/icons/stock_barcode.png</field>
             <field name="website">https://www.sigil.com/app/inventory?utm_source=db&amp;utm_medium=module</field>
-        </record>
+        </record> -->
 
         <!-- <record model="ir.module.module" id="base.module_voip">
             <field name="name">voip</field>
@@ -226,7 +226,7 @@
             <field name="website">https://www.sigil.com/app/crm?utm_source=db&amp;utm_medium=module</field>
         </record> -->
 
-        <record model="ir.module.module" id="base.module_appointment">
+        <!-- <record model="ir.module.module" id="base.module_appointment">
             <field name="name">appointment</field>
             <field name="shortdesc">Appointments</field>
             <field name="sequence">215</field>
@@ -291,6 +291,6 @@
             <field name="author">iantirta.com</field>
             <field name="to_buy" eval="True"/>
             <field name="icon">/base/static/img/icons/payment_sepa_direct_debit.png</field>
-        </record>
+        </record> -->
     </data>
 </sigil>

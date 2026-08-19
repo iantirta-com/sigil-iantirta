@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sigil>
+    <data>
+        <record id="view_company_form" model="ir.ui.view">
+            <field name="name">res.company.form</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+
+                <!-- replace original -->
+                <xpath expr="//sheet/div[hasclass('d-flex')]" position="replace"/>
+                <xpath expr="//sheet" position="before">
+                    <sheet class="ie_form_sheet_aside">
+                        <div class="d-flex flex-column gap-2">
+                            <field name="logo" widget="contact_image" class="oe_avatar text-start float-none" nolabel="1" options="{'size': [100,100], 'img_class': 'rounded-4'}"/>
+                            <div class="oe_title">
+                                <label for="name"/>
+                                <h5 class="mb-0">
+                                    <field name="name" placeholder="e.g. My Company"/>
+                                </h5>
+                            </div>
+                        </div>
+                    </sheet>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</sigil>

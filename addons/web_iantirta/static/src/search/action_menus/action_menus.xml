@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="ActionMenus" t-inherit="web.ActionMenus" t-inherit-mode="extension">
+        <xpath expr="//i[hasclass('fa-cog')]" position="attributes">
+            <attribute name="class" remove="fa-cog me-1" add="fa-fw fa-ellipsis-h" separator=" "/>
+        </xpath>
+        <xpath expr="//div[@t-if='actionItems.length']//Dropdown/button/span" position="replace"/>
+    </t>
+</templates>

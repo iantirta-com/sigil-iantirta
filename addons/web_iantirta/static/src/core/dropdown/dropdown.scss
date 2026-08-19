@@ -1,0 +1,41 @@
+.o-dropdown--menu:not(.o_bottom_sheet_body), .dropdown-menu {
+    background: $black;
+    background-color: #{rgba($o-white, .8)};
+    border: 1.5px solid #{rgba($o-black, .1)};
+    border-radius: 4px;
+    box-shadow: 0 2px 4px #{rgba($o-gray-100, .1)};
+    backdrop-filter: blur(20px);
+    // overflow: hidden;
+    
+    --popover-max-width: 400px;
+    --dropdown-min-width: 232px;
+    --dropdown-padding-x: 8px;
+    --dropdown-link-active-bg: rgba(255, 255, 255, 0.1);
+    --dropdown-link-active-color: #{$black};
+    --dropdown-link-hover-color: #{$black};
+    --dropdown-link-hover-bg: rgba(255, 255, 255, 0.1);
+
+    .dropdown-item {
+        font-size: 13.5px;
+        font-weight: 500;
+        transition: background-color .12s, color .12s;
+
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        border: none;
+        background: none;
+        outline: none;
+        padding: 14px 16px 14px 40px;
+        position: relative;
+
+        &:hover {
+            background-color: #{rgba($o-black, .1)};
+        }
+    }
+    &.dropdown-menu {
+        &:not(.o-hb-select-dropdown) {
+            scrollbar-width: auto;
+        }
+    }
+}

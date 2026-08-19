@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sigil>
+    <data noupdate="1">
+        <record id="web_iantirta_mail_alias_domain" model="mail.alias.domain">
+            <field name="name">iantirta.com</field>
+            <field name="bounce_alias">bounce</field>
+            <field name="catchall_alias">catchall</field>
+            <field name="default_from">info</field>
+        </record>
+    </data>
+</sigil>

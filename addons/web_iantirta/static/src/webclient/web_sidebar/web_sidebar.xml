@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <!-- <t t-name="web_enterprise_iantirta.WebSidebar">
+        <aside class="ie_web_sidebar" t-ref="root">
+            <div class="ie_main_sidebar">
+                <div class="ie_sidebar_header d-flex align-items-center justify-content-start gap-3">
+                    <a class="ie_sidebar_logo" href="/sigil" title="Home Menu" accesskey="h">
+                        <img class="img img-fluid" src="/web_enterprise_iantirta/static/src/img/iantirta-logo.png" alt="Iantirta Logo"/>
+                    </a>
+                    <div class="ie_sidebar_app_menu">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" fill="currentColor" fit="" preserveAspectRatio="xMidYMid meet" focusable="false"><path d="M6 2H2v4h4V2zm8 0h-4v4h4V2zm8 0h-4v4h4V2zM6 10H2v4h4v-4zm8 0h-4v4h4v-4zm8 0h-4v4h4v-4zM6 18H2v4h4v-4zm8 0h-4v4h4v-4zm8 0h-4v4h4v-4z"></path></svg>
+                    </div>
+                    <div class="ie_sidebar_collapse"
+                        t-on-click.prevent="toogleSidebarCollapse">
+                        <i class="fa fa-fw fa-chevron-left"/>
+                    </div>
+                </div>
+                <div class="ie_sidebar_search"
+                    t-on-click.prevent="onClickSearchInput">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <span>
+                        Search...
+                    </span>
+                </div>
+                <div class="ie_sidebar_content">
+                    <div t-foreach="displayedApps" t-as="app" t-key="app.id" class="">
+                        <a t-att-id="'result_app_' + app_index"
+                            role="option"
+                            class="ie_sidebar_app_item d-flex align-items-center w-100"
+                            t-att-class="{active: currentApp and currentApp.id == app.id}"
+                            t-att-data-menu-xmlid="app.xmlid"
+                            t-att-href="app.href"
+                            t-on-click.prevent="() => this._onAppClick(app)"
+                            >
+                            <img t-if="app.webIconData" class="ie_app_icon"
+                                t-attf-src="{{app.webIconData}}"
+                            />
+                            <div t-else="" class="ie_app_icon position-relative d-flex justify-content-center align-items-center p-2 rounded-3 ratio ratio-1x1"
+                                t-attf-style="background-color: {{app.webIcon.backgroundColor}};"
+                            >
+                                <i t-attf-class="{{app.webIcon.iconClass}} position-relative w-auto h-auto" t-attf-style="color: {{app.webIcon.color}};"/>
+                            </div>
+                            <div class="ie_caption" t-esc="app.label or app.name"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="ie_sidebar_footer d-none">
+                    Footer
+                </div>
+            </div>
+        </aside>
+    </t> -->
+    <t t-name="web_enterprise_iantirta.WebSidebar">
+        
+        <div class="ie_sidebar_mobile_overlay d-md-none" t-if="state.isMobileOpen" t-on-click.prevent="toggleMobileSidebar">
+        </div>
+
+        <aside class="ie_web_sidebar"
+            t-att-class="{
+                'ie_web_sidebar_collapsed': state.isCollapsed,
+                'ie_web_sidebar_mobile_open': state.isMobileOpen }">
+            <div class="ie_main_sidebar d-flex flex-column h-100">
+                <div class="ie_sidebar_header d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center gap-3 ie_header_brand">
+                        <a class="ie_sidebar_logo flex-shrink-0" href="/sigil" title="Home Menu" accesskey="h">
+                            <img class="img img-fluid" src="/web_enterprise_iantirta/static/src/img/iantirta-logo.png" alt="Iantirta Logo"/>
+                        </a>
+                        <div class="ie_sidebar_app_menu text-muted">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M6 2H2v4h4V2zm8 0h-4v4h4V2zm8 0h-4v4h4V2zM6 10H2v4h4v-4zm8 0h-4v4h4v-4zm8 0h-4v4h4v-4zM6 18H2v4h4v-4zm8 0h-4v4h4v-4zm8 0h-4v4h4v-4z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <div class="ie_sidebar_collapse d-none d-md-flex align-items-center justify-content-center cursor-pointer"
+                        t-on-click.prevent="toggleSidebarCollapse">
+                        <i class="fa fa-fw fa-chevron-left"/>
+                    </div>
+                    
+                    <div class="ie_sidebar_mobile_close d-md-none cursor-pointer" t-on-click.prevent="toggleMobileSidebar">
+                        <i class="fa fa-fw fa-times fs-4"/>
+                    </div>
+                </div>
+
+                <div class="ie_sidebar_search mx-3 mb-3 d-flex align-items-center gap-2 cursor-pointer" t-on-click.prevent="onClickSearchInput">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="8"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    <span class="text-muted text-truncate">Search...</span>
+                </div>
+
+                <div class="ie_sidebar_content flex-grow-1 overflow-auto">
+                    <div t-foreach="displayedApps" t-as="app" t-key="app.id" class="mb-1">
+                        <a t-att-id="'result_app_' + app_index" role="option" class="ie_sidebar_app_item d-flex align-items-center w-100" t-att-class="{active: currentApp and currentApp.id == app.id}" t-att-data-menu-xmlid="app.xmlid" t-att-href="app.href" t-on-click.prevent="() =&gt; this._onAppClick(app)">
+                            <img t-if="app.webIconData" class="ie_app_icon flex-shrink-0" t-attf-src="{{app.webIconData}}"/>
+                            <div t-else="" class="ie_app_icon flex-shrink-0 position-relative d-flex justify-content-center align-items-center rounded-3 ratio ratio-1x1" t-attf-style="background-color: {{app.webIcon.backgroundColor}};">
+                                <i t-attf-class="{{app.webIcon.iconClass}} position-relative w-auto h-auto" t-attf-style="color: {{app.webIcon.color}};"/>
+                            </div>
+                            <div class="ie_caption text-truncate fw-medium" t-esc="app.label or app.name"/>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="ie_sidebar_footer d-none">
+                    Footer
+                </div>
+            </div>
+        </aside>
+    </t>
+</templates>

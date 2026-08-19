@@ -28,7 +28,7 @@ from werkzeug import urls
 
 import sigil
 
-from .. import tools
+from . import tools
 from .release import MIN_PG_VERSION
 from .tools import config, SQL
 from .tools.func import frame_codeinfo, locked

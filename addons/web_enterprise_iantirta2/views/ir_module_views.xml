@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sigil>
+    <data>
+        <record id="view_module_filter_apps_inherit" model="ir.ui.view">
+            <field name="name">Search Data Modules</field>
+            <field name="model">ir.module.module</field>
+            <field name="inherit_id" ref="base.view_module_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//searchpanel/field[@name='category_id']" position="attributes">
+                    <attribute name="icon">fa-folder-open-o</attribute>
+                </xpath>
+                <xpath expr="//searchpanel/field[@name='module_type']" position="attributes">
+                    <attribute name="icon">fa-puzzle-piece</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</sigil>

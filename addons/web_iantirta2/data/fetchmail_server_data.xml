@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sigil>
+    <data noupdate="1">
+        <!-- This is still not working until zoho is upgraded for my mailing. -->
+        <!-- <record id="imap_iantirta_zoho_info" model="fetchmail.server">
+            <field name="name">Zoho Mail imap</field>
+            <field name="server">imap.zoho.com</field>
+            <field name="port">993</field>
+            <field name="server_type">imap</field>
+            <field name="is_ssl">True</field>
+            <field name="password">kGe87e7qAbHu</field>
+            <field name="user">info@iantirta.com</field>
+        </record> -->
+        <!-- <record id="imap_iantirta_zoho_info" model="fetchmail.server">
+            <field name="name">Gmail imap</field>
+            <field name="server">imap.gmail.com</field>
+            <field name="port">993</field>
+            <field name="server_type">imap</field>
+            <field name="is_ssl">True</field>
+            <field name="password">uhli mjgu niur poxf</field>
+            <field name="user">iantirta.catchall@gmail.com</field>
+        </record> -->
+        
+        <record id="imap_iantirta2_gmail" model="fetchmail.server">
+            <field name="name">Gmail imap 2</field>
+            <field name="server">imap.gmail.com</field>
+            <field name="port">993</field>
+            <field name="server_type">imap</field>
+            <field name="is_ssl">True</field>
+            <field name="password">brmg kxps ilai dkrc</field>
+            <field name="user">catchalliantirta@gmail.com</field>
+        </record>
+    </data>
+</sigil>

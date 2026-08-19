@@ -1,0 +1,43 @@
+
+
+.o_main_navbar {
+    // --NavBar-entry-backgroundColor--hover: #{rgba($o-white, .2)};
+    // --NavBar-entry-backgroundColor--focus: #{rgba($o-white, .2)};
+    // --NavBar-entry-backgroundColor--active: #{rgba($o-white, .2)};
+    // --NavBar-entry-color--active: #{$o-white};
+
+    padding-right: 22px;
+    padding-left: 0;
+    // background: rgba(255, 255, 255, .82) !important;
+    // backdrop-filter: blur(20px) saturate(1.6);
+    // border-bottom: 1px solid var(--border-color);
+    // box-shadow: 0 1px 12px rgba(0, 0, 0, .05);
+
+    @include media-breakpoint-down(md) {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    // .o_menu_toggle {
+        // @include media-breakpoint-up(md) {
+            // .o_menu_brand_icon {
+                // background: #E8291C;
+                // border-radius: 9px;
+                // box-shadow: 0 2px 8px rgba(232, 41, 28, .3);
+                // padding-left: 0 !important;
+                // object-fit: none;
+            // }
+        // }
+    // }
+    .o_menu_sections {
+        .o-dropdown,
+        .o_nav_entry {
+
+            // @include transparent-bg;
+
+            // &:hover {
+            //     @include transparent-bg;
+            // }
+        }
+    }
+}

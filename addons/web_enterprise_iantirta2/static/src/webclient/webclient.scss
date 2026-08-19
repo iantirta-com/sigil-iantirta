@@ -1,0 +1,26 @@
+// ::-webkit-scrollbar-track {
+// 	border-radius: 10px;
+// 	background-color: #F5F5F5;
+// }
+::-webkit-scrollbar {
+	width: 8px !important;
+    height: 8px !important;
+	// background-color: #F5F5F5;
+}
+::-webkit-scrollbar-thumb {
+	background-color: #c9ccd6;
+    border-radius: 8px;
+    background-clip: content-box !important;
+    border: 2px solid transparent;
+    min-height: 40px;
+    min-width: 40px;
+}
+
+.ie_icon_svg {
+    width: 16px;
+    height: 16px;
+}
+
+.btn-group .btn {
+    border:none;
+}

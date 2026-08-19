@@ -12,9 +12,9 @@ import warnings
 
 import werkzeug.serving
 
-from .. import release
-from .. import sql_db
-from .. import tools
+from . import release
+from . import sql_db
+from . import tools
 
 _logger = logging.getLogger(__name__)
 
@@ -75,7 +75,7 @@ class PostgreSQLHandler(logging.Handler):
             val = ('server', ct_db, record.name, levelname, msg, record.pathname, record.lineno, record.funcName)
 
             if self._support_metadata:
-                from .. import modules
+                from . import modules
                 metadata = {}
                 if modules.module.current_test:
                     with contextlib.suppress(Exception):

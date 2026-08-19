@@ -1,0 +1,6 @@
+.o_kanban_record {
+    &:not(.o_kanban_ghost) {
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        border-radius: 8px;
+    }
+}
