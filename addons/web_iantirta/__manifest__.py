@@ -16,7 +16,7 @@ Long description of module's purpose
             # ('after', 'web/static/src/scss/primary_variables.scss',
             #     'web_iantirta/static/src/**/*.variables.scss'),
             ('after', 'web/static/src/scss/primary_variables.scss',
-                "web_iantirta/static/src/light.css"),
+                "web_iantirta/static/src/scss/*.variables.scss"),
         ],
         # 'web.assets_backend': [
         #     'web_iantirta/static/src/webclient/**/*',
