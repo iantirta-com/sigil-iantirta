@@ -1,16 +1,19 @@
 // Google Material 3 Sigil Theme
 
-$m3-primary: rgb(71, 93, 145) !default;
-$m3-primary-container: rgb(217, 226, 255) !default;
-$m3-onprimary: rgb(255, 255, 255) !default;
-$m3-onprimary-container: rgb(46, 69, 120) !default;
+$m3-primary: #475d91 !default;
+$m3-primary-container: #d9e2ff !default;
+$m3-onprimary: #ffffff !default;
+$m3-onprimary-container: #2e4578 !default;
 
-$m3-tertiary: rgb(46, 106, 68) !default;
-$m3-tertiary-container: rgb(177, 241, 193) !default;
-$m3-ontertiary: rgb(255, 255, 255) !default;
-$m3-ontertiary-container: rgb(18, 81, 46) !default;
+$m3-tertiary: #2e6a44 !default;
+$m3-tertiary-container: #b1f1c1 !default;
+$m3-ontertiary: #ffffff !default;
+$m3-ontertiary-container: #12512e !default;
 
-$m3-surface: rgb(250, 248, 255) !default;
-$m3-surface-container: rgb(238, 237, 244) !default;
-$m3-surface-container-lowest: rgb(255, 255, 255) !default;
-$m3-onsurface: rgb(26, 27, 32) !default;
+$m3-surface: #faf8ff !default;
+$m3-surface-container: #eeedf4 !default;
+$m3-surface-container-lowest: #ffffff !default;
+$m3-onsurface: #1a1b20 !default;
+
+$m3-outline: #757780 !default;
+$m3-outline-var: #c5c6d0 !default;
