@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 MISC_HTML_SOURCE = u"""
 <font size="2" style="color: rgb(31, 31, 31); font-family: monospace; font-variant: normal; line-height: normal; ">test1</font>
 <div style="color: rgb(31, 31, 31); font-family: monospace; font-variant: normal; line-height: normal; font-size: 12px; font-style: normal; ">
@@ -73,7 +72,7 @@ QUOTE_BLOCKQUOTE = u"""<html>
     </div>
     <blockquote
 cite="mid:CAEJSRZvWvud8c6Qp=wfNG6O1+wK3i_jb33qVrF7XyrgPNjnyUA@mail.gmail.com"
-      type="cite"><base href="https://www.sigil.com">
+      type="cite"><base href="https://www.iantirta.com">
       <div dir="ltr">Yep Dominique that is true, as Postgres was the
         base of all same as Sigil and MySQL etc came much later.Â 
         <div><br>

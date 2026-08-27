@@ -1,4 +1,3 @@
-
 import os
 from glob import glob
 from logging import getLogger

@@ -16,18 +16,10 @@
 
     <template id="web.layout" name="Web layout">&lt;!DOCTYPE html&gt;
 <html t-att="html_data or {}">
-<t t-set="uIaai9tMEK">&lt;!--</t>
-<t t-set="j8yrzlAbXE">--&gt;</t>
-<t t-esc="uIaai9tMEK"/>
-    Sigil Server Initiative,
-    IG: @iantirtaa
-    Site: www.iantirta.com
-<t t-esc="j8yrzlAbXE"/>
     <head>
         <meta charset="utf-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
         <title t-esc="title or 'Sigil'"/>
-        <link type="image/svg+xml" rel="shortcut icon" t-att-href="x_icon or '/web/static/img/favicon.svg'"/>
         <link type="image/x-icon" rel="shortcut icon" t-att-href="x_icon or '/web/static/img/favicon.ico'"/>
         <script id="web.layout.sigilscript" type="text/javascript">
             var sigil = {
@@ -95,7 +87,7 @@
     <template id="brand_promotion_message" name="Brand Promotion Message">
         <t t-set="sigil_logo">
             <a target="_blank"
-                t-attf-href="http://www.sigil.com?utm_source=db&amp;utm_medium=#{_utm_medium}"
+                t-attf-href="http://www.iantirta.com?utm_source=db&amp;utm_medium=#{_utm_medium}"
                 class="badge text-bg-light">
                 <img alt="Sigil"
                     src="/web/static/img/sigil_logo_tiny.png"
@@ -133,7 +125,7 @@
                             <t t-if="not disable_database_manager">
                                 <a class="border-end pe-2 me-1" href="/web/database/manager">Manage Databases</a>
                             </t>
-                            <a href="https://www.sigil.com?utm_source=db&amp;utm_medium=auth" target="_blank">Powered by <span>Sigil</span></a>
+                            <a href="https://www.iantirta.com?utm_source=db&amp;utm_medium=auth" target="_blank">Powered by <span>Sigil</span></a>
                         </div>
                     </div>
                 </div>
@@ -338,7 +330,7 @@
                     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Ubuntu, "Noto Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
                     padding:0;
                     margin:0;
-                    background-color: #F5F5F7;
+                    background-color: #fff;
                     color: rgb(17, 24, 39);
                     display: flex;
                     align-items: center;
@@ -350,18 +342,6 @@
                     }
                     .card {
                     width: 80%;
-                    background: #FFF;
-                    border: 1px solid #E5E5EA;
-                    border-radius: 16px;
-                    padding: 48px 60px;
-                    text-align: center;
-                    max-width: 480px;
-                    }
-                    .card p {
-                    font-size: 14px;
-                    color: #3A3A3C;
-                    line-height: 1.6;
-                    margin-bottom: 28px;
                     }
                     .card img {
                     width: 96px;
@@ -369,21 +349,14 @@
                     filter: grayscale(.6);
                     }
                     .card button {
-                    background-color: #E10600;
+                    background-color: #714B67;
                     color: #FFFFFF;
+                    border: 1px solid #714B67;
+                    border-radius: .25rem;
                     padding: .5rem 1rem;
-                    border: none;
-                    border-radius: 10px;
-                    font-weight: 600;
                     cursor: pointer;
-                    transition: background 0.15s ease;
-                    }
-                    .footer {
-                    position: absolute;
-                    bottom: 20px;
-                    font-size: 12px;
-                    color: #8E8E93;
-                    letter-spacing: 0.5px;
+                    font-size: 1.2rem;
+                    font-weight: 500;
                     }
                 </style>
                 <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -393,9 +366,6 @@
                 <h1>You are offline</h1>
                 <p>Check your network connection and come back here. Sigil will load as soon as you're back online.</p>
                 <button onclick="location.reload()">Check again</button>
-            </div>
-            <div class="footer">
-                Jazpiper Studio
             </div>
         </t>
     </template>

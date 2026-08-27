@@ -14,6 +14,8 @@ from sigil import http
 from sigil.exceptions import UserError
 from sigil.http import content_disposition, request
 from sigil.tools import osutil
+from sigil.tools.misc import split_every
+from sigil.tools.constants import PREFETCH_MAX
 
 
 _logger = logging.getLogger(__name__)
@@ -89,6 +91,8 @@ class GroupsTreeNode:
 
     def _get_avg_aggregate(self, field_name, data):
         aggregate_func = OPERATOR_MAPPING.get('sum')
+        if not self.count:
+            return None
         if self.data:
             return aggregate_func(data) / self.count
         children_sums = (child.aggregated_values.get(field_name) * child.count for child in self.children.values())
@@ -606,8 +610,13 @@ class ExportFormat(object):
 
             response_data = self.from_group_data(fields, columns_headers, tree)
         else:
-            export_data = records.export_data(field_names).get('datas', [])
-            response_data = self.from_data(fields, columns_headers, export_data)
+            all_rows = []
+            for batch in split_every(PREFETCH_MAX, records.ids, Model.browse):
+                export_data = batch.export_data(field_names).get('datas', [])
+                all_rows.extend(export_data)
+                batch.invalidate_recordset()
+
+            response_data = self.from_data(fields, columns_headers, all_rows)
 
         _logger.info(
             "User %d exported %d %r records from %s. Fields: %s. %s: %s",

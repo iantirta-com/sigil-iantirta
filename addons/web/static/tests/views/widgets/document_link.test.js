@@ -108,7 +108,7 @@ test("documentation_link: relative path", async () => {
     });
     expect(".o_doc_link").toHaveAttribute(
         "href",
-        "https://www.sigil.com/documentation/1.0/applications/technical/web/settings/this_is_a_test.html"
+        "https://www.iantirta.com/documentation/1.0/applications/technical/web/settings/this_is_a_test.html"
     );
 });
 
@@ -119,10 +119,10 @@ test("documentation_link: absolute path (http)", async () => {
         arch: /* xml */ `
             <form>
                 <field name="bar"/>
-                <widget name="documentation_link" path="http://www.sigil.com/"/>
+                <widget name="documentation_link" path="http://www.iantirta.com/"/>
             </form>`,
     });
-    expect(".o_doc_link").toHaveAttribute("href", "http://www.sigil.com/");
+    expect(".o_doc_link").toHaveAttribute("href", "http://www.iantirta.com/");
 });
 
 test("documentation_link: absolute path (https)", async () => {
@@ -132,9 +132,9 @@ test("documentation_link: absolute path (https)", async () => {
         arch: /* xml */ `
         <form>
             <field name="bar"/>
-            <widget name="documentation_link" path="https://www.sigil.com/"/>
+            <widget name="documentation_link" path="https://www.iantirta.com/"/>
         </form>`,
     });
 
-    expect(".o_doc_link").toHaveAttribute("href", "https://www.sigil.com/");
+    expect(".o_doc_link").toHaveAttribute("href", "https://www.iantirta.com/");
 });

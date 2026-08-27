@@ -1,5 +1,4 @@
 
-
 from sigil.exceptions import UserError
 from sigil.tests import TransactionCase, tagged
 

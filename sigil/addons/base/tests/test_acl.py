@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 from lxml import etree
 
 from sigil.exceptions import AccessError

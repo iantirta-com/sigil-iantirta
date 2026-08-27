@@ -1,5 +1,4 @@
 
-
 from sigil.tests.common import BaseCase, TransactionCase
 from sigil.tools import Query, SQL
 

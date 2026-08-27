@@ -10,7 +10,7 @@
                     <field name="is_root_company" invisible="1"/>
                     <app data-string="General Settings" string="General Settings" name="general_settings" logo="/base/static/description/settings.png">
 
-                        <div id="invite_users" class="i-settings_group">
+                        <div id="invite_users">
                             <block title="Users" name="users_setting_container">
                                 <setting id="invite_users_setting">
                                     <widget name='res_config_invite_users'/>
@@ -31,7 +31,7 @@
                             </block>
                         </div>
 
-                        <div id="languages" class="i-settings_group">
+                        <div id="languages">
                             <block title="Languages" name="languages_setting_container">
                                 <setting id="languages_setting">
                                     <!-- TODO This is not an ideal solution but it looks ok on the interface -->
@@ -54,7 +54,7 @@
                             </block>
                         </div>
 
-                        <div id="companies" class="i-settings_group">
+                        <div id="companies">
                             <block title="Companies" name="companies_setting_container">
                                 <field name="company_id" invisible="1"/>
                                 <setting id="company_details_settings">
@@ -99,9 +99,9 @@
                                 </setting>
                             </block>
                         </div>
-                        <div id="emails" class="i-settings_group"/>
+                        <div id="emails"/>
 
-                        <div id="contacts_settings" class="i-settings_group">
+                        <div id="contacts_settings">
                             <block title="Contacts" name="contacts_setting_container">
                                 <setting id="sms" string="Send SMS" documentation="/applications/marketing/sms_marketing/pricing/pricing_and_faq.html" help="Send texts to your contacts">
                                     <!-- Invisible to avoid breaking any custom inheriting templates -->
@@ -110,39 +110,34 @@
                                 <setting help="Automatically enrich your contact base with company data" title="When populating your address book, Sigil provides a list of matching companies. When selecting one item, the company data and logo are auto-filled." id="partner_autocomplete">
                                     <field name="module_partner_autocomplete"/>
                                 </setting>
-                            </block>
-                        </div>
+                        </block>
+                    </div>
 
-                    <div class="i-settings_group">
-                        <block title="Permissions" id="user_default_rights">
-                            <setting string="Default Access Rights" help="Set custom access rights for new users" title="By default, new users get highest access rights for all installed apps. If unchecked, new users will only have basic employee access." id="access_rights">
-                                <div class="content-group">
-                                    <div class="mt8">
-                                        <button type="object" name="open_new_user_default_groups" string="Default Access Rights" icon="oi-arrow-right" class="btn-link"/>
-                                    </div>
+                    <block title="Permissions" id="user_default_rights">
+                        <setting string="Default Access Rights" help="Set custom access rights for new users" title="By default, new users get highest access rights for all installed apps. If unchecked, new users will only have basic employee access." id="access_rights">
+                            <div class="content-group">
+                                <div class="mt8">
+                                    <button type="object" name="open_new_user_default_groups" string="Default Access Rights" icon="oi-arrow-right" class="btn-link"/>
                                 </div>
-                            </setting>
-                            <setting string="API Keys" help="API Keys allow your users to access Sigil with external tools when multi-factor authentication is enabled." groups="base.group_system">
-                                <button type="action" name="%(base.action_apikeys_admin)d" string="Manage API Keys" icon="oi-arrow-right" class="btn-link"/>
-                            </setting>
-                            <setting string="Import &amp; Export" help="Allow users to import data from CSV/XLS/XLSX/ODS files" documentation="/applications/general/export_import_data.html" groups="base.group_no_one" id="allow_import">
-                                <field name="module_base_import" />
-                            </setting>
-                            <setting id="feedback_motivate_setting" help="Add fun feedback and motivate your employees" groups="base.group_no_one">
-                                <field name="show_effect"/>
-                            </setting>
-                        </block>
-                    </div>
+                            </div>
+                        </setting>
+                        <setting string="API Keys" help="API Keys allow your users to access Sigil with external tools when multi-factor authentication is enabled." groups="base.group_system">
+                            <button type="action" name="%(base.action_apikeys_admin)d" string="Manage API Keys" icon="oi-arrow-right" class="btn-link"/>
+                        </setting>
+                        <setting string="Import &amp; Export" help="Allow users to import data from CSV/XLS/XLSX/ODS files" documentation="/applications/general/export_import_data.html" groups="base.group_no_one" id="allow_import">
+                            <field name="module_base_import" />
+                        </setting>
+                        <setting id="feedback_motivate_setting" help="Add fun feedback and motivate your employees" groups="base.group_no_one">
+                            <field name="show_effect"/>
+                        </setting>
+                    </block>
 
-                    <div class="i-settings_group">
-                        <block title="Progressive Web App" id="pwa_settings" groups="base.group_no_one">
-                            <setting help="This name will be used for the application when Sigil is installed through the browser.">
-                                <field name="web_app_name" placeholder="Sigil"/>
-                            </setting>
-                        </block>
-                    </div>
+                    <block title="Progressive Web App" id="pwa_settings" groups="base.group_no_one">
+                        <setting help="This name will be used for the application when Sigil is installed through the browser.">
+                            <field name="web_app_name" placeholder="Sigil"/>
+                        </setting>
+                    </block>
 
-                    <div class="i-settings_group">
                         <block title="Integrations" name="integration">
                             <setting string="Mail Plugin" documentation="/applications/productivity/mail_plugins.html" help="Integrate with mail client plugins" id="mail_pluggin_setting">
                                 <field name="module_mail_plugin" />
@@ -194,19 +189,15 @@
                             </setting>
 
                         </block>
-                    </div>
 
-                    <div class="i-settings_group">
                         <block title="Performance" groups="base.group_no_one" name="performance">
                             <setting id="profiling_enabled_until" help="Enable the profiling tool. Profiling may impact performance while being active.">
                                 <field name="profiling_enabled_until"/>
                             </setting>
                         </block>
-                    </div>
 
                         <widget name='res_config_dev_tool'/>
-                        
-                        <div id='about' class="i-settings_group">
+                        <div id='about'>
                             <block title="About" name="about_setting_container">
                                 <widget name='res_config_edition'/>
                             </block>

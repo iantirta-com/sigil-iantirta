@@ -1,7 +1,5 @@
-# -*- coding: utf-8 -*-
 
-
-from sigil.exceptions import ValidationError
+from sigil.exceptions import AccessError, ValidationError
 from sigil.tests.common import TransactionCase
 
 
@@ -145,6 +143,25 @@ class TestIrDefault(TransactionCase):
             IrDefault.with_context(allowed_company_ids=company_b_a.ids)._get_model_defaults('res.partner')['ref'],
             'CBDefault',
         )
+
+    def test_ir_default_field(self):
+        user = self.env.user.create({'name': 'u2', 'login': 'u2'})
+        IrDefault = self.env['ir.default']
+        field_id = self.env['ir.model.fields']._get('res.partner', 'ref').id
+        field = self.env['res.partner']._fields['ref']
+        with self.assertRaises(AccessError):
+            # cannot create global defaults as non-system user
+            IrDefault.with_user(user).create({'field_id': field_id, 'json_value': '"test"'})
+
+        self.patch(field, 'groups', 'base.group_system')
+        # the user cannot create a default
+        with self.assertRaises(AccessError):
+            IrDefault.with_user(user).create({'field_id': field_id, 'json_value': '"test"', 'user_id': user.id})
+        # the admin can create such a default
+        user_default = IrDefault.create({'field_id': field_id, 'json_value': '"test"', 'user_id': user.id})
+        # the user cannot change such a default
+        with self.assertRaises(AccessError):
+            user_default.with_user(user).write({'json_value': '"myval"'})
 
     def test_json_format_invalid(self):
         """ check the _check_json_format constraint """

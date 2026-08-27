@@ -1,4 +1,3 @@
-
 """
 ================
 IrQweb / ir.qweb
@@ -24,7 +23,7 @@ which executes its directive but doesn't generate any output in and of
 itself.
 
 To create new XML template, please see :doc:`QWeb Templates documentation
-<https://www.sigil.com/documentation/master/developer/reference/frontend/qweb.html>`
+<https://www.iantirta.com/documentation/master/developer/reference/frontend/qweb.html>`
 
 Rendering process
 =================
@@ -363,6 +362,7 @@ from __future__ import annotations
 
 import base64
 import fnmatch
+import glob
 import io
 import logging
 import math
@@ -384,11 +384,13 @@ from copy import deepcopy
 from itertools import count, chain
 from lxml import etree
 from dateutil.relativedelta import relativedelta
+from os.path import join as opj
 from pathlib import Path
 from psycopg2.extensions import TransactionRollbackError
 from psycopg2.errors import ReadOnlySqlTransaction
 from typing import NamedTuple, Literal
 from types import FunctionType
+from urllib.parse import unquote_plus
 
 from sigil import api, models, tools
 from sigil.modules import Manifest
@@ -485,7 +487,8 @@ T_CALL_SLOT = '0'
 ETREE_TEMPLATE_REF = count()
 
 # Only allow a javascript scheme if it is followed by [ ][window.]history.back()
-MALICIOUS_SCHEMES = re.compile(r'javascript:(?!( ?)((window\.)?)history\.back\(\)$)', re.I).findall
+MALICIOUS_SCHEMES = re.compile(r'javascript:(?!((window\.)?)history\.back\(\)$)', re.I).findall
+WHITESPACE_REGEX = re.compile(r'[\s\x00-\x08\x0B\x0C\x0E-\x19]+')
 
 
 def _id_or_xmlid(ref):
@@ -613,12 +616,22 @@ class QwebContent:
     params__: QwebCallParameters  # not available for the python expression inside the xml
 
     def __init__(self, irQweb: IrQweb, params: QwebCallParameters):
-        self.irQweb = irQweb
+        self.__irQweb = irQweb
         self.html = None
         self.params__ = params
 
+    @property
+    def irQweb(self):
+        irQweb = self.__irQweb
+        thread_dbname = getattr(threading.current_thread(), 'dbname', None)
+        if thread_dbname and thread_dbname != irQweb.env.cr.dbname:
+            return None
+        return irQweb
+
     def __str__(self):
         if self.html is None:
+            if self.irQweb is None:
+                return ''
             params = self.params__
             self.html = ''.join(self.irQweb._render_iterall(
                params.view_ref, params.method, params.values, params.directive,
@@ -989,6 +1002,7 @@ class IrQweb(models.AbstractModel):
         return self._generate_code_uncached(ref)
 
     def _generate_code_uncached(self, template: int | str | etree._Element):
+        assert isinstance(self, IrQweb)
         ref = self._get_template_info(template)['id'] if isinstance(template, (int, str)) else None
 
         code, options, def_name = self._generate_code(template)
@@ -1122,7 +1136,8 @@ class IrQweb(models.AbstractModel):
                 """, 0)]
 
         code_lines = []
-        code_lines.append(f'template_options = {pprint.pformat(options, indent=4)}')
+        json_options = json.scriptsafe.loads(json.scriptsafe.dumps(options, default=str))
+        code_lines.append(f'template_options = {pprint.pformat(json_options, indent=4)}')
         code_lines.append('code = None')
         code_lines.append('template_functions = {}')
 
@@ -1177,8 +1192,9 @@ class IrQweb(models.AbstractModel):
         if value.get('error'):
             raise value['error']
 
-        # In dev mode `_generate_code_cached` is not cached and the tree can be processed several times
-        value_tree = deepcopy(value['tree']) if 'xml' in tools.config['dev_mode'] else value['tree']
+        # The compiled template cache can evict entries during a render, causing
+        # the same preloaded tree to be processed several times.
+        value_tree = deepcopy(value['tree'])
         # return etree, document and ref
         return (value_tree, value['template'], value['ref'])
 
@@ -1393,9 +1409,10 @@ class IrQweb(models.AbstractModel):
             f'self._compile_to_str({self._compile_expr(m.group(1) or m.group(2))})'
             for m in FORMAT_REGEX.finditer(expr)
         ]
+        if not values:
+            return repr(expr)
         code = repr(FORMAT_REGEX.sub('%s', expr.replace('%', '%%')))
-        if values:
-            code += f' % ({", ".join(values)},)'
+        code += f' % ({", ".join(values)},)'
         return code
 
     def _compile_expr_tokens(self, tokens, allowed_keys, argument_names=None, raise_on_missing=False):
@@ -2710,7 +2727,10 @@ class IrQweb(models.AbstractModel):
 
             @returns dict
         """
-        if not atts.pop('__is_static_node', False) and (href := atts.get('href')) and MALICIOUS_SCHEMES(str(href)):
+        if atts.pop('__is_static_node', False):
+            return atts
+        href = str(atts.get('href') or '')
+        if MALICIOUS_SCHEMES(WHITESPACE_REGEX.sub('', unquote_plus(href))):
             atts['href'] = ""
         return atts
 
@@ -2917,7 +2937,11 @@ class IrQweb(models.AbstractModel):
         """
         Returns the list of bundles to pregenerate.
         """
+        js_views_bundles, css_views_bundles = self._get_bundles_from_views()
+        lazy_bundles = self._get_lazy_bundles_from_js()
+        return (js_views_bundles | lazy_bundles, css_views_bundles | lazy_bundles)
 
+    def _get_bundles_from_views(self):
         views = self.env['ir.ui.view'].search([('type', '=', 'qweb'), ('arch_db', 'like', 't-call-assets')])
         js_bundles = set()
         css_bundles = set()
@@ -2931,6 +2955,22 @@ class IrQweb(models.AbstractModel):
                 if css:
                     css_bundles.add(asset)
         return (js_bundles, css_bundles)
+
+    def _get_lazy_bundles_from_js(self):
+        modules = self.env['ir.module.module'].search([('state', '=', 'installed')]).mapped('name')
+        lazy_bundle_regex = re.compile(r'\bloadBundle\((["\'`])([\w\.-]+)\1\)', flags=re.ASCII)
+        bundles = set()
+        for module in modules:
+            manifest = Manifest.for_addon(module, display_warning=False)
+            if not (manifest and manifest.static_path):
+                continue
+            for fname in glob.iglob('**/src/**/*.js', root_dir=manifest.static_path, recursive=True):
+                with file_open(opj(manifest.static_path, fname)) as f:
+                    fcontent = f.read()
+                    if match := lazy_bundle_regex.search(fcontent):
+                        bundles.add(match[2])
+        return bundles
+
 
 def render(template_name, values, load, **options):
     """ Rendering of a qweb template without database and outside the registry.

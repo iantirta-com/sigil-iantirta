@@ -22,6 +22,7 @@ export function mockIndexedDB(_name, { fn }) {
             async deleteDatabase() {
                 this.mockIndexedDB = {};
             }
+
             async invalidate(tables = null) {
                 if (tables) {
                     tables = typeof tables === "string" ? [tables] : tables;

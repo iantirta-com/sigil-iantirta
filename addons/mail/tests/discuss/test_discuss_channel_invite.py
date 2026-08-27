@@ -167,13 +167,13 @@ class TestDiscussChannelInvite(HttpCase, MailCommon):
             # Channel types that do not allow inviting by email, not selectable.
             *product(
                 [chat, private_channel],
-                ["bob@sigil.com", "alfred@sigil.com", "jane@sigil.com"],
+                ["bob@iantirta.com", "alfred@iantirta.com", "jane@iantirta.com"],
                 [False],
             ),
             # Channel types that allow inviting by email, valid email, selectable.
             *product(
                 [group_chat, public_channel],
-                ["bob@sigil.com", "alfred@sigil.com", "jane@sigil.com"],
+                ["bob@iantirta.com", "alfred@iantirta.com", "jane@iantirta.com"],
                 [True],
             ),
         ]

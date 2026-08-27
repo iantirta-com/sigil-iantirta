@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# Part of Sigil. See LICENSE file for full copyright and licensing details.
 import ast
 import pathlib
 import os
@@ -134,6 +133,9 @@ class Cloc(object):
         if not exclude:
             exclude = set()
         for i in filter(None, exclude_list):
+            assert '..' not in i, (
+                f"Invalid exclusion path '{i}': '..' is not allowed. Use a normalized path."
+            )
             exclude.update(str(p) for p in pathlib.Path(path).glob(i))
 
         module_name = os.path.basename(path)

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import dateutil.relativedelta as relativedelta
 import functools
 import re

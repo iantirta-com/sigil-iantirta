@@ -386,6 +386,7 @@ test("touch rendering - tap-to-show", async () => {
     await animationFrame();
     expect(".o_popover").toHaveCount(0);
 });
+
 test.tags("desktop");
 test("tooltip from and to child element", async () => {
     class MyComponent extends Component {

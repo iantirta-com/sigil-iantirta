@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-
 from hashlib import sha256
 from unittest.mock import patch
+import ast
 import logging
 import time
 
@@ -11,7 +11,7 @@ import io
 
 from sigil.exceptions import UserError
 from sigil.tools import sql
-from sigil.tools.translate import quote, unquote, xml_translate, html_translate, TranslationImporter, TranslationModuleReader
+from sigil.tools.translate import _push, quote, unquote, xml_translate, html_translate, TranslationImporter, TranslationModuleReader, TranslationReader
 from sigil.tests.common import TransactionCase, BaseCase, new_test_user, tagged
 
 _stats_logger = logging.getLogger('sigil.tests.stats')
@@ -430,6 +430,24 @@ class TranslationToolsTestCase(BaseCase):
         result = html_translate(lambda term: term, source)
         self.assertEqual(result, source)
 
+    def test_push_filters_no_letter_strings(self):
+        """Strings with no letters should not be exported for translation."""
+        terms = []
+
+        def callback(term, line):
+            return terms.append(term)
+        _push(callback, 'hello', 1)
+        _push(callback, '123', 1)
+        _push(callback, '!@#', 1)
+        _push(callback, '', 1)
+        self.assertEqual(terms, ['hello'])
+
+    def test_push_exports_one_letter_strings(self):
+        """One-letter strings should be exported (e.g. UoM abbreviations like 'g' for grams)."""
+        terms = []
+        _push(lambda term, line: terms.append(term), 'g', 1)
+        self.assertEqual(terms, ['g'])
+
 
 class TestLanguageInstall(TransactionCase):
     def test_language_install(self):
@@ -460,6 +478,23 @@ class TestTranslationExport(TransactionCase):
         """Read files of installed modules and export translatable terms"""
         with self.assertNoLogs('sigil.tools.translate', "ERROR"):
             TranslationModuleReader(self.env.cr)
+
+    def test_push_translation_filters_no_letter_strings(self):
+        """Strings with no letters should not be queued for translation export."""
+        reader = TranslationReader(self.env.cr)
+        reader._push_translation('module', 'model', 'res.partner,name', 1, 'hello')
+        reader._push_translation('module', 'model', 'res.partner,name', 2, '123')
+        reader._push_translation('module', 'model', 'res.partner,name', 3, '!@#')
+        reader._push_translation('module', 'model', 'res.partner,name', 4, '')
+        sources = [entry[1] for entry in reader._to_translate]
+        self.assertEqual(sources, ['hello'])
+
+    def test_push_translation_exports_one_letter_strings(self):
+        """One-letter strings should be queued for export (e.g. UoM abbreviations like 'g' for grams)."""
+        reader = TranslationReader(self.env.cr)
+        reader._push_translation('module', 'model', 'res.partner,name', 1, 'g')
+        sources = [entry[1] for entry in reader._to_translate]
+        self.assertEqual(sources, ['g'])
 
 
 class TestTranslation(TransactionCase):
@@ -1366,7 +1401,7 @@ class TestXMLTranslation(TransactionCase):
 
         self.assertEqual(view.arch_db, archf % terms_en)
         self.assertEqual(view.with_context(lang='fr_FR').arch_db, archf % terms_fr)
-        
+
         # change the order of the text term and the xml term and redo the previous test
         archf = '<form>%s<div>%s</div></form>'
         terms_en = ('<span invisible="1">Draft</span>', 'Draft')
@@ -1588,6 +1623,20 @@ class TestXMLTranslation(TransactionCase):
                 archf2,
                 f'arch_db for {lang} should be {archf2} when check_translations'
             )
+
+    def test_delay_translations_backend_edtition(self):
+        """ Ensure delayed translations are shown in backend view edition """
+        archf = '<form string="%s"><div>%s</div><div>%s</div></form>'
+        terms_fr = ('Couteau', 'Fourchette', 'Cuiller')
+        terms_en = ('Knife', 'Fork', 'Spoon')
+        view0 = self.create_view(archf, terms_fr, en_US=terms_en)
+        original_english = view0.arch_db
+        new_french = '<form>bonjour monde</form>'
+        view0.with_context(lang='fr_FR', delay_translations=True).arch_db = new_french
+        self.assertEqual(view0.arch_db, original_english)
+        self.assertEqual(view0.with_context(check_translations=True).arch_db, new_french)
+        context = ast.literal_eval(self.env.ref('base.action_ui_view').context)
+        self.assertTrue(context.get('check_translations'))
 
     def test_t_call_no_normal_attribute_translation(self):
         self.env['ir.ui.view'].create({

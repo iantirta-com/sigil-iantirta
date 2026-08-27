@@ -1,10 +1,10 @@
-
 import logging
 import re
 from ast import literal_eval
 
 from sigil import api, models, _
 from sigil.exceptions import AccessError, RedirectWarning, UserError
+from sigil.tools import str2bool
 
 _logger = logging.getLogger(__name__)
 
@@ -239,6 +239,7 @@ class ResConfigSettings(models.TransientModel):
         if not fields:
             return res
 
+        self.check_access('read')
         IrDefault = self.env['ir.default']
         IrConfigParameter = self.env['ir.config_parameter'].sudo()
         classified = self._get_classified_fields(fields)
@@ -286,7 +287,7 @@ class ResConfigSettings(models.TransientModel):
                         _logger.warning(WARNING_MESSAGE, value, field, icp)
                         value = 0.0
                 elif field.type == 'boolean':
-                    value = bool(value)
+                    value = str2bool(value, bool(value))
             res[name] = value
 
         res.update(self.get_values())

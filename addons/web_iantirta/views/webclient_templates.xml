@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sigil>
+    <template id="web.login_layout" name="Login Layout">
+        <t t-call="web.frontend_layout">
+            <t t-set="html_data" t-value="{'style': 'height: 100%;'}"/>
+            <t t-set="body_classname" t-value="'o_sigil_login_body'"/>
+            <t t-set="no_header" t-value="True"/>
+            <t t-set="no_footer" t-value="True"/>
+
+            <div class="o_sigil_login">
+                <section class="o_sigil_login_panel">
+                    <div class="o_sigil_login_content">
+                        <div class="text-center pb-3 mb-4">
+                            <img t-attf-src="/web/binary/company_logo{{ '?dbname='+db if db else '' }}" alt="Logo" style="max-height:120px; max-width: 100%; width:auto"/>
+                        </div>
+                        <div class="o_sigil_login_heading mb-4">
+                            <h1>Welcome back</h1>
+                            <p>Sign in to continue to your accounting workspace.</p>
+                        </div>
+                        <div class="o_sigil_login_form">
+                            <t t-out="0"/>
+                        </div>
+                        <div class="o_sigil_login_footer text-center small mt-4 pt-3 border-top" t-if="not disable_footer">
+                            <t t-if="not disable_database_manager">
+                                <a href="/web/database/manager" class="border-end pe-2 me-1">Manage Databases</a>
+                            </t>
+                            <a href="https://www.iantirta.com?utm_source=db&amp;utm_medium=auth" target="_blank" class="">
+                                Powered by <span>Sigil</span>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+                <section class="o_sigil_login_visual">
+                    <div class="o_sigil_login_visual_content">
+                        <div class="o_sigil_login_glow o_sigil_login_glow_1"/>
+                        <div class="o_sigil_login_glow o_sigil_login_glow_2"/>
+                        <div class="o_sigil_login_visual_intro">
+                            <span class="o_sigil_login_visual_eyebrow">SIGIL ACCOUNTING</span>
+                            <h2>
+                                Your finances,
+                                <span>clearly in control.</span>
+                            </h2>
+                            <p>
+                                Keep your books, transactions, and financial
+                                insights together in one place.
+                            </p>
+                        </div>
+                        <div class="o_sigil_accounting_preview">
+                            <div class="o_sigil_preview_kpi">
+                                <div class="o_sigil_preview_kpi_header">
+                                    <span>Net position</span>
+                                    <span class="o_sigil_preview_status">
+                                        <i class="fa fa-arrow-up"/>
+                                        12.8%
+                                    </span>
+                                </div>
+                                <div class="o_sigil_preview_amount">Rp 2,481,240,000</div>
+                                <div class="o_sigil_preview_period">Compared with previous period</div>
+                            </div>
+                            <div class="o_sigil_preview_chart_card">
+                                <div class="o_sigil_preview_card_header">
+                                    <div>
+                                        <strong>Cash flow</strong>
+                                        <span>Last 6 months</span>
+                                    </div>
+                                    <div class="o_sigil_preview_chart_legend">
+                                        <span>
+                                            <i class="o_sigil_legend_income"/>
+                                            Income
+                                        </span>
+                                        <span>
+                                            <i class="o_sigil_legend_expense"/>
+                                            Expenses
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="o_sigil_preview_chart">
+                                    <div class="o_sigil_chart_grid">
+                                        <span/>
+                                        <span/>
+                                        <span/>
+                                        <span/>
+                                    </div>
+                                    <svg class="o_sigil_chart_svg" viewBox="0 0 600 180" preserveAspectRatio="none" aria-hidden="true">
+                                        <defs>
+                                            <linearGradient id="sigilIncomeGradient" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="0%" stop-opacity=".20"/>
+                                                <stop offset="100%" stop-opacity="0"/>
+                                            </linearGradient>
+                                        </defs>
+                                        <path class="o_sigil_chart_income_area"
+                                            d="M0 145
+                                            C50 130 75 140 110 112
+                                            S170 105 205 116
+                                            S260 70 300 86
+                                            S355 95 390 58
+                                            S450 62 480 48
+                                            S545 34 600 20
+                                            L600 180
+                                            L0 180 Z"
+                                        />
+                                        <path class="o_sigil_chart_income"
+                                            d="M0 145
+                                            C50 130 75 140 110 112
+                                            S170 105 205 116
+                                            S260 70 300 86
+                                            S355 95 390 58
+                                            S450 62 480 48
+                                            S545 34 600 20"
+                                        />
+                                        <path class="o_sigil_chart_expense"
+                                            d="M0 160
+                                            C50 150 75 155 110 142
+                                            S170 145 205 134
+                                            S260 122 300 128
+                                            S355 120 390 110
+                                            S450 116 480 98
+                                            S545 102 600 86"
+                                        />
+                                    </svg>
+                                    <div class="o_sigil_chart_labels">
+                                        <span>Mar</span>
+                                        <span>Apr</span>
+                                        <span>May</span>
+                                        <span>Jun</span>
+                                        <span>Jul</span>
+                                        <span>Aug</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="o_sigil_preview_transactions">
+                                <div class="o_sigil_preview_card_header">
+                                    <div>
+                                        <strong>Recent activity</strong>
+                                        <span>Latest transactions</span>
+                                    </div>
+                                    <span class="o_sigil_preview_more"><i class="fa fa-ellipsis-h"/></span>
+                                </div>
+                                <div class="o_sigil_transaction">
+                                    <div class="o_sigil_transaction_icon o_income"><i class="fa fa-arrow-down"/></div>
+                                    <div class="o_sigil_transaction_info">
+                                        <strong>Sales invoice</strong>
+                                        <span>INV-2026-00842</span>
+                                    </div>
+                                    <div class="o_sigil_transaction_value o_positive">+ Rp 18,450,000</div>
+                                </div>
+                                <div class="o_sigil_transaction">
+                                    <div class="o_sigil_transaction_icon o_income"><i class="fa fa-university"/></div>
+                                    <div class="o_sigil_transaction_info">
+                                        <strong>Bank settlement</strong>
+                                        <span>Bank account •••• 2481</span>
+                                    </div>
+                                    <div class="o_sigil_transaction_value o_positive">+ Rp 42,000,000</div>
+                                </div>
+                                <div class="o_sigil_transaction">
+                                    <div class="o_sigil_transaction_icon o_expense"><i class="fa fa-arrow-up"/></div>
+                                    <div class="o_sigil_transaction_info">
+                                        <strong>Office expense</strong>
+                                        <span>EXP-2026-00124</span>
+                                    </div>
+                                    <div class="o_sigil_transaction_value">- Rp 2,840,000</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+</sigil>

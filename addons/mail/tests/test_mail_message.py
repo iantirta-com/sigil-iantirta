@@ -6,6 +6,7 @@ from sigil.tests import new_test_user, tagged, users
 
 @tagged("-at_install", "post_install", "mail_message")
 class TestMailMessage(common.MailCommon):
+
     @users("employee")
     def test_can_star_message_without_write_access(self):
         message = self.env["mail.message"].sudo().create({
@@ -21,6 +22,7 @@ class TestMailMessage(common.MailCommon):
         self.assertIn(self.env.user.partner_id, message.starred_partner_ids)
         self.env["mail.message"].unstar_all()
         self.assertNotIn(self.env.user.partner_id, message.starred_partner_ids)
+
     def test_mail_message_read_inexisting(self):
         inexisting_message = self.env['mail.message'].with_user(self.user_employee).browse(-434264)
         self.assertFalse(inexisting_message.exists())

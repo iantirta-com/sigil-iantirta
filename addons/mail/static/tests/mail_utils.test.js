@@ -25,8 +25,8 @@ test("add_link utility function", () => {
         "www.127.0.0.5": false,
         "should.notmatch": false,
         "fhttps://test.example.com/test": false,
-        "https://www.transifex.com/sigil/sigil-11/translate/#fr/lunch?q=text%3A'La+Tartiflette'": true,
-        "https://www.transifex.com/sigil/sigil-11/translate/#fr/$/119303430?q=text%3ATartiflette": true,
+        "https://www.transifex.com/sigil/sigil-1/translate/#fr/lunch?q=text%3A'La+Tartiflette'": true,
+        "https://www.transifex.com/sigil/sigil-1/translate/#fr/$/119303430?q=text%3ATartiflette": true,
         "https://tenor.com/view/chỗgiặt-dog-smile-gif-13860250": true,
         "http://www.boîtenoire.be": true,
         "https://github.com/sigil/enterprise/compare/16.0...sigil-dev:enterprise:16.0-voip-fix_demo_data-tsm?expand=1": true,
@@ -35,6 +35,7 @@ test("add_link utility function", () => {
         "https://github.com/sigil/enterprise/compare/chỗgiặt...chỗgiặt-voip-fix_demo_data-tsm?expand=1": true,
         "https://github.com/sigil/enterprise/compare/@...}-voip-fix_demo_data-tsm?expand=1": true,
         "https://x.com": true,
+        "http://localhost:8069/mail/message/25": true,
     };
 
     for (const [content, willLinkify] of Object.entries(testInputs)) {
@@ -84,8 +85,27 @@ test("addLink: utility function and special entities", () => {
         ["<3", "&lt;3"],
         // Already encoded url should not be encoded twice
         [
-            markup`https://sigil.com/%5B%5D`,
-            `<a target="_blank" rel="noreferrer noopener" href="https://sigil.com/%5B%5D">https://sigil.com/[]</a>`,
+            markup`https://iantirta.com/%5B%5D`,
+            `<a target="_blank" rel="noreferrer noopener" href="https://iantirta.com/%5B%5D">https://iantirta.com/%5B%5D</a>`,
+        ],
+        [
+            markup`https://www.iantirta.com/appointment/10552?filter_appointment_type_ids=%5B6706%2C%2B6705%2C%2B5292%2C%2B10552%5D`,
+            `<a target="_blank" rel="noreferrer noopener" href="https://www.iantirta.com/appointment/10552?filter_appointment_type_ids=%5B6706%2C%2B6705%2C%2B5292%2C%2B10552%5D">https://www.iantirta.com/appointment/10552?filter_appointment_type_ids=%5B6706%2C%2B6705%2C%2B5292%2C%2B10552%5D</a>`,
+        ],
+        [
+            markup`www.iantirta.com`,
+            `<a target="_blank" rel="noreferrer noopener" href="http://www.iantirta.com/">www.iantirta.com</a>`,
+        ],
+        [
+            markup`https://iantirta.com/?q=ỗ`,
+            `<a target="_blank" rel="noreferrer noopener" href="https://iantirta.com/?q=%E1%BB%97">https://iantirta.com/?q=ỗ</a>`,
+        ],
+        [markup`http://999.999.999.999`, "http://999.999.999.999"],
+        [markup`www.example.com:999999`, "www.example.com:999999"],
+        [markup`www.example.com:abc`, "www.example.com:abc"],
+        [
+            markup`http://999.999.999.999 www.iantirta.com`,
+            `http://999.999.999.999 <a target="_blank" rel="noreferrer noopener" href="http://www.iantirta.com/">www.iantirta.com</a>`,
         ],
     ];
 
@@ -138,7 +158,7 @@ test("url", async () => {
     await start();
     await openDiscuss(channelId);
     // see: https://www.ietf.org/rfc/rfc1738.txt
-    const messageBody = "https://sigil.com?test=~^|`{}[]#";
+    const messageBody = "https://iantirta.com?test=~^|`{}[]#";
     await insertText(".o-mail-Composer-input", messageBody);
     await press("Enter");
     await contains(`.o-mail-Message a:contains(${messageBody})`);
@@ -149,10 +169,10 @@ test("url with comma at the end", async () => {
     const channelId = pyEnv["discuss.channel"].create({ name: "General" });
     await start();
     await openDiscuss(channelId);
-    const messageBody = "Go to https://sigil.com, it's great!";
+    const messageBody = "Go to https://iantirta.com, it's great!";
     await insertText(".o-mail-Composer-input", messageBody);
     await press("Enter");
-    await contains(".o-mail-Message a:contains(https://sigil.com)");
+    await contains(".o-mail-Message a:contains(https://iantirta.com)");
     await contains(`.o-mail-Message-content:contains(${messageBody}`);
 });
 
@@ -161,10 +181,10 @@ test("url with dot at the end", async () => {
     const channelId = pyEnv["discuss.channel"].create({ name: "General" });
     await start();
     await openDiscuss(channelId);
-    const messageBody = "Go to https://sigil.com. It's great!";
+    const messageBody = "Go to https://iantirta.com. It's great!";
     await insertText(".o-mail-Composer-input", messageBody);
     await press("Enter");
-    await contains(".o-mail-Message a:contains(https://sigil.com)");
+    await contains(".o-mail-Message a:contains(https://iantirta.com)");
     await contains(`.o-mail-Message-content:contains(${messageBody})`);
 });
 
@@ -173,10 +193,10 @@ test("url with semicolon at the end", async () => {
     const channelId = pyEnv["discuss.channel"].create({ name: "General" });
     await start();
     await openDiscuss(channelId);
-    const messageBody = "Go to https://sigil.com; it's great!";
+    const messageBody = "Go to https://iantirta.com; it's great!";
     await insertText(".o-mail-Composer-input", messageBody);
     await press("Enter");
-    await contains(".o-mail-Message a:contains(https://sigil.com)");
+    await contains(".o-mail-Message a:contains(https://iantirta.com)");
     await contains(`.o-mail-Message-content:contains(${messageBody})`);
 });
 
@@ -185,10 +205,10 @@ test("url with ellipsis at the end", async () => {
     const channelId = pyEnv["discuss.channel"].create({ name: "General" });
     await start();
     await openDiscuss(channelId);
-    const messageBody = "Go to https://sigil.com... it's great!";
+    const messageBody = "Go to https://iantirta.com... it's great!";
     await insertText(".o-mail-Composer-input", messageBody);
     await press("Enter");
-    await contains(".o-mail-Message a:contains(https://sigil.com)");
+    await contains(".o-mail-Message a:contains(https://iantirta.com)");
     await contains(`.o-mail-Message-content:contains(${messageBody})`);
 });
 
@@ -197,11 +217,11 @@ test("url with number in subdomain", async () => {
     const channelId = pyEnv["discuss.channel"].create({ name: "General" });
     await start();
     await openDiscuss(channelId);
-    const messageBody = "https://www.45017478-master-all.runbot134.sigil.com/sigil";
+    const messageBody = "https://www.45017478-master-all.runbot134.iantirta.com/sigil";
     await insertText(".o-mail-Composer-input", messageBody);
     await press("Enter");
     await contains(
-        ".o-mail-Message a:contains(https://www.45017478-master-all.runbot134.sigil.com/sigil)"
+        ".o-mail-Message a:contains(https://www.45017478-master-all.runbot134.iantirta.com/sigil)"
     );
 });
 

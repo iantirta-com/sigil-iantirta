@@ -34,7 +34,6 @@ export class ChatHub extends Record {
             .then(() => chatHub.initPromise.resolve());
         return chatHub;
     }
-
     _recomputeCompact = 0;
     compact = fields.Attr(false, {
         compute() {

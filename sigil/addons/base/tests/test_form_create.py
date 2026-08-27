@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 from sigil.tests import TransactionCase, tagged, Form
 
 

@@ -1,5 +1,4 @@
 
-
 import base64
 import datetime
 import email.policy
@@ -72,14 +71,20 @@ smtplib.SMTP._print_debug = _print_debug
 
 # Python 3: workaround for bpo-35805, only partially fixed in Python 3.8.
 RFC5322_IDENTIFICATION_HEADERS = {'message-id', 'in-reply-to', 'references', 'resent-msg-id'}
+USER_DEFINED_HEADERS = {'bcc', 'cc', 'from', 'reply-to', 'subject', 'to'}
 _noFoldPolicy = email.policy.SMTP.clone(max_line_length=None)
+_maxFoldPolicy = email.policy.SMTP.clone(max_line_length=998)  # rfc5322#section-2.1.1
 class IdentificationFieldsNoFoldPolicy(email.policy.EmailPolicy):
     # Override _fold() to avoid folding identification fields, excluded by RFC2047 section 5
     # These are particularly important to preserve, as MTAs will often rewrite non-conformant
     # Message-ID headers, causing a loss of thread information (replies are lost)
+    # Also override _fold() for user-defined headers that may not fit on 78 characters,
+    # as Python's folding algorithm is unreliable and fail to handle all weird cases.
     def _fold(self, name, value, *args, **kwargs):
         if name.lower() in RFC5322_IDENTIFICATION_HEADERS:
             return _noFoldPolicy._fold(name, value, *args, **kwargs)
+        if name.lower() in USER_DEFINED_HEADERS:
+            return _maxFoldPolicy._fold(name, value, *args, **kwargs)
         return super()._fold(name, value, *args, **kwargs)
 
 # Global monkey-patch for our preferred SMTP policy, preserving the non-default linesep
@@ -151,7 +156,7 @@ class IrMail_Server(models.Model):
     from_filter = fields.Char(
         "FROM Filtering",
         help='Comma-separated list of addresses or domains for which this server can be used.\n'
-             'e.g.: "notification@sigil.com" or "sigil.com"')
+             'e.g.: "notification@iantirta.com" or "iantirta.com"')
     smtp_host = fields.Char(string='SMTP Server', help="Hostname or IP of SMTP server")
     smtp_port = fields.Integer(string='SMTP Port', default=25, help="SMTP Port. Usually 465 for SSL, and 25 or 587 for other cases.")
     smtp_authentication = fields.Selection([
@@ -211,7 +216,7 @@ class IrMail_Server(models.Model):
                 server.smtp_authentication_info = _(
                     'Use the SMTP configuration set in the "Command Line Interface" arguments.')
             else:
-                server.smtp_authentication = False
+                server.smtp_authentication_info = False
 
     @api.constrains('smtp_authentication', 'smtp_ssl_certificate', 'smtp_ssl_private_key')
     def _check_smtp_ssl_files(self):
@@ -289,7 +294,7 @@ class IrMail_Server(models.Model):
         return email_from
 
     def _get_test_email_to(self):
-        return "noreply@sigil.com"
+        return "noreply@iantirta.com"
 
     def test_smtp_connection(self, autodetect_max_email_size=False):
         """Test the connection and if autodetect_max_email_size, set auto-detected max email size.

@@ -6,6 +6,7 @@ import { evaluateBooleanExpr } from "@web/core/py_js/py";
 import { DataPoint } from "./datapoint";
 import { Operation } from "./operation";
 import { FetchRecordError } from "./errors";
+import { RequestEntityTooLargeError } from "@web/core/network/rpc";
 import {
     createPropertyActiveField,
     getBasicEvalContext,
@@ -1182,7 +1183,7 @@ export class Record extends DataPoint {
                 kwargs
             );
         } catch (e) {
-            if (onError) {
+            if (onError && !(e instanceof RequestEntityTooLargeError)) {
                 return onError(e, {
                     discard: () => this._discard(),
                     retry: () => this._save(...arguments),
@@ -1221,7 +1222,7 @@ export class Record extends DataPoint {
             for (const fieldName in this.activeFields) {
                 const field = this.fields[fieldName];
                 if (["one2many", "many2many"].includes(field.type) && !field.relatedPropertyField) {
-                    this._changes[fieldName]?._clearCommands();
+                    this._values[fieldName]?._clearCommands();
                 }
             }
             this._changes = markRaw({});

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 from sigil import models, Command
 from sigil.addons.base.tests.common import SavepointCaseWithUserDemo
 from sigil.tools import mute_logger, unique, lazy

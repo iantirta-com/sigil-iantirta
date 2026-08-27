@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 import contextlib
 import difflib
 import logging
@@ -12,7 +11,7 @@ from unittest.mock import patch
 
 from sigil.tests.case import TestCase
 from sigil.tests.common import BaseCase, TransactionCase, users, warmup, RegistryRLock
-from sigil.tests.result import SigilTestResult
+from sigil.tests.result import sigilTestResult
 
 _logger = logging.getLogger(__name__)
 

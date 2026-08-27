@@ -18,10 +18,10 @@ class TestMenusAdmin(sigil.tests.HttpCase):
     @classmethod
     def _request_handler(cls, s: Session, r: PreparedRequest, /, **kw):
         # mock sigilfin requests
-        if 'proxy/v1/get_dashboard_institutions' in r.url:
+        if 'proxy/v2/get_dashboard_institutions' in r.url:
             r = Response()
             r.status_code = 200
-            r.json = lambda: {'result': {}}
+            r.json = list
             return r
         return super()._request_handler(s, r, **kw)
 
@@ -84,8 +84,19 @@ class TestMenusAdminLight(sigil.tests.HttpCase):
             })
         self.browser_js("/sigil", "sigil.loader.modules.get('@web/webclient/clickbot/clickbot_loader').startClickEverywhere(undefined, true);", "sigil.isReady === true", login="admin", timeout=120, success_signal="clickbot test succeeded")
 
+
 @sigil.tests.tagged('post_install', '-at_install')
 class TestMenusDemoLight(HttpCaseWithUserDemo):
+
+    @classmethod
+    def _request_handler(cls, s: Session, r: PreparedRequest, /, **kw):
+        # mock sigilfin requests
+        if 'proxy/v2/get_dashboard_institutions' in r.url:
+            r = Response()
+            r.status_code = 200
+            r.json = list
+            return r
+        return super()._request_handler(s, r, **kw)
 
     def test_01_click_apps_menus_as_demo(self):
         # Disable onboarding tours to remove warnings

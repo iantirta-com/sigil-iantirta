@@ -1,5 +1,4 @@
 
-
 from unittest.mock import patch
 
 from sigil.tests.common import BaseCase

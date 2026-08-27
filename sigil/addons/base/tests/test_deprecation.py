@@ -1,5 +1,4 @@
 
-
 import inspect
 
 from sigil.tests.common import TransactionCase, tagged

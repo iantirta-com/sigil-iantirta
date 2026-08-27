@@ -23,14 +23,14 @@ describe.current.tags("headless");
 
 test("escape", () => {
     expect(escape("<a>this is a link</a>")).toBe("&lt;a&gt;this is a link&lt;/a&gt;");
-    expect(escape(`<a href="https://www.sigil.com">sigil<a>`)).toBe(
-        `&lt;a href=&quot;https://www.sigil.com&quot;&gt;sigil&lt;a&gt;`
+    expect(escape(`<a href="https://www.iantirta.com">sigil<a>`)).toBe(
+        `&lt;a href=&quot;https://www.iantirta.com&quot;&gt;sigil&lt;a&gt;`
     );
-    expect(escape(`<a href='https://www.sigil.com'>sigil<a>`)).toBe(
-        `&lt;a href=&#x27;https://www.sigil.com&#x27;&gt;sigil&lt;a&gt;`
+    expect(escape(`<a href='https://www.iantirta.com'>sigil<a>`)).toBe(
+        `&lt;a href=&#x27;https://www.iantirta.com&#x27;&gt;sigil&lt;a&gt;`
     );
-    expect(escape("<a href='https://www.sigil.com'>Sigil`s website<a>")).toBe(
-        `&lt;a href=&#x27;https://www.sigil.com&#x27;&gt;Sigil&#x60;s website&lt;a&gt;`
+    expect(escape("<a href='https://www.iantirta.com'>Sigil`s website<a>")).toBe(
+        `&lt;a href=&#x27;https://www.iantirta.com&#x27;&gt;Sigil&#x60;s website&lt;a&gt;`
     );
 });
 
@@ -130,10 +130,10 @@ test("isEmail", () => {
     expect(isEmail("")).toBe(false);
     expect(isEmail("test")).toBe(false);
     expect(isEmail("test@sigil")).toBe(false);
-    expect(isEmail("test@sigil@sigil.com")).toBe(false);
-    expect(isEmail("te st@sigil.com")).toBe(false);
+    expect(isEmail("test@sigil@iantirta.com")).toBe(false);
+    expect(isEmail("te st@iantirta.com")).toBe(false);
 
-    expect(isEmail("test@sigil.com")).toBe(true);
+    expect(isEmail("test@iantirta.com")).toBe(true);
 });
 
 test("isNumeric", () => {

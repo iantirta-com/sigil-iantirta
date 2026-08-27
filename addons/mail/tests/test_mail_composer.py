@@ -156,6 +156,7 @@ class TestMailComposerForm(TestMailComposer):
                 'default_model': test_record._name,
                 'default_res_ids': test_record.ids,
             }))
+
     @mute_logger('sigil.addons.mail.models.mail_mail')
     @users('employee')
     def test_composer_template_change_recipients_update(self):

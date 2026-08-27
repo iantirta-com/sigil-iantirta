@@ -80,7 +80,7 @@ export function sigilAccountItem(env) {
                     browser.open(url, "_blank");
                 })
                 .catch(() => {
-                    browser.open("https://accounts.sigil.com/account", "_blank");
+                    browser.open("https://accounts.iantirta.com/account", "_blank");
                 });
         },
         sequence: 60,

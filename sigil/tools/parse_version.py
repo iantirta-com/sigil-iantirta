@@ -1,3 +1,4 @@
+
 ## this functions are taken from the setuptools package (version 0.6c8)
 ## http://peak.telecommunity.com/DevCenter/PkgResources#parsing-utilities
 

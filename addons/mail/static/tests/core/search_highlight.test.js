@@ -29,23 +29,23 @@ test("Search highlight", async () => {
             searchTerm: "sigil",
         },
         {
-            input: markup`<a href="https://www.sigil.com">https://www.sigil.com</a>`,
-            output: `<a href="https://www.sigil.com">https://www.<span class="${HIGHLIGHT_CLASS}">sigil</span>.com</a>`,
+            input: markup`<a href="https://www.iantirta.com">https://www.iantirta.com</a>`,
+            output: `<a href="https://www.iantirta.com">https://www.<span class="${HIGHLIGHT_CLASS}">sigil</span>.com</a>`,
             searchTerm: "sigil",
         },
         {
-            input: '<a href="https://www.sigil.com">https://www.sigil.com</a>',
+            input: '<a href="https://www.iantirta.com">https://www.iantirta.com</a>',
             output: `&lt;a href="https://www.<span class="${HIGHLIGHT_CLASS}">sigil</span>.com"&gt;https://www.<span class="${HIGHLIGHT_CLASS}">sigil</span>.com&lt;/a&gt;`,
             searchTerm: "sigil",
         },
         {
-            input: markup`<a href="https://www.sigil.com">Sigil</a>`,
-            output: `<a href="https://www.sigil.com"><span class="${HIGHLIGHT_CLASS}">Sigil</span></a>`,
+            input: markup`<a href="https://www.iantirta.com">Sigil</a>`,
+            output: `<a href="https://www.iantirta.com"><span class="${HIGHLIGHT_CLASS}">Sigil</span></a>`,
             searchTerm: "sigil",
         },
         {
-            input: markup`<a href="https://www.sigil.com">Sigil</a> Sigil is a free software`,
-            output: `<a href="https://www.sigil.com"><span class="${HIGHLIGHT_CLASS}">Sigil</span></a> <span class="${HIGHLIGHT_CLASS}">Sigil</span> is a free software`,
+            input: markup`<a href="https://www.iantirta.com">Sigil</a> Sigil is a free software`,
+            output: `<a href="https://www.iantirta.com"><span class="${HIGHLIGHT_CLASS}">Sigil</span></a> <span class="${HIGHLIGHT_CLASS}">Sigil</span> is a free software`,
             searchTerm: "sigil",
         },
         {
@@ -61,11 +61,11 @@ test("Search highlight", async () => {
         {
             input: markup`<ul>
                 <li>Sigil</li>
-                <li><a href="https://sigil.com">Sigil ERP</a> Best ERP</li>
+                <li><a href="https://iantirta.com">Sigil ERP</a> Best ERP</li>
             </ul>`,
             output: `<ul>
                 <li><span class="${HIGHLIGHT_CLASS}">Sigil</span></li>
-                <li><a href="https://sigil.com"><span class="${HIGHLIGHT_CLASS}">Sigil</span> ERP</a> Best ERP</li>
+                <li><a href="https://iantirta.com"><span class="${HIGHLIGHT_CLASS}">Sigil</span> ERP</a> Best ERP</li>
             </ul>`,
             searchTerm: "sigil",
         },
@@ -108,6 +108,11 @@ test("Search highlight", async () => {
             input: markup`<p>&lt;strong&gt;test&lt;/strong&gt; hello</p>`,
             output: `<p>&lt;strong&gt;<span class="${HIGHLIGHT_CLASS}">test</span>&lt;/strong&gt; <span class="${HIGHLIGHT_CLASS}">hello</span></p>`,
             searchTerm: "test hello",
+        },
+        {
+            input: markup`test sigil`,
+            output: `t<span class="${HIGHLIGHT_CLASS}">e</span>st o<span class="${HIGHLIGHT_CLASS}">d</span>oo`,
+            searchTerm: "e               d",
         },
     ];
     for (const { input, output, searchTerm } of testCases) {

@@ -276,7 +276,7 @@ test("chat window: close on ESCAPE (multi)", async () => {
 test("Close composer suggestions in chat window with ESCAPE does not also close the chat window", async () => {
     const pyEnv = await startServer();
     const partnerId = pyEnv["res.partner"].create({
-        email: "testpartner@sigil.com",
+        email: "testpartner@iantirta.com",
         name: "TestPartner",
     });
     pyEnv["res.users"].create({ partner_id: partnerId });
@@ -302,6 +302,40 @@ test("Close emoji picker in chat window with ESCAPE does not also close the chat
     await click("button[title='Add Emojis']");
     triggerHotkey("Escape");
     await contains(".o-EmojiPicker", { count: 0 });
+    await contains(".o-mail-ChatWindow");
+});
+
+test.tags("focus required");
+test("Closing seen-by dialog on ESCAPE should not close the chat window", async () => {
+    const pyEnv = await startServer();
+    const partnerId = pyEnv["res.partner"].create({ name: "Demo User" });
+    const channelId = pyEnv["discuss.channel"].create({
+        channel_type: "chat",
+        channel_member_ids: [
+            Command.create({ partner_id: serverState.partnerId }),
+            Command.create({ partner_id: partnerId }),
+        ],
+    });
+    const messageId = pyEnv["mail.message"].create({
+        author_id: serverState.partnerId,
+        body: "Hello",
+        model: "discuss.channel",
+        res_id: channelId,
+    });
+    const [memberId] = pyEnv["discuss.channel.member"].search([
+        ["channel_id", "=", channelId],
+        ["partner_id", "=", partnerId],
+    ]);
+    pyEnv["discuss.channel.member"].write([memberId], {
+        seen_message_id: messageId,
+    });
+    setupChatHub({ opened: [channelId] });
+    await start();
+    await contains(".o-mail-ChatWindow");
+    await click(".o-mail-MessageSeenIndicator");
+    await contains(".o-mail-MessageSeenIndicatorDialog :focus");
+    triggerHotkey("Escape");
+    await contains(".o-mail-MessageSeenIndicatorDialog", { count: 0 });
     await contains(".o-mail-ChatWindow");
 });
 

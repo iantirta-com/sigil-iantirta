@@ -1,5 +1,4 @@
 
-
 from sigil import api, fields, models, tools
 from sigil.exceptions import UserError, ValidationError
 from sigil.fields import Command, Domain
@@ -84,6 +83,10 @@ class ResGroups(models.Model):
         # check for users that might have two exclusive groups
         self.env.registry.clear_cache('groups')
         self.all_implied_by_ids._check_user_disjoint_groups()
+
+    @api.constrains('view_access')
+    def _check_inherited_view_groups(self):
+        self.view_access._check_groups()
 
     @api.constrains('user_ids')
     def _check_user_disjoint_groups(self):

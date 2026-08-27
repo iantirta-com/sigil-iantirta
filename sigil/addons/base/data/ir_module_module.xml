@@ -13,10 +13,10 @@
             <field name="author">iantirta.com</field>
             <field name="to_buy" eval="True"/>
             <field name="icon">/base/static/img/icons/web_studio.png</field>
-            <field name="website">https://sigil.com/app/studio?utm_source=db&amp;utm_medium=module</field>
-        </record> -->
+            <field name="website">https://iantirta.com/app/studio?utm_source=db&amp;utm_medium=module</field>
+        </record>
 
-        <!-- <record model="ir.module.module" id="base.module_timesheet_grid">
+        <record model="ir.module.module" id="base.module_timesheet_grid">
             <field name="name">timesheet_grid</field>
             <field name="shortdesc">Timesheets</field>
             <field name="sequence">65</field>
@@ -27,10 +27,10 @@
             <field name="author">iantirta.com</field>
             <field name="to_buy" eval="True"/>
             <field name="icon">/base/static/img/icons/timesheet_grid.png</field>
-            <field name="website">https://www.sigil.com/app/timesheet?utm_source=db&amp;utm_medium=module</field> -->
-        <!-- </record> -->
+            <field name="website">https://www.iantirta.com/app/timesheet?utm_source=db&amp;utm_medium=module</field>
+        </record>
 
-        <!-- <record model="ir.module.module" id="base.module_accountant">
+        <record model="ir.module.module" id="base.module_accountant">
             <field name="name">accountant</field>
             <field name="sequence">30</field>
             <field name="shortdesc">Accounting</field>
@@ -41,7 +41,7 @@
             <field name="author">iantirta.com</field>
             <field name="to_buy" eval="True"/>
             <field name="icon">/base/static/img/icons/account_accountant.png</field>
-            <field name="website">https://www.sigil.com/app/accounting?utm_source=db&amp;utm_medium=module</field>
+            <field name="website">https://www.iantirta.com/app/accounting?utm_source=db&amp;utm_medium=module</field>
         </record>
 
         <record model="ir.module.module" id="base.module_knowledge">
@@ -55,7 +55,7 @@
             <field name="author">iantirta.com</field>
             <field name="to_buy" eval="True"/>
             <field name="icon">/base/static/img/icons/knowledge.png</field>
-            <field name="website">https://www.sigil.com/app/knowledge?utm_source=db&amp;utm_medium=module</field>
+            <field name="website">https://www.iantirta.com/app/knowledge?utm_source=db&amp;utm_medium=module</field>
         </record>
 
         <record model="ir.module.module" id="base.module_industry_fsm">
@@ -69,7 +69,7 @@
             <field name="author">iantirta.com</field>
             <field name="to_buy" eval="True"/>
             <field name="icon">/base/static/img/icons/industry_fsm.png</field>
-            <field name="website">https://www.sigil.com/app/field-service?utm_source=db&amp;utm_medium=module</field>
+            <field name="website">https://www.iantirta.com/app/field-service?utm_source=db&amp;utm_medium=module</field>
         </record>
 
         <record model="ir.module.module" id="base.module_helpdesk">
@@ -83,7 +83,7 @@
             <field name="author">iantirta.com</field>
             <field name="to_buy" eval="True"/>
             <field name="icon">/base/static/img/icons/helpdesk.png</field>
-            <field name="website">https://www.sigil.com/app/helpdesk?utm_source=db&amp;utm_medium=module</field>
+            <field name="website">https://www.iantirta.com/app/helpdesk?utm_source=db&amp;utm_medium=module</field>
         </record>
 
         <record model="ir.module.module" id="base.module_hr_appraisal">
@@ -97,10 +97,10 @@
             <field name="author">iantirta.com</field>
             <field name="to_buy" eval="True"/>
             <field name="icon">/base/static/img/icons/hr_appraisal.png</field>
-            <field name="website">https://www.sigil.com/app/appraisals?utm_source=db&amp;utm_medium=module</field>
-        </record> -->
+            <field name="website">https://www.iantirta.com/app/appraisals?utm_source=db&amp;utm_medium=module</field>
+        </record>
 
-        <!-- <record model="ir.module.module" id="base.module_marketing_automation">
+        <record model="ir.module.module" id="base.module_marketing_automation">
             <field name="name">marketing_automation</field>
             <field name="shortdesc">Marketing Automation</field>
             <field name="sequence">195</field>
@@ -111,10 +111,10 @@
             <field name="author">iantirta.com</field>
             <field name="to_buy" eval="True"/>
             <field name="icon">/base/static/img/icons/marketing_automation.png</field>
-            <field name="website">https://www.sigil.com/app/marketing-automation?utm_source=db&amp;utm_medium=module</field>
-        </record> -->
+            <field name="website">https://www.iantirta.com/app/marketing-automation?utm_source=db&amp;utm_medium=module</field>
+        </record>
 
-        <!-- <record model="ir.module.module" id="base.module_mrp_plm">
+        <record model="ir.module.module" id="base.module_mrp_plm">
             <field name="name">mrp_plm</field>
             <field name="shortdesc">Product Lifecycle Management (PLM)</field>
             <field name="category_id" ref="base.module_category_supply_chain"/>
@@ -125,7 +125,7 @@
             <field name="author">iantirta.com</field>
             <field name="to_buy" eval="True"/>
             <field name="icon">/base/static/img/icons/mrp_plm.png</field>
-            <field name="website">https://www.sigil.com/app/plm?utm_source=db&amp;utm_medium=module</field>
+            <field name="website">https://www.iantirta.com/app/plm?utm_source=db&amp;utm_medium=module</field>
         </record>
 
         <record model="ir.module.module" id="base.module_quality_control">
@@ -139,10 +139,10 @@
             <field name="author">iantirta.com</field>
             <field name="to_buy" eval="True"/>
             <field name="icon">/base/static/img/icons/quality_control.png</field>
-            <field name="website">https://www.sigil.com/app/quality?utm_source=db&amp;utm_medium=module</field>
-        </record> -->
+            <field name="website">https://www.iantirta.com/app/quality?utm_source=db&amp;utm_medium=module</field>
+        </record>
 
-        <!-- <record model="ir.module.module" id="base.module_sale_amazon">
+        <record model="ir.module.module" id="base.module_sale_amazon">
             <field name="name">sale_amazon</field>
             <field name="shortdesc">Amazon Connector</field>
             <field name="sequence">320</field>
@@ -153,10 +153,10 @@
             <field name="author">iantirta.com</field>
             <field name="to_buy" eval="True"/>
             <field name="icon">/base/static/img/icons/sale_amazon.png</field>
-            <field name="website">https://www.sigil.com/app/amazon-connector?utm_source=db&amp;utm_medium=module</field>
-        </record> -->
+            <field name="website">https://www.iantirta.com/app/amazon-connector?utm_source=db&amp;utm_medium=module</field>
+        </record>
 
-        <!-- <record model="ir.module.module" id="base.module_planning">
+        <record model="ir.module.module" id="base.module_planning">
             <field name="name">planning</field>
             <field name="shortdesc">Planning</field>
             <field name="sequence">130</field>
@@ -167,10 +167,10 @@
             <field name="author">iantirta.com</field>
             <field name="to_buy" eval="True"/>
             <field name="icon">/base/static/img/icons/planning.png</field>
-            <field name="website">https://www.sigil.com/app/planning?utm_source=db&amp;utm_medium=module</field>
-        </record> -->
+            <field name="website">https://www.iantirta.com/app/planning?utm_source=db&amp;utm_medium=module</field>
+        </record>
 
-        <!-- <record model="ir.module.module" id="base.module_sale_subscription">
+        <record model="ir.module.module" id="base.module_sale_subscription">
             <field name="name">sale_subscription</field>
             <field name="shortdesc">Subscriptions</field>
             <field name="sequence">115</field>
@@ -181,10 +181,10 @@
             <field name="author">iantirta.com</field>
             <field name="to_buy" eval="True"/>
             <field name="icon">/base/static/img/icons/sale_subscription.png</field>
-            <field name="website">https://www.sigil.com/app/subscriptions?utm_source=db&amp;utm_medium=module</field>
-        </record> -->
+            <field name="website">https://www.iantirta.com/app/subscriptions?utm_source=db&amp;utm_medium=module</field>
+        </record>
 
-        <!-- <record model="ir.module.module" id="base.module_sign">
+        <record model="ir.module.module" id="base.module_sign">
             <field name="name">sign</field>
             <field name="shortdesc">Sign</field>
             <field name="sequence">105</field>
@@ -195,7 +195,7 @@
             <field name="author">iantirta.com</field>
             <field name="to_buy" eval="True"/>
             <field name="icon">/base/static/img/icons/sign.png</field>
-            <field name="website">https://www.sigil.com/app/sign?utm_source=db&amp;utm_medium=module</field>
+            <field name="website">https://www.iantirta.com/app/sign?utm_source=db&amp;utm_medium=module</field>
         </record>
 
         <record model="ir.module.module" id="base.module_stock_barcode">
@@ -209,10 +209,10 @@
             <field name="author">iantirta.com</field>
             <field name="to_buy" eval="True"/>
             <field name="icon">/base/static/img/icons/stock_barcode.png</field>
-            <field name="website">https://www.sigil.com/app/inventory?utm_source=db&amp;utm_medium=module</field>
-        </record> -->
+            <field name="website">https://www.iantirta.com/app/inventory?utm_source=db&amp;utm_medium=module</field>
+        </record>
 
-        <!-- <record model="ir.module.module" id="base.module_voip">
+        <record model="ir.module.module" id="base.module_voip">
             <field name="name">voip</field>
             <field name="shortdesc">Phone</field>
             <field name="sequence">280</field>
@@ -223,10 +223,10 @@
             <field name="author">iantirta.com</field>
             <field name="to_buy" eval="True"/>
             <field name="icon">/base/static/img/icons/voip.png</field>
-            <field name="website">https://www.sigil.com/app/crm?utm_source=db&amp;utm_medium=module</field>
-        </record> -->
+            <field name="website">https://www.iantirta.com/app/crm?utm_source=db&amp;utm_medium=module</field>
+        </record>
 
-        <!-- <record model="ir.module.module" id="base.module_appointment">
+        <record model="ir.module.module" id="base.module_appointment">
             <field name="name">appointment</field>
             <field name="shortdesc">Appointments</field>
             <field name="sequence">215</field>
@@ -237,7 +237,7 @@
             <field name="author">iantirta.com</field>
             <field name="to_buy" eval="True"/>
             <field name="icon">/base/static/img/icons/appointment.png</field>
-            <field name="website">https://www.sigil.com/app/appointments?utm_source=db&amp;utm_medium=module</field>
+            <field name="website">https://www.iantirta.com/app/appointments?utm_source=db&amp;utm_medium=module</field>
         </record>
 
         <record model="ir.module.module" id="base.module_social">
@@ -251,7 +251,7 @@
             <field name="author">iantirta.com</field>
             <field name="to_buy" eval="True"/>
             <field name="icon">/base/static/img/icons/social.png</field>
-            <field name="website">https://www.sigil.com/app/social-marketing</field>
+            <field name="website">https://www.iantirta.com/app/social-marketing</field>
         </record>
 
         <record model="ir.module.module" id="base.module_mrp_workorder">
@@ -265,7 +265,7 @@
             <field name="author">iantirta.com</field>
             <field name="to_buy" eval="True"/>
             <field name="icon">/base/static/img/icons/mrp_workorder.png</field>
-            <field name="website">https://www.sigil.com/page/manufacturing?utm_source=db&amp;utm_medium=module</field>
+            <field name="website">https://www.iantirta.com/page/manufacturing?utm_source=db&amp;utm_medium=module</field>
         </record>
 
         <record model="ir.module.module" id="base.module_web_mobile">
@@ -280,7 +280,7 @@
             <field name="to_buy" eval="True"/>
             <field name="icon">/base/static/img/icons/web_mobile.png</field>
             <field name="website">https://play.google.com/store/apps/details?id=com.sigil.mobile</field>
-        </record>
+        </record> -->
 
         <record model="ir.module.module" id="base.module_payment_sepa_direct_debit">
             <field name="name">payment_sepa_direct_debit</field>
@@ -291,6 +291,6 @@
             <field name="author">iantirta.com</field>
             <field name="to_buy" eval="True"/>
             <field name="icon">/base/static/img/icons/payment_sepa_direct_debit.png</field>
-        </record> -->
+        </record>
     </data>
 </sigil>

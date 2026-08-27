@@ -1,5 +1,4 @@
 
-
 from sigil import api, fields, models
 from sigil.exceptions import ValidationError
 

@@ -34,7 +34,7 @@ const archs = {
 
 test("Show 'Followers only' placeholder for recipients input when no recipient", async () => {
     const pyEnv = await startServer();
-    const partnerId = pyEnv["res.partner"].create({ name: "test name 1", email: "test1@sigil.com" });
+    const partnerId = pyEnv["res.partner"].create({ name: "test name 1", email: "test1@iantirta.com" });
     await start();
     await openFormView("res.partner", partnerId);
     await click("button", { text: "Send message" });
@@ -228,6 +228,19 @@ test("update email for the partner on the fly", async () => {
     await click(".o-mail-Composer-send:enabled");
     await contains(".o-mail-Message");
     await contains(".o-mail-Followers-counter", { text: "0" });
+});
+
+test("recipients dropdown only offers 'Create' when the input has text", async () => {
+    const pyEnv = await startServer();
+    const fakeId = pyEnv["res.fake"].create({});
+    registerArchs(archs);
+    await start();
+    await openFormView("res.fake", fakeId);
+    await click("button", { text: "Send message" });
+    await insertText(".o-mail-RecipientsInput .o-autocomplete--input", "New");
+    await contains(".o_m2o_dropdown_option_create", { text: "Create New" });
+    await insertText(".o-mail-RecipientsInput .o-autocomplete--input", "", { replace: true });
+    await contains(".o_m2o_dropdown_option_create", { count: 0 });
 });
 
 test("suggested recipients should not be added as follower when posting a message", async () => {

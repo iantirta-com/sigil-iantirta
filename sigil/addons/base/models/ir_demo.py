@@ -1,5 +1,4 @@
 
-
 from sigil import models
 from sigil.addons.base.models.ir_module import assert_log_admin_access
 

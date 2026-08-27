@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 import email.message
 import email.policy
 

@@ -1,6 +1,5 @@
 # -*- coding: ascii -*-
 
-
 from sigil import fields, models
 
 

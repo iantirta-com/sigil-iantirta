@@ -82,5 +82,4 @@ document.addEventListener("DOMContentLoaded", function () {
         pwdInput.value = password;
         pwdInput.setAttribute("autocomplete", "new-password");
     }
-
 });

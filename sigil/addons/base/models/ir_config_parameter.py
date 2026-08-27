@@ -1,4 +1,3 @@
-
 """
 Store database-specific configuration parameters
 """

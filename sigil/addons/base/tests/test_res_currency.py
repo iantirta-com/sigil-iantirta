@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 from lxml import etree
 from sigil import Command
 from sigil.tests.common import TransactionCase

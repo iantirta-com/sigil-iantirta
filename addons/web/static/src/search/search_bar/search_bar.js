@@ -41,6 +41,7 @@ let nextItemId = 1;
 const SUB_ITEMS_DEFAULT_LIMIT = 8;
 
 export const DROPDOWN_CLOSE_DELAY = 10;
+
 export class SearchBar extends Component {
     static template = "web.SearchBar";
     static components = {
@@ -669,6 +670,7 @@ export class SearchBar extends Component {
      */
     onSearchInput(ev) {
         clearTimeout(this.searchDropdownCloseTimeout);
+
         if (!hasTouch()) {
             this.searchBarDropdownState.close();
         }

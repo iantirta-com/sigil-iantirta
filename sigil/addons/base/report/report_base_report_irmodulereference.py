@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 from sigil import api, models
 
 

@@ -26,7 +26,12 @@ ALLOWED_DEBUG_MODES = ['', '1', 'assets', 'tests']
 class IrHttp(models.AbstractModel):
     _inherit = 'ir.http'
 
-    bots = ["bot", "crawl", "slurp", "spider", "curl", "wget", "facebookexternalhit", "whatsapp", "trendsmapresolver", "pinterest", "instagram", "google-pagerenderer", "preview"]
+    bots = [
+        "bot", "crawl", "slurp", "spider", "curl", "wget", "facebookexternalhit",
+        "whatsapp", "trendsmapresolver", "pinterest", "instagram",
+        "google-pagerenderer", "preview", "google-inspectiontool", "googleother",
+        "meta-external", "meta-webindexer", "chatgpt-user", "claude-user", "perplexity-user",
+    ]
 
     @classmethod
     def is_a_bot(cls):
@@ -105,7 +110,7 @@ class IrHttp(models.AbstractModel):
             "user_settings": self.env['res.users.settings']._find_or_create_for_user(user)._res_users_settings_format(),
             "server_version": version_info.get('server_version'),
             "server_version_info": version_info.get('server_version_info'),
-            "support_url": "https://www.sigil.com/buy",
+            "support_url": "https://www.iantirta.com/buy",
             "name": user.name,
             "username": user.login,
             "quick_login": str2bool(IrConfigSudo.get_param('web.quick_login', default=True), True),

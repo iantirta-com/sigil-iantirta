@@ -22,6 +22,7 @@ beforeEach(() => {
         arrow: false,
     });
 });
+
 test("popover can have custom class", async () => {
     await mountWithCleanup(Popover, {
         props: {
@@ -419,6 +420,7 @@ test("popover position is updated when the content dimensions change", async () 
         </span>
     </div>`;
     }
+
     await mountWithCleanup(/* xml */ `
         <div class="popover-target" style="width: 50px; height: 50px;" />
     `);

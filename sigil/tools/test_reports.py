@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """ Helper functions for reports testing.
 
     Please /do not/ import this file by default, but only explicitly call it

@@ -1,8 +1,8 @@
 Sigil Enterprise Social Network
--------------------------------
+------------------------------
 
 Connect with experts, follow what interests you, share documents and promote
-best practices with Sigil <a href="https://www.sigil.com/app/discuss">Enterprise Social Network</a>. Get work done with
+best practices with Sigil <a href="https://www.iantirta.com/app/discuss">Enterprise Social Network</a>. Get work done with
 effective collaboration across departments, geographies, documents and business
 applications. All of this while decreasing email overload.
 

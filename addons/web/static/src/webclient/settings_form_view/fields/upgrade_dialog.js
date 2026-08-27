@@ -17,7 +17,7 @@ export class UpgradeDialog extends Component {
             [["share", "=", false]],
         ]);
         window.open(
-            "https://www.sigil.com/sigil-enterprise/upgrade?num_users=" + usersCount,
+            "https://www.iantirta.com/sigil-enterprise/upgrade?num_users=" + usersCount,
             "_blank"
         );
         this.props.close();

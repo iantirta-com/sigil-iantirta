@@ -200,20 +200,20 @@ class TestLinkPreview(MailCommon):
                 ("http://localhost:8069/", "http://localhost:8069/", 1),
                 ("http://localhost:8069/", "http://localhost:8069/sigil-experience", 1),
                 ("http://localhost:8069/", "http://localhost:8069/chat/5/bFtIfYHRco", 0),
-                ("https://www.sigil.com/", "https://www.sigil.com/web", 0),
-                ("https://www.sigil.com/", "https://www.sigil.com/sigil", 0),
-                ("https://www.sigil.com/", "https://www.sigil.com/sigil/", 0),
-                ("https://www.sigil.com/", "https://www.sigil.com/sigil?debug=assets", 0),
-                ("https://www.sigil.com/", "https://www.sigil.com/sigil#anchor", 0),
-                ("https://www.sigil.com/", "https://www.sigil.com/sigil-experience", 1),
-                ("https://www.sigil.com/", "https://www.sigil.com/sigil/1519/tasks/4102866", 0),
-                ("http://www.sigil.com/", "https://www.sigil.com/sigil/1519/tasks/4102866", 1),
-                ("https://www.sigil.com/", "https://wwwasigil.com/sigil/", 1),
-                ("https://www.sigil.com/", "https://www.sigil.com/chat/", 0),
-                ("https://www.sigil.com/", "https://www.sigil.com/chat/5/bFtIfYHRco", 0),
-                ("http://www.sigil.com/", "https://www.sigil.com/chat/5/bFtIfYHRco", 1),
-                ("https://clients.sigil.com/", "https://www.sigil.com/sigil/1519/tasks/4102866", 1),
-                ("https://clients.sigil.com/", "https://www.sigil.com/chat/5/bFtIfYHRco", 1),
+                ("https://www.iantirta.com/", "https://www.iantirta.com/web", 0),
+                ("https://www.iantirta.com/", "https://www.iantirta.com/sigil", 0),
+                ("https://www.iantirta.com/", "https://www.iantirta.com/sigil/", 0),
+                ("https://www.iantirta.com/", "https://www.iantirta.com/sigil?debug=assets", 0),
+                ("https://www.iantirta.com/", "https://www.iantirta.com/sigil#anchor", 0),
+                ("https://www.iantirta.com/", "https://www.iantirta.com/sigil-experience", 1),
+                ("https://www.iantirta.com/", "https://www.iantirta.com/sigil/1519/tasks/4102866", 0),
+                ("http://www.iantirta.com/", "https://www.iantirta.com/sigil/1519/tasks/4102866", 1),
+                ("https://www.iantirta.com/", "https://wwwaiantirta.com/sigil/", 1),
+                ("https://www.iantirta.com/", "https://www.iantirta.com/chat/", 0),
+                ("https://www.iantirta.com/", "https://www.iantirta.com/chat/5/bFtIfYHRco", 0),
+                ("http://www.iantirta.com/", "https://www.iantirta.com/chat/5/bFtIfYHRco", 1),
+                ("https://clients.iantirta.com/", "https://www.iantirta.com/sigil/1519/tasks/4102866", 1),
+                ("https://clients.iantirta.com/", "https://www.iantirta.com/chat/5/bFtIfYHRco", 1),
             ]
             for request_url, url, counter in urls:
                 with self.subTest(request_url=request_url, url=url, counter=counter):
@@ -235,7 +235,7 @@ class TestLinkPreview(MailCommon):
         ):
             message = self.test_partner.message_post(
                 body=Markup(
-                    '<a href="https://www.sigil.com/sigil-experience">Nothing link</a> <a href="https://www.sigil.com/sigil-experience-2025">Other Nothing link</a>'
+                    '<a href="https://www.iantirta.com/sigil-experience">Nothing link</a> <a href="https://www.iantirta.com/sigil-experience-2025">Other Nothing link</a>'
                 ),
                 message_type="comment",
             )
@@ -246,7 +246,7 @@ class TestLinkPreview(MailCommon):
             self.assertEqual(link_preview_count, 2)
             self.test_partner._message_update_content(
                 message,
-                body=Markup('<a href="https://www.sigil.com/sigil-experience">Nothing link</a>'),
+                body=Markup('<a href="https://www.iantirta.com/sigil-experience">Nothing link</a>'),
             )
             self.env["mail.link.preview"]._create_from_message_and_notify(message)
             link_preview_count = self.env["mail.message.link.preview"].search_count(

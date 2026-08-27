@@ -11,9 +11,11 @@ import {
     openFormView,
     start,
     startServer,
+    triggerHotkey,
 } from "@mail/../tests/mail_test_helpers";
 import { beforeEach, expect, describe, test } from "@sigil/hoot";
-import { Deferred, tick } from "@sigil/hoot-mock";
+import { Deferred, animationFrame, tick } from "@sigil/hoot-mock";
+import { onWillUpdateProps } from "@sigil/owl";
 import {
     asyncStep,
     Command,
@@ -21,10 +23,13 @@ import {
     onRpc,
     patchWithCleanup,
     serverState,
+    withUser,
 } from "@web/../tests/web_test_helpers";
 
 import { Composer } from "@mail/core/common/composer";
+import { ImStatus } from "@mail/core/common/im_status";
 import { press } from "@sigil/hoot-dom";
+import { rpc } from "@web/core/network/rpc";
 
 describe.current.tags("desktop");
 defineMailModels();
@@ -41,11 +46,11 @@ beforeEach(() => {
 test('[text composer] display partner mention suggestions on typing "@"', async () => {
     const pyEnv = await startServer();
     const partnerId_1 = pyEnv["res.partner"].create({
-        email: "testpartner@sigil.com",
+        email: "testpartner@iantirta.com",
         name: "TestPartner",
     });
     const partnerId_2 = pyEnv["res.partner"].create({
-        email: "testpartner2@sigil.com",
+        email: "testpartner2@iantirta.com",
         name: "TestPartner2",
     });
     pyEnv["res.users"].create({ partner_id: partnerId_1 });
@@ -63,15 +68,50 @@ test('[text composer] display partner mention suggestions on typing "@"', async 
     await contains(".o-mail-Composer-suggestion strong", { count: 3 });
 });
 
+test.tags("focus required");
+test("suggestion list closed by Escape stays closed when a member starts typing", async () => {
+    const pyEnv = await startServer();
+    const partnerId = pyEnv["res.partner"].create({
+        email: "testpartner@iantirta.com",
+        name: "TestPartner",
+    });
+    const userId = pyEnv["res.users"].create({ partner_id: partnerId });
+    const channelId = pyEnv["discuss.channel"].create({
+        name: "general",
+        channel_member_ids: [
+            Command.create({ partner_id: serverState.partnerId }),
+            Command.create({ partner_id: partnerId }),
+        ],
+    });
+    await start();
+    await openDiscuss(channelId);
+    await contains(".o-mail-Composer-input:focus");
+    await insertText(".o-mail-Composer-input", "@");
+    await contains(".o-mail-Composer-suggestionList .o-open");
+    triggerHotkey("Escape");
+    await contains(".o-mail-Composer-suggestionList .o-open", { count: 0 });
+    // The typing status re-renders the composer without changing the
+    // suggestions: the list closed by the user has to stay closed.
+    withUser(userId, () =>
+        rpc("/discuss/channel/notify_typing", { channel_id: channelId, is_typing: true })
+    );
+    await contains(".o-discuss-Typing", { text: "TestPartner is typing..." });
+    await animationFrame(); // a re-open would show up on the next render
+    await contains(".o-mail-Composer-suggestionList .o-open", { count: 0 });
+    // Typing more characters re-opens the suggestions for the refined search.
+    await insertText(".o-mail-Composer-input", "Test");
+    await contains(".o-mail-Composer-suggestionList .o-open");
+});
+
 test.tags("html composer");
 test("display partner mention suggestions on typing '@'", async () => {
     const pyEnv = await startServer();
     const partnerId_1 = pyEnv["res.partner"].create({
-        email: "testpartner@sigil.com",
+        email: "testpartner@iantirta.com",
         name: "TestPartner",
     });
     const partnerId_2 = pyEnv["res.partner"].create({
-        email: "testpartner2@sigil.com",
+        email: "testpartner2@iantirta.com",
         name: "TestPartner2",
     });
     pyEnv["res.users"].create({ partner_id: partnerId_1 });
@@ -103,8 +143,8 @@ test("[text composer] can @user in restricted (group_public_id) channels", async
         name: "Custom Channel Group",
     });
     const [partnerId_1, partnerId_2] = pyEnv["res.partner"].create([
-        { email: "testpartner1@sigil.com", name: "TestPartner1" },
-        { email: "testpartner2@sigil.com", name: "TestPartner2" },
+        { email: "testpartner1@iantirta.com", name: "TestPartner1" },
+        { email: "testpartner2@iantirta.com", name: "TestPartner2" },
     ]);
     pyEnv["res.users"].create([
         { partner_id: partnerId_1, group_ids: [Command.link(groupId)] },
@@ -133,8 +173,8 @@ test("can @user in restricted (group_public_id) channels", async () => {
         name: "Custom Channel Group",
     });
     const [partnerId_1, partnerId_2] = pyEnv["res.partner"].create([
-        { email: "testpartner1@sigil.com", name: "TestPartner1" },
-        { email: "testpartner2@sigil.com", name: "TestPartner2" },
+        { email: "testpartner1@iantirta.com", name: "TestPartner1" },
+        { email: "testpartner2@iantirta.com", name: "TestPartner2" },
     ]);
     pyEnv["res.users"].create([
         { partner_id: partnerId_1, group_ids: [Command.link(groupId)] },
@@ -167,11 +207,11 @@ test("can @user in restricted (group_public_id) channels", async () => {
 test("[text composer] post a first message then display partner mention suggestions on typing '@'", async () => {
     const pyEnv = await startServer();
     const partnerId_1 = pyEnv["res.partner"].create({
-        email: "testpartner@sigil.com",
+        email: "testpartner@iantirta.com",
         name: "TestPartner",
     });
     const partnerId_2 = pyEnv["res.partner"].create({
-        email: "testpartner2@sigil.com",
+        email: "testpartner2@iantirta.com",
         name: "TestPartner2",
     });
     pyEnv["res.users"].create({ partner_id: partnerId_1 });
@@ -197,11 +237,11 @@ test.tags("html composer");
 test("post a first message then display partner mention suggestions on typing '@'", async () => {
     const pyEnv = await startServer();
     const partnerId_1 = pyEnv["res.partner"].create({
-        email: "testpartner@sigil.com",
+        email: "testpartner@iantirta.com",
         name: "TestPartner",
     });
     const partnerId_2 = pyEnv["res.partner"].create({
-        email: "testpartner2@sigil.com",
+        email: "testpartner2@iantirta.com",
         name: "TestPartner2",
     });
     pyEnv["res.users"].create({ partner_id: partnerId_1 });
@@ -306,7 +346,7 @@ test("Do not fetch if search more specific and fetch had no result", async () =>
 test("[text composer] show other channel member in @ mention", async () => {
     const pyEnv = await startServer();
     const partnerId = pyEnv["res.partner"].create({
-        email: "testpartner@sigil.com",
+        email: "testpartner@iantirta.com",
         name: "TestPartner",
     });
     const channelId = pyEnv["discuss.channel"].create({
@@ -326,7 +366,7 @@ test.tags("html composer");
 test("show other channel member in @ mention", async () => {
     const pyEnv = await startServer();
     const partnerId = pyEnv["res.partner"].create({
-        email: "testpartner@sigil.com",
+        email: "testpartner@iantirta.com",
         name: "TestPartner",
     });
     const channelId = pyEnv["discuss.channel"].create({
@@ -353,7 +393,7 @@ test("show other channel member in @ mention", async () => {
 test("[text composer] select @ mention insert mention text in composer", async () => {
     const pyEnv = await startServer();
     const partnerId = pyEnv["res.partner"].create({
-        email: "testpartner@sigil.com",
+        email: "testpartner@iantirta.com",
         name: "TestPartner",
     });
     const channelId = pyEnv["discuss.channel"].create({
@@ -374,7 +414,7 @@ test.tags("html composer");
 test("select @ mention insert mention text in composer", async () => {
     const pyEnv = await startServer();
     const partnerId = pyEnv["res.partner"].create({
-        email: "testpartner@sigil.com",
+        email: "testpartner@iantirta.com",
         name: "TestPartner",
     });
     const channelId = pyEnv["discuss.channel"].create({
@@ -399,10 +439,47 @@ test("select @ mention insert mention text in composer", async () => {
     await contains(".o-mail-Composer-html.sigil-editor-editable", { text: "@TestPartner" });
 });
 
+test("select @ mention from the suggestion list being filtered", async () => {
+    const pyEnv = await startServer();
+    const partnerId = pyEnv["res.partner"].create({
+        email: "testpartner@iantirta.com",
+        name: "TestPartner",
+    });
+    const channelId = pyEnv["discuss.channel"].create({
+        name: "general",
+        channel_member_ids: [
+            Command.create({ partner_id: serverState.partnerId }),
+            Command.create({ partner_id: partnerId }),
+        ],
+    });
+    const filtering = new Deferred();
+    const listRendered = new Deferred();
+    patchWithCleanup(ImStatus.prototype, {
+        setup() {
+            super.setup();
+            // Simulate a slow render, keeping the previous search on screen.
+            onWillUpdateProps(() => {
+                filtering.resolve();
+                return listRendered;
+            });
+        },
+    });
+    await start();
+    await openDiscuss(channelId);
+    await insertText(".o-mail-Composer-input", "@");
+    await contains(".o-mail-Composer-suggestion", { count: 2 });
+    await insertText(".o-mail-Composer-input", "Test");
+    await filtering;
+    await contains(".o-mail-Composer-suggestion", { count: 2 });
+    await click(".o-mail-Composer-suggestion strong", { text: "TestPartner" });
+    listRendered.resolve();
+    await contains(".o-mail-Composer-input", { value: "@TestPartner " });
+});
+
 test("[text composer] select @ mention closes suggestions", async () => {
     const pyEnv = await startServer();
     const partnerId = pyEnv["res.partner"].create({
-        email: "testpartner@sigil.com",
+        email: "testpartner@iantirta.com",
         name: "TestPartner",
     });
     const channelId = pyEnv["discuss.channel"].create({
@@ -423,7 +500,7 @@ test.tags("html composer");
 test("select @ mention closes suggestions", async () => {
     const pyEnv = await startServer();
     const partnerId = pyEnv["res.partner"].create({
-        email: "testpartner@sigil.com",
+        email: "testpartner@iantirta.com",
         name: "TestPartner",
     });
     const channelId = pyEnv["discuss.channel"].create({
@@ -1342,4 +1419,65 @@ test("Mention with @-role trigger one RPC only", async () => {
     await expect.waitForSteps([
         "/web/dataset/call_kw/res.partner/get_mention_suggestions_from_channel",
     ]);
+});
+
+test("[text composer] should send notifications to users with names containing HTML entities", async () => {
+    const pyEnv = await startServer();
+    const partnerRaw = {
+        email: "tim.ascii@example.com",
+        name: "' !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~",
+    };
+    const partnerId = pyEnv["res.partner"].create(partnerRaw);
+    pyEnv["res.users"].create({ partner_id: partnerId });
+    const channelId = pyEnv["discuss.channel"].create({
+        name: "general",
+        channel_member_ids: [
+            Command.create({ partner_id: serverState.partnerId }),
+            Command.create({ partner_id: partnerId }),
+        ],
+    });
+    await start();
+    await openDiscuss(channelId);
+    await insertText(".o-mail-Composer-input", "@");
+    await click(`.o-mail-Composer-suggestion:contains(${partnerRaw.email})`);
+    await click(".o-mail-Composer [title='Send']");
+    await contains(".o-mail-Message .o_mail_redirect", { text: `@${partnerRaw.name}` });
+    await click(".o-mail-Message-notification");
+    await contains(".o-mail-MessageNotificationPopover span", {
+        text: `${partnerRaw.name} (${partnerRaw.email})`,
+    });
+});
+
+test.tags("html composer");
+test("should send notifications to users with names containing HTML entities", async () => {
+    const pyEnv = await startServer();
+    const partnerRaw = {
+        email: "tim.ascii@example.com",
+        name: "' !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~",
+    };
+    const partnerId = pyEnv["res.partner"].create(partnerRaw);
+    pyEnv["res.users"].create({ partner_id: partnerId });
+    const channelId = pyEnv["discuss.channel"].create({
+        name: "general",
+        channel_member_ids: [
+            Command.create({ partner_id: serverState.partnerId }),
+            Command.create({ partner_id: partnerId }),
+        ],
+    });
+    await start();
+    getService("mail.composer").setHtmlComposer();
+    await openDiscuss(channelId);
+    await contains(".o-mail-Composer-html.sigil-editor-editable");
+    const editor = {
+        document,
+        editable: document.querySelector(".o-mail-Composer-html.sigil-editor-editable"),
+    };
+    await htmlInsertText(editor, "@");
+    await click(`.o-mail-Composer-suggestion:contains(${partnerRaw.email})`);
+    await click(".o-mail-Composer [title='Send']");
+    await contains(".o-mail-Message .o_mail_redirect", { text: `@${partnerRaw.name}` });
+    await click(".o-mail-Message-notification");
+    await contains(".o-mail-MessageNotificationPopover span", {
+        text: `${partnerRaw.name} (${partnerRaw.email})`,
+    });
 });

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 from sigil.tests.common import TransactionCase
 from sigil.tools import pdf
 from sigil.tools.misc import file_open
@@ -65,6 +64,12 @@ class TestPdf(TransactionCase):
             pdf_reader = pdf.SigilPdfFileReader(reader_buffer)
             attachments = list(pdf_reader.getAttachments())
 
+        self.assertEqual(len(attachments), 2)
+
+    def test_sigil_pdf_file_reader_with_nested_attachments(self):
+        with file_open('base/tests/multi_kids_embedded.pdf', 'rb') as file:
+            pdf_reader = pdf.SigilPdfFileReader(file, strict=False)
+            attachments = list(pdf_reader.getAttachments())
         self.assertEqual(len(attachments), 2)
 
     def test_merge_pdf(self):

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 import ast
 
 from textwrap import dedent
@@ -131,6 +130,35 @@ class TestSafeEval(BaseCase):
         # no dunder
         with self.assertRaises(NameError):
             safe_eval("self.__name__", {'self': self}, mode="exec")
+
+
+class TestSafeEvalTransaction(TransactionCase):
+
+    @mute_logger('sigil.sql_db')
+    def test_bubble_up_integrity_error(self):
+        vals = {
+            'module': 'module_test',
+            'name': 'duplicate_name',
+            'model': 'res.partner',
+        }
+        self.env['ir.model.data'].create(vals)
+
+        # Trigger `UniqueViolation` via `_obj_name_uniq` constraint.
+
+        with self.assertRaises(Exception) as normal_exception:
+            self.env['ir.model.data'].create(vals)
+
+        with self.assertRaises(Exception) as bubble_up_exception:
+            expr = """
+                self.env['ir.model.data'].create(vals)
+            """
+            safe_eval(dedent(expr), {'self': self, 'vals': vals}, mode='exec')
+
+        self.assertEqual(
+            type(normal_exception.exception),
+            type(bubble_up_exception.exception),
+            'Database integrity exception must be the same as normal business code evaluation.'
+        )
 
 
 class TestParentStore(TransactionCase):

@@ -1,9 +1,11 @@
+# -*- coding: utf-8 -*-
+
 """
 safe_eval module - methods intended to provide more restricted alternatives to
                    evaluate simple and/or untrusted code.
 
 Methods in this module are typically used as alternatives to eval() to parse
-Sigil domain strings, conditions and expressions, mostly based on locals
+OpenERP domain strings, conditions and expressions, mostly based on locals
 condition/math builtins.
 """
 

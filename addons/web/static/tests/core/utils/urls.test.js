@@ -85,6 +85,6 @@ test("redirect", () => {
     expect(testRedirect("/abc/def?x=y")).toBe("http://www.test.com/abc/def?x=y");
     expect(testRedirect("/abc?x=y#a=1&b=2")).toBe("http://www.test.com/abc?x=y#a=1&b=2");
 
-    expect(() => testRedirect("https://www.sigil.com")).toThrow(/Can't redirect/);
+    expect(() => testRedirect("https://www.iantirta.com")).toThrow(/Can't redirect/);
     expect(() => testRedirect("javascript:alert('boom');")).toThrow(/Can't redirect/);
 });

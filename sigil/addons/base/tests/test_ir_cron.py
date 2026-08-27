@@ -1,5 +1,4 @@
 
-
 # ruff: noqa: E201, E241, E272, E301, E306
 
 import contextlib

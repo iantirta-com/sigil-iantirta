@@ -217,6 +217,7 @@ test("chatter: drop attachments", async () => {
     const text3 = new File(["hello, world"], "text3.txt", { type: "text/plain" });
     await start();
     await openFormView("res.partner", partnerId);
+    await contains("button[aria-label='Attach files']:enabled");
     const files = [text, text2];
     await dragenterFiles(".o-mail-Chatter", files);
     await contains(".o-Dropzone");
@@ -227,6 +228,29 @@ test("chatter: drop attachments", async () => {
     await dragenterFiles(".o-mail-Chatter", extraFiles);
     await dropFiles(".o-Dropzone", extraFiles);
     await contains(".o-mail-AttachmentContainer:not(.o-isUploading)", { count: 3 });
+});
+
+test("chatter: drop attachments on message in edition", async () => {
+    const pyEnv = await startServer();
+    const partnerId = pyEnv["res.partner"].create({ name: "John Doe" });
+    pyEnv["mail.message"].create({
+        author_id: serverState.partnerId,
+        body: "my note",
+        model: "res.partner",
+        res_id: partnerId,
+        message_type: "comment",
+    });
+    const file = new File(["hello, world"], "text.txt", { type: "text/plain" });
+    await start();
+    await openFormView("res.partner", partnerId);
+    await click(".o-mail-Message [title='Edit']");
+    await contains(".o-mail-Message .o-mail-Composer-input");
+    await dragenterFiles(".o-mail-Message-body", [file]);
+    await contains(".o-Dropzone");
+    await dropFiles(".o-Dropzone.o-mail-Composer-dropzone", [file]);
+    await contains(
+        ".o-mail-Message .o-mail-Composer .o-mail-AttachmentContainer:not(.o-isUploading)"
+    );
 });
 
 test("chatter: drop attachment should refresh thread data with hasParentReloadOnAttachmentsChange prop", async () => {
@@ -246,6 +270,7 @@ test("chatter: drop attachment should refresh thread data with hasParentReloadOn
                 <chatter reload_on_post="True" reload_on_attachment="True"/>
             </form>`,
     });
+    await contains("button[aria-label='Attach files']:enabled");
     await dragenterFiles(".o-mail-Chatter", [textPdf]);
     await dropFiles(".o-Dropzone", [textPdf]);
     await contains(".o-mail-Attachment iframe", { count: 1 });
@@ -714,7 +739,7 @@ test("should display the subject even if the record name is false", async () => 
 
 test("Update message recipients without saving", async () => {
     const pyEnv = await startServer();
-    pyEnv["res.partner"].write([serverState.partnerId], { email: "mitchell@sigil.com" });
+    pyEnv["res.partner"].write([serverState.partnerId], { email: "mitchell@iantirta.com" });
     const partnerId = pyEnv["res.partner"].create({
         name: "John Doe",
         email: "john@doe.be",
@@ -734,7 +759,7 @@ test("Update message recipients without saving", async () => {
 
 test("Update primary email in recipient without saving", async () => {
     const pyEnv = await startServer();
-    pyEnv["res.partner"].write([serverState.partnerId], { email: "mitchell@sigil.com" });
+    pyEnv["res.partner"].write([serverState.partnerId], { email: "mitchell@iantirta.com" });
     const partnerId = pyEnv["res.partner"].create({
         name: "John Doe",
         email: "john@doe.be",

@@ -1,5 +1,4 @@
 
-
 from sigil.tests.common import TransactionCase, tagged
 from sigil.tools import convert_file
 from sigil.tools.misc import file_path

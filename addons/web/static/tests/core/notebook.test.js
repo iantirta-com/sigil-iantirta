@@ -354,6 +354,7 @@ test("icons can be given for each page tab", async () => {
     expect(".nav-item:nth-child(3) i").toHaveClass("fa-pencil");
     expect(".nav-item:nth-child(3)").toHaveText("page3");
 });
+
 test("switch notebook page after async work", async () => {
     let { promise, resolve } = Promise.withResolvers();
     class Page extends Component {

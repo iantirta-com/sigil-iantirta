@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 from psycopg2.errors import CheckViolation
 
 from sigil.tests.common import BaseCase, TransactionCase

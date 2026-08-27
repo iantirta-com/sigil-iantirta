@@ -1,4 +1,3 @@
-
 from sigil.tools import cloc
 from sigil.tests import TransactionCase, tagged
 

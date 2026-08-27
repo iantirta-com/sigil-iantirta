@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 __all__ = [
     'convert_file', 'convert_sql_import',
     'convert_csv_import', 'convert_xml_import'
@@ -23,6 +25,7 @@ except ImportError:
 
 from .config import config
 from .misc import file_open, file_path, SKIPPED_ELEMENT_TYPES
+from .safe_eval import _UNSAFE_ATTRIBUTES
 from sigil.exceptions import ValidationError
 
 from .safe_eval import safe_eval, pytz, time
@@ -166,7 +169,9 @@ def _eval_xml(self, node, env):
         from sigil.models import BaseModel  # noqa: PLC0415
         model_str = node.get('model')
         model = env[model_str]
-        method_name = node.get('name')
+        method_name = node.get('name') or ''
+        if '__' in method_name or method_name in _UNSAFE_ATTRIBUTES:
+            raise NameError(f'Access to forbidden name {method_name!r}')
         # determine arguments
         args = []
         kwargs = {}
@@ -656,9 +661,9 @@ form: module.record_id""" % (xml_id,)
         }
 
     def parse(self, de):
-        assert de.tag in self.DATA_ROOTS, "Root xml tag must be <sigilerp>, <sigil> or <data>."
+        assert de.tag in self.DATA_ROOTS, "Root xml tag must be <openerp>, <sigil> or <data>."
         self._tag_root(de)
-    DATA_ROOTS = ['sigil', 'data', 'sigilerp']
+    DATA_ROOTS = ['sigil', 'data', 'openerp']
 
 
 def convert_file(

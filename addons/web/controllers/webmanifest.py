@@ -46,8 +46,8 @@ class WebManifest(http.Controller):
             'scope': '/sigil',
             'start_url': '/sigil',
             'display': 'standalone',
-            'background_color': '#E95420',
-            'theme_color': '#E95420',
+            'background_color': '#714B67',
+            'theme_color': '#714B67',
             'prefer_related_applications': False,
         }
         icon_sizes = ['192x192', '512x512']
@@ -153,8 +153,8 @@ class WebManifest(http.Controller):
             'scope': path,
             'start_url': path,
             'display': 'standalone',
-            'background_color': '#E95420',
-            'theme_color': '#E95420',
+            'background_color': '#714B67',
+            'theme_color': '#714B67',
             'prefer_related_applications': False,
             'shortcuts': self._get_scoped_app_shortcuts(app_id)
         }

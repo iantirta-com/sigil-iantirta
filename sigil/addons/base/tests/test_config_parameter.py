@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 from sigil.addons.base.models.ir_config_parameter import _default_parameters
 from sigil.exceptions import ValidationError
 from sigil.tests.common import TransactionCase

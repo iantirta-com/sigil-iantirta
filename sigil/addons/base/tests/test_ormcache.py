@@ -1,5 +1,4 @@
 
-
 from sigil.tests.common import TransactionCase, tagged
 from sigil.tools.cache import get_cache_key_counter
 from threading import Thread, Barrier

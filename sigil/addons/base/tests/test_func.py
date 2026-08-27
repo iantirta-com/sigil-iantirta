@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 import functools
 
 from sigil.tests.common import BaseCase

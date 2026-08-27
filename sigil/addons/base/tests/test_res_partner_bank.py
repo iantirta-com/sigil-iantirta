@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 # Copyright (c) 2015 ACSONE SA/NV (<http://acsone.eu>)
 
 from sigil.addons.base.tests.common import SavepointCaseWithUserDemo

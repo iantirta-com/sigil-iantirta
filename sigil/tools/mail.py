@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import base64
 import collections
 import itertools
@@ -22,7 +24,6 @@ from lxml.html import (
     _looks_like_full_html_unicode,
     clean,
     defs,
-    document_fromstring,
     html_parser,
 )
 from werkzeug import urls
@@ -80,6 +81,9 @@ safe_attrs = defs.safe_attrs | frozenset(
      'data-language-id',
      'data-bs-toggle',  # support nav-tabs
      ])
+
+defs.link_attrs |= {'xlink:href'}
+
 SANITIZE_TAGS = {
     # allow new semantic HTML5 tags
     'allow_tags': defs.tags | frozenset('article bdi section header footer hgroup nav aside figure main'.split() + [etree.Comment]),
@@ -96,7 +100,7 @@ class _Cleaner(clean.Cleaner):
     _style_whitelist = [
         'font-size', 'font-family', 'font-weight', 'font-style', 'background-color', 'color', 'text-align',
         'line-height', 'letter-spacing', 'text-transform', 'text-decoration', 'text-decoration', 'opacity',
-        'float', 'vertical-align', 'display', 'object-fit',
+        'float', 'vertical-align', 'display', 'object-fit', 'direction',
         'padding', 'padding-top', 'padding-left', 'padding-bottom', 'padding-right',
         'margin', 'margin-top', 'margin-left', 'margin-bottom', 'margin-right',
         'white-space',
@@ -291,7 +295,7 @@ def fromstring(html_, base_url=None, parser=None, **kw):
         is_full_html = _looks_like_full_html_bytes(html_)
     else:
         is_full_html = _looks_like_full_html_unicode(html_)
-    doc = document_fromstring(html_, parser=parser, base_url=base_url, **kw)
+    doc = html.document_fromstring(html_, parser=parser, base_url=base_url, **kw)
     if is_full_html:
         return doc, False
     # otherwise, lets parse it out...
@@ -1001,8 +1005,8 @@ def encapsulate_email(old_email, new_email):
 
     e.g.
     * Old From: "Admin" <admin@gmail.com>
-    * New From: notifications@sigil.com
-    * Output: "Admin" <notifications@sigil.com>
+    * New From: notifications@iantirta.com
+    * Output: "Admin" <notifications@iantirta.com>
     """
     old_email_split = getaddresses([old_email])
     if not old_email_split or not old_email_split[0]:

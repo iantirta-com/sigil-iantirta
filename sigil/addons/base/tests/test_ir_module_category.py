@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 from sigil.exceptions import ValidationError
 from sigil.tests.common import TransactionCase
 

@@ -48,7 +48,7 @@ export class AutoComplete extends Component {
         value: "",
         placeholder: "",
         title: "",
-        autocomplete: "new-password",
+        autocomplete: "off",
         autoSelect: false,
         dropdown: true,
         onInput: () => {},
@@ -121,7 +121,6 @@ export class AutoComplete extends Component {
                     this.state.value = nextProps.value;
                     this.inputRef.el.value = nextProps.value;
                 }
-                this.close();
             }
         });
 

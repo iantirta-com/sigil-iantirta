@@ -35,7 +35,7 @@ test("can make DM chat in mobile", async () => {
     await contains("button.active", { text: "Notifications" });
     await click("button", { text: "Chats" });
     await click(".o-mail-DiscussSearch-inputContainer");
-    await contains(".o_command_name", { count: 5 });
+    await contains(".o_command_name", { count: 4 });
     await insertText("input[placeholder='Search a conversation']", "Gandalf");
     await contains(".o_command_name", { count: 3 });
     await click(".o_command_name", { text: "Gandalf" });
@@ -51,7 +51,7 @@ test("can search channel in mobile", async () => {
     await contains("button.active", { text: "Notifications" });
     await click("button", { text: "Channels" });
     await click(".o-mail-DiscussSearch-inputContainer");
-    await contains(".o_command_name", { count: 5 });
+    await contains(".o_command_name", { count: 4 });
     await insertText("input[placeholder='Search a conversation']", "Gryff");
     await contains(".o_command_name", { count: 3 });
     await click(".o_command_name", { text: "Gryffindors" });
@@ -277,7 +277,7 @@ test("can use notification item swipe actions", async () => {
     mockTouch(true);
     patchUiSize({ size: SIZES.SM });
     const pyEnv = await startServer();
-    const partnerId = pyEnv["res.partner"].create({ name: "Demo", email: "demo@sigil.com" });
+    const partnerId = pyEnv["res.partner"].create({ name: "Demo", email: "demo@iantirta.com" });
     const channelId = pyEnv["discuss.channel"].create({
         channel_type: "chat",
         channel_member_ids: [

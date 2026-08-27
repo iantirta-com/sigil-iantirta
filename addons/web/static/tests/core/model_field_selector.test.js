@@ -946,6 +946,7 @@ test("showDebugInput = false", async () => {
     await openModelFieldSelectorPopover();
     expect(".o_model_field_selector_debug").toHaveCount(0);
 });
+
 test("models with a m2o of the same name should show the correct page data", async () => {
     class Cat extends models.Model {
         cat_name = fields.Char();

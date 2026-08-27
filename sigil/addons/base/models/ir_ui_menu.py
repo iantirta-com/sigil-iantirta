@@ -1,5 +1,4 @@
 
-
 import base64
 from collections import defaultdict
 from os.path import join as opj

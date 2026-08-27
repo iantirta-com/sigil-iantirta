@@ -26,7 +26,7 @@ export class DocumentationLink extends Component {
                       "-"
                   )
                 : "master";
-            return "https://www.sigil.com/documentation/" + serverVersion + this.props.path;
+            return "https://www.iantirta.com/documentation/" + serverVersion + this.props.path;
         }
     }
 

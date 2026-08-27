@@ -122,7 +122,7 @@ test("change setting on nav bar click in base settings on desktop", async () => 
                         </setting>
                     </block>
                     <block title="Title of group Foo">
-                        <setting help="this is foo" info="this is foo info" documentation="https://www.sigil.com/documentation/1.0/applications/technical/web/settings/this_is_another_test.html">
+                        <setting help="this is foo" info="this is foo info" documentation="https://www.iantirta.com/documentation/1.0/applications/technical/web/settings/this_is_another_test.html">
                             <field name="foo"/>
                         </setting>
                         <setting string="Personalize setting" help="this is full personalize setting">
@@ -173,11 +173,11 @@ test("change setting on nav bar click in base settings on desktop", async () => 
     );
     expect(".o_setting_box a:eq(0)").toHaveAttribute(
         "href",
-        "https://www.sigil.com/documentation/1.0/applications/technical/web/settings/this_is_a_test.html"
+        "https://www.iantirta.com/documentation/1.0/applications/technical/web/settings/this_is_a_test.html"
     );
     expect(".o_setting_box a:eq(1)").toHaveAttribute(
         "href",
-        "https://www.sigil.com/documentation/1.0/applications/technical/web/settings/this_is_another_test.html"
+        "https://www.iantirta.com/documentation/1.0/applications/technical/web/settings/this_is_another_test.html"
     );
 
     await editSearch("Hello there");
@@ -279,7 +279,7 @@ test("change setting on nav bar click in base settings on mobile", async () => {
                         </setting>
                     </block>
                     <block title="Title of group Foo">
-                        <setting help="this is foo" info="this is foo info" documentation="https://www.sigil.com/documentation/1.0/applications/technical/web/settings/this_is_another_test.html">
+                        <setting help="this is foo" info="this is foo info" documentation="https://www.iantirta.com/documentation/1.0/applications/technical/web/settings/this_is_another_test.html">
                             <field name="foo"/>
                         </setting>
                         <setting string="Personalize setting" help="this is full personalize setting">
@@ -329,11 +329,11 @@ test("change setting on nav bar click in base settings on mobile", async () => {
     );
     expect(".o_setting_box a:eq(0)").toHaveAttribute(
         "href",
-        "https://www.sigil.com/documentation/1.0/applications/technical/web/settings/this_is_a_test.html"
+        "https://www.iantirta.com/documentation/1.0/applications/technical/web/settings/this_is_a_test.html"
     );
     expect(".o_setting_box a:eq(1)").toHaveAttribute(
         "href",
-        "https://www.sigil.com/documentation/1.0/applications/technical/web/settings/this_is_another_test.html"
+        "https://www.iantirta.com/documentation/1.0/applications/technical/web/settings/this_is_another_test.html"
     );
 
     await editSearch("Hello there");

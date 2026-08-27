@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 from markupsafe import Markup
 
 import re

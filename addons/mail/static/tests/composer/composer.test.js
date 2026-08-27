@@ -31,6 +31,7 @@ import { Deferred, animationFrame, tick } from "@sigil/hoot-mock";
 import {
     Command,
     getService,
+    makeDialogMockEnv,
     onRpc,
     patchWithCleanup,
     serverState,
@@ -467,7 +468,7 @@ test("composer textarea content is retained when changing channel then going bac
 test("add an emoji after a partner mention", async () => {
     const pyEnv = await startServer();
     const partnerId = pyEnv["res.partner"].create({
-        email: "testpartner@sigil.com",
+        email: "testpartner@iantirta.com",
         name: "TestPartner",
     });
     const channelId = pyEnv["discuss.channel"].create({
@@ -539,7 +540,7 @@ test("pending mentions are kept when toggling composer", async () => {
 test("composer suggestion should match with input selection", async () => {
     const pyEnv = await startServer();
     const partnerId = pyEnv["res.partner"].create({
-        email: "testpartner@sigil.com",
+        email: "testpartner@iantirta.com",
         name: "Luigi",
     });
     const channelId = pyEnv["discuss.channel"].create({
@@ -833,7 +834,7 @@ test("quick edit last self-message from UP arrow", async () => {
 test("Select composer suggestion via Enter does not send the message", async () => {
     const pyEnv = await startServer();
     const partnerId = pyEnv["res.partner"].create({
-        email: "shrek@sigil.com",
+        email: "shrek@iantirta.com",
         name: "Shrek",
     });
     pyEnv["res.users"].create({ partner_id: partnerId });
@@ -876,6 +877,29 @@ test("composer: drop attachments", async () => {
     await dragenterFiles(".o-mail-Composer-input", extraFiles);
     await dropFiles(".o-Dropzone", extraFiles);
     await contains(".o-mail-AttachmentContainer:not(.o-isUploading)", { count: 3 });
+});
+
+test("composer: drop attachments on message in edition", async () => {
+    const pyEnv = await startServer();
+    const channelId = pyEnv["discuss.channel"].create({ name: "General" });
+    pyEnv["mail.message"].create({
+        author_id: serverState.partnerId,
+        body: "my message",
+        model: "discuss.channel",
+        res_id: channelId,
+        message_type: "comment",
+    });
+    const file = new File(["hello, world"], "text.txt", { type: "text/plain" });
+    await start();
+    await openDiscuss(channelId);
+    await click(".o-mail-Message [title='Edit']");
+    await contains(".o-mail-Message .o-mail-Composer-input");
+    await dragenterFiles(".o-mail-Message-body", [file]);
+    await contains(".o-Dropzone");
+    await dropFiles(".o-Dropzone.o-mail-Composer-dropzone", [file]);
+    await contains(
+        ".o-mail-Message .o-mail-Composer .o-mail-AttachmentContainer:not(.o-isUploading)"
+    );
 });
 
 test("composer: add an attachment", async () => {
@@ -1050,6 +1074,35 @@ test("remove an uploading attachment", async () => {
     await contains(".o-mail-AttachmentContainer.o-isUploading:contains(text.txt)");
     await click(".o-mail-Attachment-unlink");
     await contains(".o-mail-Composer .o-mail-AttachmentContainer", { count: 0 });
+});
+
+test("Can dismiss mail composer with 500+ active_ids", async () => {
+    // When there are more than 500 active_ids, _compute_res_ids
+    // short-circuits and leaves res_ids empty for performance reasons.
+    // In that case, the code must rely on active_ids and dismissing
+    // the dialog must not crash.
+    const pyEnv = await startServer();
+    const env = await makeDialogMockEnv();
+    const partnerId = pyEnv["res.partner"].create({ name: "Partner" });
+    registerArchs({
+        "mail.compose.message,false,form": `
+            <form string="Compose Email" js_class="mail_composer_form">
+                <field name="model"/>
+                <field name="partner_ids"/>
+            </form>`,
+    });
+    await start();
+    const composerId = pyEnv["mail.compose.message"].create({
+        model: "res.partner",
+        res_ids: "", // simulate >500 active_ids case
+        partner_ids: [],
+    });
+    await openFormView("mail.compose.message", composerId, {
+        context: { active_ids: [partnerId] },
+    });
+    expect(env.dialogData).not.toBeEmpty()
+    // Dialog is closed without errors
+    await env.dialogData.dismiss()
 });
 
 test("Uploading multiple files in the composer create multiple temporary attachments", async () => {
@@ -1603,9 +1656,9 @@ test("html composer: basic rendering", async () => {
         document,
         editable: document.querySelector(".o-mail-Composer-html.sigil-editor-editable"),
     };
-    await htmlInsertText(editor, "Test ");
+    await htmlInsertText(editor, " Test");
     composerService.setTextComposer();
-    await contains("textarea.o-mail-Composer-input", { value: "Test Hello World!" });
+    await contains("textarea.o-mail-Composer-input", { value: "Hello World! Test" });
     await contains(".o-mail-Composer-html.sigil-editor-editable", { count: 0 });
 });
 

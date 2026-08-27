@@ -4,9 +4,8 @@
         <xpath expr="//*[@t-name='mail.MessagingMenu']" position="inside">
             <div t-if="!env.inDiscussApp" t-att-class="discussSystray.class">
                 <Dropdown state="dropdown" beforeOpen.bind="beforeOpen" position="'bottom-end'" menuClass="discussSystray.menuClass" bottomSheet="false">
-                    <button class="disabled bg-transparent" disabled="disabled">
-                        <!-- <i class="fa fa-lg fa-comments" role="img" aria-label="Messages" t-on-click="() => store.discuss.activeTab = ui.isSmall and store.discuss.activeTab === 'notification' ? 'notification' : store.discuss.activeTab"></i> -->
-                         <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                    <button class="bg-transparent">
+                        <i class="fa fa-lg fa-comments" role="img" aria-label="Messages" t-on-click="() => store.discuss.activeTab = ui.isSmall and store.discuss.activeTab === 'notification' ? 'notification' : store.discuss.activeTab"></i>
                         <span t-if="counter" class="o-mail-MessagingMenu-counter badge rounded-pill"><t t-esc="counter"/></span>
                     </button>
                     <t t-set-slot="content">
