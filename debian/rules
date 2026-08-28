@@ -12,7 +12,7 @@ override_dh_auto_build:
 
 override_dh_auto_install:
 	dh_auto_install
-	rm debian/sigil/usr/lib/python3*/dist-packages/sigil/addons/point_of_sale/static/src/fonts/Inconsolata.otf
+	rm -f debian/sigil/usr/lib/python3*/dist-packages/sigil/addons/point_of_sale/static/src/fonts/Inconsolata.otf
 	for LINKTARGET in `awk '{ print $2 }' sigil.links`; do rm debian/sigil/${LINKTARGET} ; done
 	find debian/sigil -name LICENSE.txt -exec rm {} \;
 
