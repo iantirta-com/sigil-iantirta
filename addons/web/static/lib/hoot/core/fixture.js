@@ -1,7 +1,7 @@
-/** @odoo-module */
+/** @sigil-module */
 
-import { animationFrame } from "@odoo/hoot-dom";
-import { App } from "@odoo/owl";
+import { animationFrame } from "@sigil/hoot-dom";
+import { App } from "@sigil/owl";
 import { getActiveElement, getCurrentDimensions } from "@web/../lib/hoot-dom/helpers/dom";
 import { setupEventActions } from "@web/../lib/hoot-dom/helpers/events";
 import { isInstanceOf } from "@web/../lib/hoot-dom/hoot_dom_utils";
@@ -10,13 +10,13 @@ import { subscribeToTransitionChange } from "../mock/animation";
 import { getViewPortHeight, getViewPortWidth } from "../mock/window";
 
 /**
- * @typedef {Parameters<typeof import("@odoo/owl").mount>[2] & {
+ * @typedef {Parameters<typeof import("@sigil/owl").mount>[2] & {
  *  className: string | string[];
- *  target?: import("@odoo/hoot-dom").Target;
+ *  target?: import("@sigil/hoot-dom").Target;
  * }} MountOnFixtureOptions
  *
  * @typedef {{
- *  component: import("@odoo/owl").ComponentConstructor;
+ *  component: import("@sigil/owl").ComponentConstructor;
  *  props: unknown;
  * }} TestRootProps
  */
@@ -50,7 +50,7 @@ let shouldPrepareNextFixture = true; // Prepare setup for first test
 //-----------------------------------------------------------------------------
 
 /**
- * @param {App | import("@odoo/owl").Component} target
+ * @param {App | import("@sigil/owl").Component} target
  */
 export function destroy(target) {
     const app = isInstanceOf(target, App) ? target : target.__owl__.app;

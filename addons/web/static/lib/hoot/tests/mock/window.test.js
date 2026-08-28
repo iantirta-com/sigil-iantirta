@@ -1,8 +1,8 @@
-/** @odoo-module */
+/** @sigil-module */
 
-import { after, describe, expect, test, watchListeners } from "@odoo/hoot";
-import { queryOne } from "@odoo/hoot-dom";
-import { EventBus } from "@odoo/owl";
+import { after, describe, expect, test, watchListeners } from "@sigil/hoot";
+import { queryOne } from "@sigil/hoot-dom";
+import { EventBus } from "@sigil/owl";
 import { mountForTest, parseUrl } from "../local_helpers";
 
 describe(parseUrl(import.meta.url), () => {

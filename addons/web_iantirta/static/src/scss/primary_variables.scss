@@ -17,4 +17,14 @@ $tooltip-padding-y: 14px !default;
 $tooltip-padding-x: 16px !default;
 $tooltip-bg: rgba(17, 17, 17, 0.8);
 
+$o-opacity-muted: .76 !default;
 
+$o-main-text-color: $m3-onsurface !default;
+$o-main-color-muted: rgba($m3-onsurface-var, $o-opacity-muted) !default;
+
+$o-view-background-color: $m3-surface-container-lowest !default;
+$o-shadow-color: $m3-shadow !default;
+
+$o-border-radius: o-to-rem(11px) !default;
+$o-border-radius-sm: o-to-rem(9px) !default;
+$o-border-radius-lg: o-to-rem(15px) !default;

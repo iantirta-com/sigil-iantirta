@@ -1,3 +1,4 @@
+
 """ High-level objects for fields. """
 from __future__ import annotations
 
@@ -320,9 +321,7 @@ class Field(typing.Generic[T]):
         return "%s.%s" % (self.model_name, self.name)
 
     def __repr__(self):
-        if not self.name:
-            return f"{'<%s.%s>'!r}" % (__name__, type(self).__name__)
-        return f"{'%s.%s'!r}" % (self.model_name, self.name)
+        return repr(str(self))
 
     def __init_subclass__(cls):
         super().__init_subclass__()
@@ -1579,11 +1578,12 @@ class Field(typing.Generic[T]):
         either not in cache, or different from ``cache_value``.
         """
         field_cache = self._get_cache(records.env)
-        return records.browse(
+        ids_to_update = tuple(
             record_id
             for record_id in records._ids
             if field_cache.get(record_id, SENTINEL) != cache_value
         )
+        return records.__class__(records.env, ids_to_update, records._prefetch_ids)
 
     def _to_prefetch(self, record: ModelType) -> ModelType:
         """ Return a recordset including ``record`` to prefetch the field. """

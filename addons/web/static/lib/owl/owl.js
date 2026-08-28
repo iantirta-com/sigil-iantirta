@@ -1574,7 +1574,7 @@
             }
             moveBeforeVNode(other, afterNode) {
                 if (other) {
-                    // check this with @ged-odoo for use in foreach
+                    // check this with @ged-sigil for use in foreach
                     afterNode = other.firstNode() || afterNode;
                 }
                 this.child.moveBeforeVNode(other ? other.child : null, afterNode);
@@ -6383,7 +6383,7 @@
 
     __info__.date = '2026-07-10T09:10:50.283Z';
     __info__.hash = '5093c0b';
-    __info__.url = 'https://github.com/odoo/owl';
+    __info__.url = 'https://github.com/sigil/owl';
 
 
 })(this.owl = this.owl || {});

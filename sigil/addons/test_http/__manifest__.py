@@ -1,0 +1,15 @@
+{
+    'name': 'Test HTTP',
+    'version': '1.0',
+    'category': 'Hidden/Tests',
+    'description': """A module to test HTTP""",
+    'depends': ['web', 'web_tour', 'mail', 'rpc'],
+    'installable': True,
+    'data': [
+        'data.xml',
+        'ir.model.access.csv',
+        'views.xml'
+    ],
+    'author': 'iantirta.com',
+    'license': 'LGPL-3',
+}

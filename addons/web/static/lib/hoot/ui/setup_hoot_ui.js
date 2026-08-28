@@ -1,6 +1,6 @@
-/** @odoo-module */
+/** @sigil-module */
 
-import { mount, reactive } from "@odoo/owl";
+import { mount, reactive } from "@sigil/owl";
 import { HootFixtureElement } from "../core/fixture";
 import { waitForDocument } from "../hoot_utils";
 import { getRunner } from "../main_runner";

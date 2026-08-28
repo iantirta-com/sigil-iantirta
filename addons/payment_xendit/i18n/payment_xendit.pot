@@ -1,10 +1,10 @@
-# Translation of Odoo Server.
+# Translation of Sigil Server.
 # This file contains the translation of the following modules:
 # 	* payment_xendit
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Sigil Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-01 17:37+0000\n"
 "PO-Revision-Date: 2026-05-01 17:37+0000\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: payment_xendit
-#. odoo-python
+#. sigil-python
 #: code:addons/payment_xendit/models/payment_transaction.py:0
 msgid ""
 "An error occurred during the processing of your payment (%s). Please try "
@@ -71,19 +71,19 @@ msgid "ID"
 msgstr ""
 
 #. module: payment_xendit
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/payment_xendit/static/src/interactions/payment_form.js:0
 msgid "Invalid CVN"
 msgstr ""
 
 #. module: payment_xendit
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/payment_xendit/static/src/interactions/payment_form.js:0
 msgid "Invalid Card Number"
 msgstr ""
 
 #. module: payment_xendit
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/payment_xendit/static/src/interactions/payment_form.js:0
 msgid "Invalid Date"
 msgstr ""
@@ -109,7 +109,7 @@ msgid "Payment Transaction"
 msgstr ""
 
 #. module: payment_xendit
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/payment_xendit/static/src/interactions/payment_form.js:0
 msgid "Payment processing failed"
 msgstr ""
@@ -135,7 +135,7 @@ msgid "Smith"
 msgstr ""
 
 #. module: payment_xendit
-#. odoo-python
+#. sigil-python
 #: code:addons/payment_xendit/controllers/main.py:0
 msgid "The access token doesn't match the transaction reference."
 msgstr ""

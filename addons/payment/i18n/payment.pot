@@ -1,10 +1,10 @@
-# Translation of Odoo Server.
+# Translation of Sigil Server.
 # This file contains the translation of the following modules:
 # 	* payment
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Sigil Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-07-10 17:37+0000\n"
 "PO-Revision-Date: 2026-07-10 17:37+0000\n"
@@ -30,7 +30,7 @@ msgstr ""
 msgid ""
 "<i class=\"fa fa-exclamation-triangle\"/> These properties are set to\n"
 "                                match the behavior of providers and that of their integration with\n"
-"                                Odoo regarding this payment method. Any change may result in errors\n"
+"                                Sigil regarding this payment method. Any change may result in errors\n"
 "                                and should be tested on a test database first."
 msgstr ""
 
@@ -331,7 +331,7 @@ msgid "Archived"
 msgstr ""
 
 #. module: payment
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/payment/static/src/xml/payment_form_templates.xml:0
 msgid "Are you sure you want to delete this payment method?"
 msgstr ""
@@ -580,19 +580,19 @@ msgid "Cancelled Message"
 msgstr ""
 
 #. module: payment
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/payment/static/src/interactions/payment_form.js:0
 msgid "Cannot delete payment method"
 msgstr ""
 
 #. module: payment
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/payment/static/src/interactions/payment_form.js:0
 msgid "Cannot save payment method"
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_transaction.py:0
 #: model_terms:ir.ui.view,arch_db:payment.payment_capture_wizard_view_form
 msgid "Capture"
@@ -611,7 +611,7 @@ msgstr ""
 #. module: payment
 #: model:ir.model.fields,help:payment.field_payment_provider__capture_manually
 msgid ""
-"Capture the amount from Odoo, when the delivery is completed.\n"
+"Capture the amount from Sigil, when the delivery is completed.\n"
 "Use this if you want to charge your customers cards only when\n"
 "you are sure you can ship the goods to them."
 msgstr ""
@@ -737,13 +737,13 @@ msgid "Configuration"
 msgstr ""
 
 #. module: payment
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/payment/static/src/interactions/payment_form.js:0
 msgid "Confirm"
 msgstr ""
 
 #. module: payment
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/payment/static/src/interactions/payment_form.js:0
 msgid "Confirm Deletion"
 msgstr ""
@@ -780,7 +780,7 @@ msgid "Corresponding Module"
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_provider.py:0
 msgid "Could not establish the connection to the payment provider."
 msgstr ""
@@ -829,7 +829,7 @@ msgid "Created on"
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_transaction.py:0
 msgid "Creating a transaction from an archived token is forbidden."
 msgstr ""
@@ -1236,7 +1236,7 @@ msgid "Is Stripe Supported Country"
 msgstr ""
 
 #. module: payment
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/payment/static/src/xml/payment_form_templates.xml:0
 msgid "It is currently linked to the following documents:"
 msgstr ""
@@ -1397,7 +1397,7 @@ msgid "Magna"
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_transaction.py:0
 msgid ""
 "Making a request to the provider is not possible because the provider is "
@@ -1581,7 +1581,7 @@ msgid "No providers available"
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_token.py:0
 msgid "No token can be assigned to the public partner."
 msgstr ""
@@ -1618,7 +1618,7 @@ msgstr ""
 
 #. module: payment
 #: model:ir.model.fields,field_description:payment.field_payment_provider__module_to_buy
-msgid "Odoo Enterprise Module"
+msgid "Sigil Enterprise Module"
 msgstr ""
 
 #. module: payment
@@ -1672,13 +1672,13 @@ msgid "Online payment with redirection"
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_transaction.py:0
 msgid "Only authorized transactions can be voided."
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_transaction.py:0
 msgid "Only confirmed transactions can be refunded."
 msgstr ""
@@ -1847,7 +1847,7 @@ msgid "Payment Method Code"
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_provider.py:0
 #: model:ir.actions.act_window,name:payment.action_payment_method
 #: model_terms:ir.ui.view,arch_db:payment.payment_methods
@@ -1867,7 +1867,7 @@ msgid "Payment Providers"
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/controllers/post_processing.py:0
 #: model_terms:ir.ui.view,arch_db:payment.payment_status
 msgid "Payment Status"
@@ -1916,7 +1916,7 @@ msgid "Payment Transactions Linked To Token"
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_token.py:0
 msgid "Payment details saved on %(date)s"
 msgstr ""
@@ -1934,7 +1934,7 @@ msgid "Payment methods"
 msgstr ""
 
 #. module: payment
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/payment/static/src/interactions/payment_form.js:0
 msgid "Payment processing failed"
 msgstr ""
@@ -2000,19 +2000,19 @@ msgid "Pix"
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_method.py:0
 msgid "Please make sure that %(payment_method)s is supported by %(provider)s."
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/wizards/payment_link_wizard.py:0
 msgid "Please set a positive amount."
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/wizards/payment_link_wizard.py:0
 msgid "Please set an amount lower than %s."
 msgstr ""
@@ -2162,7 +2162,7 @@ msgid "Reference must be unique!"
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_transaction.py:0
 #: model:ir.model.fields,field_description:payment.field_payment_method__support_refund
 #: model:ir.model.fields,field_description:payment.field_payment_provider__support_refund
@@ -2175,7 +2175,7 @@ msgstr ""
 #: model:ir.model.fields,help:payment.field_payment_provider__support_refund
 msgid ""
 "Refund is a feature allowing to refund customers directly from the payment "
-"in Odoo."
+"in Sigil."
 msgstr ""
 
 #. module: payment
@@ -2301,7 +2301,7 @@ msgid "Sofort"
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/wizards/payment_capture_wizard.py:0
 msgid ""
 "Some of the transactions you intend to capture can only be captured in full."
@@ -2431,50 +2431,50 @@ msgid "Thank you!"
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_transaction.py:0
 msgid "The %(tx_label)s %(ref)s of %(formatted_amount)s encountered an error."
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_transaction.py:0
 msgid "The %(tx_label)s %(ref)s of %(formatted_amount)s has been authorized."
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_transaction.py:0
 msgid "The %(tx_label)s %(ref)s of %(formatted_amount)s has been canceled."
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_transaction.py:0
 msgid "The %(tx_label)s %(ref)s of %(formatted_amount)s has been confirmed."
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_transaction.py:0
 msgid "The %(tx_label)s %(ref)s of %(formatted_amount)s is pending."
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_transaction.py:0
 msgid ""
 "The amount from the payment data doesn't match the one from the transaction."
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_transaction.py:0
 msgid "The amount or currency is missing from the payment data."
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/wizards/payment_capture_wizard.py:0
 msgid "The amount to capture must be positive and cannot be superior to %s."
 msgstr ""
@@ -2527,7 +2527,7 @@ msgid ""
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_transaction.py:0
 msgid ""
 "The currency from the payment data doesn't match the one from the "
@@ -2535,19 +2535,19 @@ msgid ""
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_provider.py:0
 msgid "The following fields must be filled: %s"
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/controllers/portal.py:0
 msgid "The following kwargs are not whitelisted: %s"
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_method.py:0
 msgid ""
 "The following payment methods cannot be enabled because their payment "
@@ -2555,7 +2555,7 @@ msgid ""
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_provider.py:0
 msgid ""
 "The following payment methods must be disabled in order to enable manual "
@@ -2634,7 +2634,7 @@ msgid "The payment is authorized and captured in two steps instead of one."
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_provider.py:0
 msgid ""
 "The payment provider rejected the request.\n"
@@ -2659,7 +2659,7 @@ msgid "The provider reference of the transaction"
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_transaction.py:0
 msgid "The refund %(ref)s of %(formatted_amount)s has been initiated."
 msgstr ""
@@ -2724,7 +2724,7 @@ msgid ""
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_transaction.py:0
 msgid "The transaction %(ref)s of %(formatted_amount)s has been initiated."
 msgstr ""
@@ -2740,7 +2740,7 @@ msgid "There is no token created yet."
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/wizards/payment_link_wizard.py:0
 msgid "There is nothing to be paid."
 msgstr ""
@@ -2751,7 +2751,7 @@ msgid "There is nothing to pay."
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_method.py:0
 msgid ""
 "This action will also archive %s tokens that are registered with this "
@@ -2759,7 +2759,7 @@ msgid ""
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_provider.py:0
 msgid ""
 "This action will also archive %s tokens that are registered with this "
@@ -2790,7 +2790,7 @@ msgid ""
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_method.py:0
 msgid ""
 "This payment method needs a partner in crime; you should enable a payment "
@@ -2851,7 +2851,7 @@ msgid "Transaction"
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_transaction.py:0
 msgid ""
 "Transaction authorization is not supported by the following payment "
@@ -3004,7 +3004,7 @@ msgid "Walley"
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_method.py:0
 #: code:addons/payment/models/payment_provider.py:0
 msgid "Warning"
@@ -3016,7 +3016,7 @@ msgid "Warning Message"
 msgstr ""
 
 #. module: payment
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/payment/static/src/interactions/payment_form.js:0
 msgid "Warning!"
 msgstr ""
@@ -3084,7 +3084,7 @@ msgid "Xendit"
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_token.py:0
 msgid ""
 "You can't unarchive tokens linked to inactive payment methods or disabled "
@@ -3092,7 +3092,7 @@ msgid ""
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_provider.py:0
 msgid ""
 "You cannot change the company of a payment provider with existing "
@@ -3100,13 +3100,13 @@ msgid ""
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_method.py:0
 msgid "You cannot delete the default payment method."
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_provider.py:0
 msgid ""
 "You cannot delete the payment provider %s; disable it or uninstall it "
@@ -3114,13 +3114,13 @@ msgid ""
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_provider.py:0
 msgid "You cannot publish a disabled provider."
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/controllers/portal.py:0
 msgid "You do not have access to this payment token."
 msgstr ""
@@ -3133,7 +3133,7 @@ msgid ""
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_provider.py:0
 #: model_terms:payment.provider,auth_msg:payment.payment_provider_adyen
 #: model_terms:payment.provider,auth_msg:payment.payment_provider_aps
@@ -3163,7 +3163,7 @@ msgid "Your payment has been authorized."
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_provider.py:0
 #: model_terms:payment.provider,cancel_msg:payment.payment_provider_adyen
 #: model_terms:payment.provider,cancel_msg:payment.payment_provider_aps
@@ -3193,7 +3193,7 @@ msgid "Your payment has been cancelled."
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_provider.py:0
 #: model_terms:payment.provider,pending_msg:payment.payment_provider_adyen
 #: model_terms:payment.provider,pending_msg:payment.payment_provider_aps
@@ -3222,7 +3222,7 @@ msgid "Your payment has been processed but is waiting for approval."
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_provider.py:0
 #: model_terms:payment.provider,done_msg:payment.payment_provider_adyen
 #: model_terms:payment.provider,done_msg:payment.payment_provider_aps
@@ -3272,7 +3272,7 @@ msgid "Your payment methods"
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_transaction.py:0
 msgid ""
 "Your payment operation could not be completed for following transactions: "
@@ -3280,7 +3280,7 @@ msgid ""
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_transaction.py:0
 msgid "Your payment operation has been successfully submitted."
 msgstr ""
@@ -3312,7 +3312,7 @@ msgid "eNETS"
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/const.py:0
 msgid "express checkout not supported"
 msgstr ""
@@ -3329,7 +3329,7 @@ msgid "iPASS Money"
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/models/payment_provider.py:0
 msgid "id"
 msgstr ""
@@ -3340,37 +3340,37 @@ msgid "in3"
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/const.py:0
 msgid "incompatible country"
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/const.py:0
 msgid "incompatible currency"
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/const.py:0
 msgid "incompatible website"
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/const.py:0
 msgid "manual capture not supported"
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/const.py:0
 msgid "maximum amount exceeded"
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/const.py:0
 msgid "no supported provider available"
 msgstr ""
@@ -3394,13 +3394,13 @@ msgid ""
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/const.py:0
 msgid "tokenization not supported"
 msgstr ""
 
 #. module: payment
-#. odoo-python
+#. sigil-python
 #: code:addons/payment/const.py:0
 msgid "tokenization without payment no supported"
 msgstr ""

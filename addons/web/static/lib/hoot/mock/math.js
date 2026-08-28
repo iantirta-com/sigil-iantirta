@@ -1,4 +1,4 @@
-/** @odoo-module */
+/** @sigil-module */
 
 import { isNil, stringToNumber } from "../hoot_utils";
 

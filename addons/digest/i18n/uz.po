@@ -565,10 +565,10 @@ msgstr "Sarlavha"
 #, fuzzy
 msgid ""
 "Type \"@\" to notify someone in a message, or \"#\" to link to a channel. "
-"Try to notify @SigilBot to test the feature."
+"Try to notify @sigilBot to test the feature."
 msgstr ""
 "Xabarda kimnidir belgilash uchun \"@\" yoki kanalga havola qilish uchun "
-"\"#\" belgisini kiriting. Ushbu funksiyani sinab ko‘rish uchun @SigilBot'ni "
+"\"#\" belgisini kiriting. Ushbu funksiyani sinab ko‘rish uchun @sigilBot'ni "
 "belgilashga harakat qiling."
 
 #. module: digest

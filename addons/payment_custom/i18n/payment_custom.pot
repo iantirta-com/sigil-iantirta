@@ -1,10 +1,10 @@
-# Translation of Odoo Server.
+# Translation of Sigil Server.
 # This file contains the translation of the following modules:
 # 	* payment_custom
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Sigil Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-25 18:37+0000\n"
 "PO-Revision-Date: 2026-01-25 18:37+0000\n"
@@ -28,13 +28,13 @@ msgid "<strong class=\"mt-auto\">Communication: </strong>"
 msgstr ""
 
 #. module: payment_custom
-#. odoo-python
+#. sigil-python
 #: code:addons/payment_custom/models/payment_provider.py:0
 msgid "Bank Account"
 msgstr ""
 
 #. module: payment_custom
-#. odoo-python
+#. sigil-python
 #: code:addons/payment_custom/models/payment_provider.py:0
 msgid "Bank Accounts"
 msgstr ""
@@ -102,7 +102,7 @@ msgid "Payment Transaction"
 msgstr ""
 
 #. module: payment_custom
-#. odoo-python
+#. sigil-python
 #: code:addons/payment_custom/models/payment_provider.py:0
 msgid "Please use the following transfer details"
 msgstr ""
@@ -113,7 +113,7 @@ msgid "Reload Pending Message"
 msgstr ""
 
 #. module: payment_custom
-#. odoo-python
+#. sigil-python
 #: code:addons/payment_custom/models/payment_transaction.py:0
 msgid "The customer has selected %(provider_name)s to make the payment."
 msgstr ""

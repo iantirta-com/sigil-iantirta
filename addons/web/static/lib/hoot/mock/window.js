@@ -1,6 +1,6 @@
-/** @odoo-module */
+/** @sigil-module */
 
-import { EventBus } from "@odoo/owl";
+import { EventBus } from "@sigil/owl";
 import { getCurrentDimensions, getDocument, getWindow } from "@web/../lib/hoot-dom/helpers/dom";
 import {
     mockedCancelAnimationFrame,
@@ -745,7 +745,7 @@ export function watchListeners(view = getWindow()) {
  * @param {T} target
  * @param {string[]} [whiteList]
  * @example
- *  afterEach(watchKeys(window, ["odoo"]));
+ *  afterEach(watchKeys(window, ["sigil"]));
  */
 export function watchKeys(target, whiteList) {
     const acceptedKeys = new Set($ownKeys(target).concat(whiteList || []));

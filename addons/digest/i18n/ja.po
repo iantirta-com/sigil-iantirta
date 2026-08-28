@@ -324,7 +324,7 @@ msgstr "次回メール送信日"
 #. module: digest
 #: model_terms:ir.ui.view,arch_db:digest.digest_section_mobile
 msgid "Sigil Mobile"
-msgstr "Sigilモバイル"
+msgstr "sigilモバイル"
 
 #. module: digest
 #: model:ir.model.fields,field_description:digest.field_digest_digest__periodicity
@@ -367,7 +367,7 @@ msgstr "宛先"
 #. module: digest
 #: model_terms:ir.ui.view,arch_db:digest.digest_section_mobile
 msgid "Run your business from anywhere with <b>Sigil Mobile</b>."
-msgstr "<b>Sigilモバイル</b>でどこからでもビジネスを運営しましょう。"
+msgstr "<b>sigilモバイル</b>でどこからでもビジネスを運営しましょう。"
 
 #. module: digest
 #: model_terms:ir.ui.view,arch_db:digest.digest_digest_view_form
@@ -403,7 +403,7 @@ msgstr "ヒント説明"
 #. module: digest
 #: model_terms:digest.tip,tip_description:digest.digest_tip_digest_2
 msgid "Tip: A calculator in Sigil"
-msgstr "ヒント: Sigilの計算機能を活用しましょう"
+msgstr "ヒント: sigilの計算機能を活用しましょう"
 
 #. module: digest
 #: model_terms:digest.tip,tip_description:digest.digest_tip_digest_1
@@ -440,7 +440,7 @@ msgstr "ヒント: ショートカットを使ってワークフローを高速�
 #. module: digest
 #: model:digest.tip,name:digest.digest_tip_digest_2
 msgid "Tip: A calculator in Sigil"
-msgstr "ヒント: Sigilの計算機能を活用しましょう"
+msgstr "ヒント: sigilの計算機能を活用しましょう"
 
 #. module: digest
 #: model:digest.tip,name:digest.digest_tip_digest_1
@@ -471,10 +471,10 @@ msgstr "タイトル"
 #: model_terms:digest.tip,tip_description:digest.digest_tip_digest_3
 msgid ""
 "Type \"@\" to notify someone in a message, or \"#\" to link to a channel. "
-"Try to notify @SigilBot to test the feature."
+"Try to notify @sigilBot to test the feature."
 msgstr ""
 "メッセージで誰かに通知するには\"@\"を、チャンネルにリンクするには \"#\"を入力"
-"します。試しに@SigilBotに通知してみましょう。"
+"します。試しに@sigilBotに通知してみましょう。"
 
 #. module: digest
 #: model:ir.model.fields,help:digest.field_digest_tip__sequence
@@ -548,7 +548,7 @@ msgstr "以下の登録解除を完了しました:<br/>"
 #. module: digest
 #: model:digest.digest,name:digest.digest_digest_default
 msgid "Your Sigil Periodic Digest"
-msgstr "Sigil定期レポート"
+msgstr "sigil定期レポート"
 
 #. module: digest
 #: model_terms:ir.ui.view,arch_db:digest.digest_digest_view_form

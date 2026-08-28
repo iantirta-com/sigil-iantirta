@@ -1,10 +1,10 @@
-# Translation of Odoo Server.
+# Translation of Sigil Server.
 # This file contains the translation of the following modules:
 # 	* base_iban
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Sigil Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-25 18:36+0000\n"
 "PO-Revision-Date: 2026-01-25 18:36+0000\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: base_iban
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/base_iban/static/src/components/iban_widget/iban_widget.xml:0
 msgid "Account isn't a valid IBAN"
 msgstr ""
@@ -27,7 +27,7 @@ msgid "Bank Accounts"
 msgstr ""
 
 #. module: base_iban
-#. odoo-python
+#. sigil-python
 #: code:addons/base_iban/models/res_partner_bank.py:0
 msgid "Cannot compute the BBAN because the account number is not an IBAN."
 msgstr ""
@@ -38,7 +38,7 @@ msgid "Display Name"
 msgstr ""
 
 #. module: base_iban
-#. odoo-python
+#. sigil-python
 #: code:addons/base_iban/models/res_partner_bank.py:0
 msgid "IBAN"
 msgstr ""
@@ -49,7 +49,7 @@ msgid "ID"
 msgstr ""
 
 #. module: base_iban
-#. odoo-python
+#. sigil-python
 #: code:addons/base_iban/models/res_partner_bank.py:0
 msgid ""
 "The IBAN does not seem to be correct. You should have entered something like this %s\n"
@@ -57,19 +57,19 @@ msgid ""
 msgstr ""
 
 #. module: base_iban
-#. odoo-python
+#. sigil-python
 #: code:addons/base_iban/models/res_partner_bank.py:0
 msgid "The IBAN is invalid, it should begin with the country code"
 msgstr ""
 
 #. module: base_iban
-#. odoo-python
+#. sigil-python
 #: code:addons/base_iban/models/res_partner_bank.py:0
 msgid "There is no IBAN code."
 msgstr ""
 
 #. module: base_iban
-#. odoo-python
+#. sigil-python
 #: code:addons/base_iban/models/res_partner_bank.py:0
 msgid "This IBAN does not pass the validation check, please verify it."
 msgstr ""

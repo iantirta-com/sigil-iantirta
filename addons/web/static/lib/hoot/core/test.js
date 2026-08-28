@@ -1,6 +1,6 @@
-/** @odoo-module */
+/** @sigil-module */
 
-import { markup, reactive } from "@odoo/owl";
+import { markup, reactive } from "@sigil/owl";
 import { HootError, stringify } from "../hoot_utils";
 import { Job } from "./job";
 import { Tag } from "./tag";

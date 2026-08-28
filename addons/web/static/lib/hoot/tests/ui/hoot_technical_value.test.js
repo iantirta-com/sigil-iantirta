@@ -1,8 +1,8 @@
-/** @odoo-module */
+/** @sigil-module */
 
-import { after, describe, expect, test } from "@odoo/hoot";
-import { animationFrame, click, Deferred } from "@odoo/hoot-dom";
-import { Component, reactive, useState, xml } from "@odoo/owl";
+import { after, describe, expect, test } from "@sigil/hoot";
+import { animationFrame, click, Deferred } from "@sigil/hoot-dom";
+import { Component, reactive, useState, xml } from "@sigil/owl";
 import { mountForTest, parseUrl } from "../local_helpers";
 
 import { logger } from "../../core/logger";

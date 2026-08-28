@@ -420,7 +420,7 @@ msgstr "Vinkin kuvaus"
 #. module: digest
 #: model_terms:digest.tip,tip_description:digest.digest_tip_digest_2
 msgid "Tip: A calculator in Sigil"
-msgstr "Vinkki: Laskin Sigilssa"
+msgstr "Vinkki: Laskin sigilssa"
 
 #. module: digest
 #: model_terms:digest.tip,tip_description:digest.digest_tip_digest_1
@@ -457,7 +457,7 @@ msgstr "Vihje: Nopeuta työnkulkua pikanäppäinten avulla"
 #. module: digest
 #: model:digest.tip,name:digest.digest_tip_digest_2
 msgid "Tip: A calculator in Sigil"
-msgstr "Vinkki: Laskin Sigilssa"
+msgstr "Vinkki: Laskin sigilssa"
 
 #. module: digest
 #: model:digest.tip,name:digest.digest_tip_digest_1
@@ -488,10 +488,10 @@ msgstr "Otsikko"
 #: model_terms:digest.tip,tip_description:digest.digest_tip_digest_3
 msgid ""
 "Type \"@\" to notify someone in a message, or \"#\" to link to a channel. "
-"Try to notify @SigilBot to test the feature."
+"Try to notify @sigilBot to test the feature."
 msgstr ""
 "Kirjoita \"@\", jos haluat merkitä toisen käyttäjän viestiin, tai \"#\", jos "
-"haluat linkittää kanavan. Kokeile kirjoittaa @SigilBot testataksesi "
+"haluat linkittää kanavan. Kokeile kirjoittaa @sigilBot testataksesi "
 "ominaisuutta."
 
 #. module: digest

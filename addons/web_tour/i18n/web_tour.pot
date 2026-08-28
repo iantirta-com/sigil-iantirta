@@ -1,10 +1,10 @@
-# Translation of Odoo Server.
+# Translation of Sigil Server.
 # This file contains the translation of the following modules:
 # 	* web_tour
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Sigil Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-10 18:40+0000\n"
 "PO-Revision-Date: 2026-04-10 18:40+0000\n"
@@ -16,13 +16,13 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: web_tour
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/web_tour/static/src/js/tour_recorder/tour_recorder.xml:0
 msgid "(recording keyboard)"
 msgstr ""
 
 #. module: web_tour
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/web_tour/static/src/js/tour_recorder/tour_recorder.xml:0
 msgid "(run:"
 msgstr ""
@@ -38,7 +38,7 @@ msgid "Bottom"
 msgstr ""
 
 #. module: web_tour
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/web_tour/static/src/tour_utils.js:0
 msgid "Click the top left corner to navigate across apps."
 msgstr ""
@@ -66,13 +66,13 @@ msgid "Custom"
 msgstr ""
 
 #. module: web_tour
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/web_tour/static/src/js/tour_recorder/tour_recorder.js:0
 msgid "Custom tour '%s' couldn't be saved!"
 msgstr ""
 
 #. module: web_tour
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/web_tour/static/src/js/tour_recorder/tour_recorder.js:0
 msgid "Custom tour '%s' has been added."
 msgstr ""
@@ -126,13 +126,13 @@ msgid "Name"
 msgstr ""
 
 #. module: web_tour
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/web_tour/static/src/js/tour_recorder/tour_recorder.xml:0
 msgid "Name:"
 msgstr ""
 
 #. module: web_tour
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/web_tour/static/src/js/onboarding_item.xml:0
 #: code:addons/web_tour/static/src/widgets/tour_start.xml:0
 #: model:ir.model.fields,field_description:web_tour.field_res_users__tour_enabled
@@ -150,14 +150,14 @@ msgid "Rainbow Man Message..."
 msgstr ""
 
 #. module: web_tour
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/web_tour/static/src/js/tour_recorder/tour_recorder.xml:0
 #: code:addons/web_tour/static/src/views/tour_controller.xml:0
 msgid "Record"
 msgstr ""
 
 #. module: web_tour
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/web_tour/static/src/views/tour_controller.xml:0
 msgid "Record Tour"
 msgstr ""
@@ -173,31 +173,31 @@ msgid "Run"
 msgstr ""
 
 #. module: web_tour
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/web_tour/static/src/js/tour_recorder/tour_recorder.xml:0
 msgid "Save"
 msgstr ""
 
 #. module: web_tour
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/web_tour/static/src/js/tour_pointer/tour_pointer_state.js:0
 msgid "Scroll down to reach the next step."
 msgstr ""
 
 #. module: web_tour
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/web_tour/static/src/js/tour_pointer/tour_pointer_state.js:0
 msgid "Scroll left to reach the next step."
 msgstr ""
 
 #. module: web_tour
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/web_tour/static/src/js/tour_pointer/tour_pointer_state.js:0
 msgid "Scroll right to reach the next step."
 msgstr ""
 
 #. module: web_tour
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/web_tour/static/src/js/tour_pointer/tour_pointer_state.js:0
 msgid "Scroll up to reach the next step."
 msgstr ""
@@ -214,7 +214,7 @@ msgid "Sharing URL"
 msgstr ""
 
 #. module: web_tour
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/web_tour/static/src/widgets/tour_start.xml:0
 msgid "Start Tour"
 msgstr ""
@@ -230,32 +230,32 @@ msgid "Step"
 msgstr ""
 
 #. module: web_tour
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/web_tour/static/src/js/tour_recorder/tour_recorder.xml:0
 #: model_terms:ir.ui.view,arch_db:web_tour.tour_form
 msgid "Steps"
 msgstr ""
 
 #. module: web_tour
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/web_tour/static/src/js/tour_recorder/tour_recorder.xml:0
 msgid "Steps:"
 msgstr ""
 
 #. module: web_tour
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/web_tour/static/src/js/tour_pointer/tour_pointer.xml:0
 msgid "Stop Tour"
 msgstr ""
 
 #. module: web_tour
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/web_tour/static/src/widgets/tour_start.xml:0
 msgid "Test Tour"
 msgstr ""
 
 #. module: web_tour
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/web_tour/static/src/widgets/tour_start.xml:0
 msgid "Testing"
 msgstr ""
@@ -298,7 +298,7 @@ msgid "Trigger"
 msgstr ""
 
 #. module: web_tour
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/web_tour/static/src/js/tour_recorder/tour_recorder.xml:0
 msgid "Url:"
 msgstr ""
@@ -324,19 +324,19 @@ msgid "left"
 msgstr ""
 
 #. module: web_tour
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/web_tour/static/src/js/tour_recorder/tour_recorder.xml:0
 msgid "name_of_the_tour"
 msgstr ""
 
 #. module: web_tour
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/web_tour/static/src/js/tour_recorder/tour_recorder.xml:0
 msgid "n°"
 msgstr ""
 
 #. module: web_tour
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/web_tour/static/src/js/tour_recorder/tour_recorder.xml:0
 msgid "trigger"
 msgstr ""

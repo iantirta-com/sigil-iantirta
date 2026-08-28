@@ -1,4 +1,4 @@
-/** @odoo-module */
+/** @sigil-module */
 
 import { getTag, isFirefox, isInstanceOf, isIterable, parseRegExp } from "../hoot_dom_utils";
 import { waitUntil } from "./time";

@@ -323,7 +323,7 @@ msgstr "下一次发送日期"
 #. module: digest
 #: model_terms:ir.ui.view,arch_db:digest.digest_section_mobile
 msgid "Sigil Mobile"
-msgstr "Sigil移动端"
+msgstr "sigil移动端"
 
 #. module: digest
 #: model:ir.model.fields,field_description:digest.field_digest_digest__periodicity
@@ -364,7 +364,7 @@ msgstr "收件人"
 #. module: digest
 #: model_terms:ir.ui.view,arch_db:digest.digest_section_mobile
 msgid "Run your business from anywhere with <b>Sigil Mobile</b>."
-msgstr "使用<b>Sigil移动端</b>可以在任何位置开始您的工作。"
+msgstr "使用<b>sigil移动端</b>可以在任何位置开始您的工作。"
 
 #. module: digest
 #: model_terms:ir.ui.view,arch_db:digest.digest_digest_view_form
@@ -400,7 +400,7 @@ msgstr "提示详情"
 #. module: digest
 #: model_terms:digest.tip,tip_description:digest.digest_tip_digest_2
 msgid "Tip: A calculator in Sigil"
-msgstr "提示：Sigil中的一个计算器"
+msgstr "提示：sigil中的一个计算器"
 
 #. module: digest
 #: model_terms:digest.tip,tip_description:digest.digest_tip_digest_1
@@ -437,7 +437,7 @@ msgstr "提示：使用快捷键来加快您的工作流"
 #. module: digest
 #: model:digest.tip,name:digest.digest_tip_digest_2
 msgid "Tip: A calculator in Sigil"
-msgstr "提示：Sigil中的一个计算器"
+msgstr "提示：sigil中的一个计算器"
 
 #. module: digest
 #: model:digest.tip,name:digest.digest_tip_digest_1
@@ -468,10 +468,10 @@ msgstr "标题"
 #: model_terms:digest.tip,tip_description:digest.digest_tip_digest_3
 msgid ""
 "Type \"@\" to notify someone in a message, or \"#\" to link to a channel. "
-"Try to notify @SigilBot to test the feature."
+"Try to notify @sigilBot to test the feature."
 msgstr ""
 "键入 \"@\" 来在一个消息中引起某人的注意，或通过 \"#\"来链接到一个频道。尝试"
-"用 @SigilBot 来测试这个特性。"
+"用 @sigilBot 来测试这个特性。"
 
 #. module: digest
 #: model:ir.model.fields,help:digest.field_digest_tip__sequence

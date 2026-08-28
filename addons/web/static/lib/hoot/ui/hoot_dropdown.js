@@ -1,6 +1,6 @@
-/** @odoo-module */
+/** @sigil-module */
 
-import { Component, useRef, useState, xml } from "@odoo/owl";
+import { Component, useRef, useState, xml } from "@sigil/owl";
 import { useAutofocus, useHootKey, useWindowListener } from "../hoot_utils";
 
 /**

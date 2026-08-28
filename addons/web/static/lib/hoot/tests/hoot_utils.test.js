@@ -1,7 +1,7 @@
-/** @odoo-module */
+/** @sigil-module */
 
-import { describe, expect, test } from "@odoo/hoot";
-import { queryOne } from "@odoo/hoot-dom";
+import { describe, expect, test } from "@sigil/hoot";
+import { queryOne } from "@sigil/hoot-dom";
 import { isInstanceOf, isIterable } from "@web/../lib/hoot-dom/hoot_dom_utils";
 import {
     deepCopy,

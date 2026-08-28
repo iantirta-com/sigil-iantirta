@@ -1,6 +1,6 @@
-/** @odoo-module */
+/** @sigil-module */
 
-import { Component, useState, xml } from "@odoo/owl";
+import { Component, useState, xml } from "@sigil/owl";
 import { FILTER_SCHEMA } from "../core/config";
 import { createUrlFromId } from "../core/url";
 import { ensureArray, INCLUDE_LEVEL } from "../hoot_utils";

@@ -1,4 +1,4 @@
-/** @odoo-module */
+/** @sigil-module */
 
 import { isInstanceOf } from "../../hoot-dom/hoot_dom_utils";
 import {

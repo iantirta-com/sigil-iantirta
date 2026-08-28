@@ -480,10 +480,10 @@ msgstr "Titel"
 #: model_terms:digest.tip,tip_description:digest.digest_tip_digest_3
 msgid ""
 "Type \"@\" to notify someone in a message, or \"#\" to link to a channel. "
-"Try to notify @SigilBot to test the feature."
+"Try to notify @sigilBot to test the feature."
 msgstr ""
 "Typ \"@\" om iemand in een bericht op de hoogte te stellen, of \"#\" om naar "
-"een kanaal te linken. Probeer @SigilBot op de hoogte te stellen om de functie "
+"een kanaal te linken. Probeer @sigilBot op de hoogte te stellen om de functie "
 "te testen."
 
 #. module: digest

@@ -1,10 +1,10 @@
-# Translation of Odoo Server.
+# Translation of Sigil Server.
 # This file contains the translation of the following modules:
 # 	* payment_asiapay
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Sigil Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-25 18:37+0000\n"
 "PO-Revision-Date: 2026-01-25 18:37+0000\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: payment_asiapay
-#. odoo-python
+#. sigil-python
 #: code:addons/payment_asiapay/models/payment_transaction.py:0
 msgid ""
 "An error occurred during the processing of your payment (success code "
@@ -45,7 +45,7 @@ msgid "AsiaPay Secure Hash Secret"
 msgstr ""
 
 #. module: payment_asiapay
-#. odoo-python
+#. sigil-python
 #: code:addons/payment_asiapay/models/payment_provider.py:0
 msgid "AsiaPay does not support the following currencies: %(currencies)s."
 msgstr ""
@@ -88,7 +88,7 @@ msgid "Merchant ID"
 msgstr ""
 
 #. module: payment_asiapay
-#. odoo-python
+#. sigil-python
 #: code:addons/payment_asiapay/models/payment_provider.py:0
 msgid "Only one currency can be selected by AsiaPay account."
 msgstr ""
@@ -114,7 +114,7 @@ msgid "PesoPay"
 msgstr ""
 
 #. module: payment_asiapay
-#. odoo-python
+#. sigil-python
 #: code:addons/payment_asiapay/models/payment_transaction.py:0
 msgid "Received data with missing success code."
 msgstr ""
@@ -170,7 +170,7 @@ msgid "The technical code of this payment provider."
 msgstr ""
 
 #. module: payment_asiapay
-#. odoo-python
+#. sigil-python
 #: code:addons/payment_asiapay/models/payment_transaction.py:0
 msgid "Unknown success code: %s"
 msgstr ""

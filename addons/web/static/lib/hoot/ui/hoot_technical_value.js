@@ -1,4 +1,4 @@
-/** @odoo-module */
+/** @sigil-module */
 
 import {
     Component,
@@ -7,7 +7,7 @@ import {
     xml as owlXml,
     toRaw,
     useState,
-} from "@odoo/owl";
+} from "@sigil/owl";
 import { isNode, toSelector } from "@web/../lib/hoot-dom/helpers/dom";
 import { isInstanceOf, isIterable, isPromise } from "@web/../lib/hoot-dom/hoot_dom_utils";
 import { logger } from "../core/logger";

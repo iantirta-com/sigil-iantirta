@@ -1,10 +1,10 @@
-# Translation of Odoo Server.
+# Translation of Sigil Server.
 # This file contains the translation of the following modules:
 # 	* auth_signup
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Sigil Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-07-03 17:36+0000\n"
 "PO-Revision-Date: 2026-07-03 17:36+0000\n"
@@ -153,7 +153,7 @@ msgid ""
 "    <tr><td align=\"center\" style=\"min-width: 590px;\">\n"
 "        <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;\">\n"
 "            <tr><td style=\"text-align: center; font-size: 13px;\">\n"
-"                Powered by <a target=\"_blank\" t-attf-href=\"https://www.odoo.com?utm_source=db&amp;utm_medium={{ ctx.get('medium', 'auth') }}\" t-attf-style=\"color: {{object.company_id.email_secondary_color or '#875A7B'}};\">Odoo</a>\n"
+"                Powered by <a target=\"_blank\" t-attf-href=\"https://www.iantirta.com?utm_source=db&amp;utm_medium={{ ctx.get('medium', 'auth') }}\" t-attf-style=\"color: {{object.company_id.email_secondary_color or '#875A7B'}};\">Sigil</a>\n"
 "            </td></tr>\n"
 "        </table>\n"
 "    </td></tr>\n"
@@ -172,7 +172,7 @@ msgid ""
 "        <td align=\"center\" style=\"min-width: 590px;\">\n"
 "            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
 "                <tr><td valign=\"middle\">\n"
-"                    <span style=\"font-size: 10px;\">Welcome to Odoo</span><br/>\n"
+"                    <span style=\"font-size: 10px;\">Welcome to Sigil</span><br/>\n"
 "                    <span style=\"font-size: 20px; font-weight: bold;\">\n"
 "                        <t t-out=\"object.name or ''\">Marc Demo</t>\n"
 "                    </span>\n"
@@ -192,7 +192,7 @@ msgid ""
 "                <tr><td valign=\"top\" style=\"font-size: 13px;\">\n"
 "                    <div>\n"
 "                        Dear <t t-out=\"object.name or ''\">Marc Demo</t>,<br/><br/>\n"
-"                        You have been invited by <t t-out=\"object.create_uid.name or ''\">OdooBot</t> of <t t-out=\"object.company_id.name or ''\">YourCompany</t> to connect on Odoo.\n"
+"                        You have been invited by <t t-out=\"object.create_uid.name or ''\">SigilBot</t> of <t t-out=\"object.company_id.name or ''\">YourCompany</t> to connect on Sigil.\n"
 "                        <div style=\"margin: 16px 0px 16px 0px;\">\n"
 "                            <a t-att-href=\"object.partner_id._get_signup_url()\" t-attf-style=\"background-color: {{object.company_id.email_secondary_color or '#875A7B'}}; padding: 8px 16px 8px 16px; text-decoration: none; color: {{object.company_id.email_primary_color or '#FFFFFF'}}; border-radius: 5px; font-size:13px;\">\n"
 "                                Accept invitation\n"
@@ -200,13 +200,13 @@ msgid ""
 "                        </div>\n"
 "                        <b>  This link will remain valid during <t t-out=\"int(int(object.env['ir.config_parameter'].sudo().get_param('auth_signup.signup.validity.hours',144))/24)\"/> days </b> <br/>\n"
 "                        <t t-set=\"website_url\" t-value=\"object.get_base_url()\"/>\n"
-"                        Your Odoo domain is: <b><a t-att-href=\"website_url\" t-out=\"website_url or ''\">http://yourcompany.odoo.com</a></b><br/>\n"
+"                        Your Sigil domain is: <b><a t-att-href=\"website_url\" t-out=\"website_url or ''\">http://yourcompany.iantirta.com</a></b><br/>\n"
 "                        Your sign in email is: <b><a t-attf-href=\"/web/login?login={{ object.email }}\" target=\"_blank\" t-out=\"object.email or ''\">mark.brown23@example.com</a></b><br/><br/>\n"
-"                        Never heard of Odoo? It’s an all-in-one business software loved by 12+ million users. It will considerably improve your experience at work and increase your productivity.\n"
+"                        Never heard of Sigil? It’s an all-in-one business software loved by 12+ million users. It will considerably improve your experience at work and increase your productivity.\n"
 "                        <br/><br/>\n"
-"                        Have a look at the <a href=\"https://www.odoo.com/page/tour?utm_source=db&amp;utm_medium=auth\" t-attf-style=\"color: {{object.company_id.email_secondary_color or '#875A7B'}};\">Odoo Tour</a> to discover the tool.\n"
+"                        Have a look at the <a href=\"https://www.iantirta.com/page/tour?utm_source=db&amp;utm_medium=auth\" t-attf-style=\"color: {{object.company_id.email_secondary_color or '#875A7B'}};\">Sigil Tour</a> to discover the tool.\n"
 "                        <br/><br/>\n"
-"                        Enjoy Odoo!<br/>\n"
+"                        Enjoy Sigil!<br/>\n"
 "                        --<br/>The <t t-out=\"object.company_id.name or ''\">YourCompany</t> Team\n"
 "                    </div>\n"
 "                </td></tr>\n"
@@ -242,7 +242,7 @@ msgid ""
 "<tr><td align=\"center\" style=\"min-width: 590px;\">\n"
 "    <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;\">\n"
 "      <tr><td style=\"text-align: center; font-size: 13px;\">\n"
-"        Powered by <a target=\"_blank\" href=\"https://www.odoo.com?utm_source=db&amp;utm_medium=auth\" t-attf-style=\"color: {{object.company_id.email_secondary_color or '#875A7B'}};\">Odoo</a>\n"
+"        Powered by <a target=\"_blank\" href=\"https://www.iantirta.com?utm_source=db&amp;utm_medium=auth\" t-attf-style=\"color: {{object.company_id.email_secondary_color or '#875A7B'}};\">Sigil</a>\n"
 "      </td></tr>\n"
 "    </table>\n"
 "</td></tr>\n"
@@ -327,7 +327,7 @@ msgid ""
 "<tr><td align=\"center\" style=\"min-width: 590px;\">\n"
 "    <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;\">\n"
 "      <tr><td style=\"text-align: center; font-size: 13px;\">\n"
-"        Powered by <a target=\"_blank\" href=\"https://www.odoo.com?utm_source=db&amp;utm_medium=auth\" t-attf-style=\"color: {{object.company_id.email_secondary_color or '#875A7B'}};\">Odoo</a>\n"
+"        Powered by <a target=\"_blank\" href=\"https://www.iantirta.com?utm_source=db&amp;utm_medium=auth\" t-attf-style=\"color: {{object.company_id.email_secondary_color or '#875A7B'}};\">Sigil</a>\n"
 "      </td></tr>\n"
 "    </table>\n"
 "</td></tr>\n"
@@ -335,13 +335,13 @@ msgid ""
 msgstr ""
 
 #. module: auth_signup
-#. odoo-python
+#. sigil-python
 #: code:addons/auth_signup/models/res_users.py:0
 msgid "A reset password link was sent by email"
 msgstr ""
 
 #. module: auth_signup
-#. odoo-python
+#. sigil-python
 #: code:addons/auth_signup/models/res_users.py:0
 msgid "A signup link was sent by email"
 msgstr ""
@@ -352,7 +352,7 @@ msgid "Already have an account?"
 msgstr ""
 
 #. module: auth_signup
-#. odoo-python
+#. sigil-python
 #: code:addons/auth_signup/controllers/main.py:0
 #: code:addons/auth_signup/models/res_users.py:0
 msgid "Another user is already registered using this email address."
@@ -364,7 +364,7 @@ msgid "Back to Login"
 msgstr ""
 
 #. module: auth_signup
-#. odoo-python
+#. sigil-python
 #: code:addons/auth_signup/models/res_users.py:0
 msgid "Cannot send email: user %s has no email address."
 msgstr ""
@@ -395,7 +395,7 @@ msgid "Contact"
 msgstr ""
 
 #. module: auth_signup
-#. odoo-python
+#. sigil-python
 #: code:addons/auth_signup/models/res_users.py:0
 msgid ""
 "Could not contact the mail server, please check your outgoing email server "
@@ -403,13 +403,13 @@ msgid ""
 msgstr ""
 
 #. module: auth_signup
-#. odoo-python
+#. sigil-python
 #: code:addons/auth_signup/controllers/main.py:0
 msgid "Could not create a new account."
 msgstr ""
 
 #. module: auth_signup
-#. odoo-python
+#. sigil-python
 #: code:addons/auth_signup/controllers/main.py:0
 msgid "Could not reset your password"
 msgstr ""
@@ -485,7 +485,7 @@ msgid ""
 msgstr ""
 
 #. module: auth_signup
-#. odoo-python
+#. sigil-python
 #: code:addons/auth_signup/controllers/main.py:0
 msgid "Invalid signup token"
 msgstr ""
@@ -511,7 +511,7 @@ msgid "Marc Demo"
 msgstr ""
 
 #. module: auth_signup
-#. odoo-python
+#. sigil-python
 #: code:addons/auth_signup/models/res_users.py:0
 msgid "Multiple accounts found for this login"
 msgstr ""
@@ -522,20 +522,20 @@ msgid "Name"
 msgstr ""
 
 #. module: auth_signup
-#. odoo-python
+#. sigil-python
 #: code:addons/auth_signup/models/res_users.py:0
 msgid "No account found for this login"
 msgstr ""
 
 #. module: auth_signup
-#. odoo-python
+#. sigil-python
 #: code:addons/auth_signup/controllers/main.py:0
 msgid "No login provided."
 msgstr ""
 
 #. module: auth_signup
 #: model_terms:ir.ui.view,arch_db:auth_signup.reset_password_email
-msgid "Odoo"
+msgid "Sigil"
 msgstr ""
 
 #. module: auth_signup
@@ -554,19 +554,19 @@ msgid "Password Reset"
 msgstr ""
 
 #. module: auth_signup
-#. odoo-python
+#. sigil-python
 #: code:addons/auth_signup/models/res_users.py:0
 msgid "Password reset"
 msgstr ""
 
 #. module: auth_signup
-#. odoo-python
+#. sigil-python
 #: code:addons/auth_signup/controllers/main.py:0
 msgid "Password reset instructions sent to your email address."
 msgstr ""
 
 #. module: auth_signup
-#. odoo-python
+#. sigil-python
 #: code:addons/auth_signup/controllers/main.py:0
 msgid "Passwords do not match; please retype them."
 msgstr ""
@@ -587,7 +587,7 @@ msgid "Reminder for unregistered users"
 msgstr ""
 
 #. module: auth_signup
-#. odoo-python
+#. sigil-python
 #: code:addons/auth_signup/controllers/main.py:0
 #: model_terms:ir.ui.view,arch_db:auth_signup.login
 #: model_terms:ir.ui.view,arch_db:auth_signup.reset_password
@@ -651,7 +651,7 @@ msgid "Settings: Unregistered User Reminder"
 msgstr ""
 
 #. module: auth_signup
-#. odoo-python
+#. sigil-python
 #: code:addons/auth_signup/controllers/main.py:0
 msgid "Sign Up"
 msgstr ""
@@ -668,31 +668,31 @@ msgid "Signup Token Type"
 msgstr ""
 
 #. module: auth_signup
-#. odoo-python
+#. sigil-python
 #: code:addons/auth_signup/models/res_users.py:0
 msgid "Signup is not allowed for uninvited users"
 msgstr ""
 
 #. module: auth_signup
-#. odoo-python
+#. sigil-python
 #: code:addons/auth_signup/models/res_partner.py:0
 msgid "Signup token '%s' is not valid or expired"
 msgstr ""
 
 #. module: auth_signup
-#. odoo-python
+#. sigil-python
 #: code:addons/auth_signup/models/res_users.py:0
 msgid "Signup: invalid template user"
 msgstr ""
 
 #. module: auth_signup
-#. odoo-python
+#. sigil-python
 #: code:addons/auth_signup/models/res_users.py:0
 msgid "Signup: no login given for new user"
 msgstr ""
 
 #. module: auth_signup
-#. odoo-python
+#. sigil-python
 #: code:addons/auth_signup/models/res_users.py:0
 msgid "Signup: no name or partner given for new user"
 msgstr ""
@@ -708,13 +708,13 @@ msgid "Template user for new users created through signup"
 msgstr ""
 
 #. module: auth_signup
-#. odoo-python
+#. sigil-python
 #: code:addons/auth_signup/controllers/main.py:0
 msgid "The form was not properly filled in."
 msgstr ""
 
 #. module: auth_signup
-#. odoo-python
+#. sigil-python
 #: code:addons/auth_signup/models/res_users.py:0
 msgid ""
 "There was an error when trying to deliver your Email, please check your "
@@ -745,7 +745,7 @@ msgid "Welcome to {{ object.company_id.name }}!"
 msgstr ""
 
 #. module: auth_signup
-#. odoo-python
+#. sigil-python
 #: code:addons/auth_signup/models/res_users.py:0
 msgid "You cannot perform this action on an archived user."
 msgstr ""
@@ -756,7 +756,7 @@ msgid "Your account at {{ object.company_id.name }}"
 msgstr ""
 
 #. module: auth_signup
-#. odoo-python
+#. sigil-python
 #: code:addons/auth_signup/controllers/main.py:0
 msgid "Your password has been reset successfully."
 msgstr ""
@@ -790,5 +790,5 @@ msgstr ""
 #: model:mail.template,subject:auth_signup.set_password_email
 msgid ""
 "{{ object.create_uid.name }} from {{ object.company_id.name }} invites you "
-"to connect to Odoo"
+"to connect to Sigil"
 msgstr ""

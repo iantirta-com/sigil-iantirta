@@ -1,6 +1,6 @@
-/** @odoo-module */
+/** @sigil-module */
 
-import { Component, useState, xml } from "@odoo/owl";
+import { Component, useState, xml } from "@sigil/owl";
 import { createUrl, refresh } from "../core/url";
 import { callHootKey, useHootKey, useWindowListener } from "../hoot_utils";
 import { HootButtons } from "./hoot_buttons";
@@ -85,7 +85,7 @@ export class HootMain extends Component {
                     <nav class="hoot-controls py-1 px-2">
                         <h1
                             class="hoot-logo m-0 select-none"
-                            title="Hierarchically Organized Odoo Tests"
+                            title="Hierarchically Organized Sigil Tests"
                         >
                             <strong class="flex">HOOT</strong>
                         </h1>

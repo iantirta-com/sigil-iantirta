@@ -1,10 +1,10 @@
-# Translation of Odoo Server.
+# Translation of Sigil Server.
 # This file contains the translation of the following modules:
 # 	* payment_paymob
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Sigil Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-25 18:37+0000\n"
 "PO-Revision-Date: 2026-01-25 18:37+0000\n"
@@ -26,7 +26,7 @@ msgid "Account Country"
 msgstr ""
 
 #. module: payment_paymob
-#. odoo-python
+#. sigil-python
 #: code:addons/payment_paymob/models/payment_transaction.py:0
 msgid ""
 "An error occurred during the processing of your payment (%(msg)s). Please "
@@ -39,7 +39,7 @@ msgid "Code"
 msgstr ""
 
 #. module: payment_paymob
-#. odoo-python
+#. sigil-python
 #: code:addons/payment_paymob/models/payment_provider.py:0
 msgid "Could not generate a new access token."
 msgstr ""
@@ -67,19 +67,19 @@ msgid "Make the payment methods compatible with the Paymob portal."
 msgstr ""
 
 #. module: payment_paymob
-#. odoo-python
+#. sigil-python
 #: code:addons/payment_paymob/models/payment_provider.py:0
 msgid "Not all enabled payment methods were found on your account."
 msgstr ""
 
 #. module: payment_paymob
-#. odoo-python
+#. sigil-python
 #: code:addons/payment_paymob/models/payment_provider.py:0
 msgid "Only currencies supported by Paymob can be selected."
 msgstr ""
 
 #. module: payment_paymob
-#. odoo-python
+#. sigil-python
 #: code:addons/payment_paymob/models/payment_provider.py:0
 msgid "Only one currency can be selected per Paymob account."
 msgstr ""
@@ -95,13 +95,13 @@ msgid "Payment Transaction"
 msgstr ""
 
 #. module: payment_paymob
-#. odoo-python
+#. sigil-python
 #: code:addons/payment_paymob/models/payment_provider.py:0
 msgid "Payment methods have been successfully set up!"
 msgstr ""
 
 #. module: payment_paymob
-#. odoo-python
+#. sigil-python
 #: code:addons/payment_paymob/models/payment_provider.py:0
 msgid "Payment methods not found"
 msgstr ""
@@ -147,7 +147,7 @@ msgid "Secret Key"
 msgstr ""
 
 #. module: payment_paymob
-#. odoo-python
+#. sigil-python
 #: code:addons/payment_paymob/models/payment_provider.py:0
 msgid "Successfully synchronized with Paymob"
 msgstr ""
@@ -165,7 +165,7 @@ msgid ""
 msgstr ""
 
 #. module: payment_paymob
-#. odoo-python
+#. sigil-python
 #: code:addons/payment_paymob/models/payment_provider.py:0
 msgid "The following fields must be filled: %(fields)s"
 msgstr ""

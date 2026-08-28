@@ -45,7 +45,7 @@ __all__ = [
     "get_modules_with_version",
     "get_resource_from_path",
     "initialize_sys_path",
-    "load_sigil_module",
+    "load_openerp_module",
 ]
 
 MODULE_NAME_RE = re.compile(r'^\w{1,256}$')
@@ -77,6 +77,7 @@ _DEFAULT_MANIFEST = {
     'installable': True,
     'images': [],  # website
     'images_preview_theme': {},  # website themes
+    'kpi_providers': [],
     'live_test_url': '',  # website themes
     'new_page_templates': {},  # website themes
     'post_init_hook': '',
@@ -487,8 +488,8 @@ def get_manifest(module: str, mod_path: str | None = None) -> Mapping[str, typin
     return mod if mod is not None else {}
 
 
-def load_sigil_module(module_name: str) -> None:
-    """ Load an Sigil module, if not already loaded.
+def load_openerp_module(module_name: str) -> None:
+    """ Load an OpenERP module, if not already loaded.
 
     This loads the module and register all of its models, thanks to either
     the MetaModel metaclass, or the explicit instantiation of the model.

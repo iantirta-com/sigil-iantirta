@@ -21,7 +21,7 @@ from sigil.tools.convert import convert_file, IdRef, ConvertMode as LoadMode
 
 from . import db as modules_db
 from .migration import MigrationManager
-from .module import adapt_version, initialize_sys_path, load_sigil_module
+from .module import adapt_version, initialize_sys_path, load_openerp_module
 from .module_graph import ModuleGraph
 from .registry import Registry
 
@@ -110,6 +110,7 @@ def force_demo(env: Environment) -> None:
         Registry.new(env.cr.dbname, update_module=True)
         env.transaction.reset()
 
+
 def load_module_graph(
     env: Environment,
     graph: ModuleGraph,
@@ -173,7 +174,7 @@ def load_module_graph(
             if package.name != 'base':
                 env.flush_all()
 
-        load_sigil_module(package.name)
+        load_openerp_module(package.name)
 
         if update_operation == 'install':
             py_module = sys.modules['sigil.addons.%s' % (module_name,)]

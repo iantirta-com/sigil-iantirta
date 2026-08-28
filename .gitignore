@@ -18,12 +18,12 @@ __pycache__/
 # hg stuff
 *.orig
 status
-# odoo filestore
-odoo/filestore
+# sigil filestore
+sigil/filestore
 # maintenance migration scripts
-odoo/addons/base/maintenance
+sigil/addons/base/maintenance
 # windows installation config file
-/odoo.conf
+/sigil.conf
 
 # generated for windows installer?
 install/win32/*.bat

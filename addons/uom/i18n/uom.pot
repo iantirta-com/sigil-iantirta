@@ -1,10 +1,10 @@
-# Translation of Odoo Server.
+# Translation of Sigil Server.
 # This file contains the translation of the following modules:
 # 	* uom
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Sigil Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-10 18:40+0000\n"
 "PO-Revision-Date: 2026-04-10 18:40+0000\n"
@@ -123,7 +123,7 @@ msgid "Parent Path"
 msgstr ""
 
 #. module: uom
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/uom/static/src/components/many2one_uom/many2one_uom_field.js:0
 #: code:addons/uom/static/src/components/many2x_uom_tags/many2x_uom_tags.js:0
 msgid "Product Field Name"
@@ -140,7 +140,7 @@ msgid "Quantity"
 msgstr ""
 
 #. module: uom
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/uom/static/src/components/many2one_uom/many2one_uom_field.js:0
 #: code:addons/uom/static/src/components/many2x_uom_tags/many2x_uom_tags.js:0
 msgid "Quantity Field Name"
@@ -153,7 +153,7 @@ msgid "Reference Unit"
 msgstr ""
 
 #. module: uom
-#. odoo-python
+#. sigil-python
 #: code:addons/uom/models/uom_uom.py:0
 msgid "Reference unit of measure is missing."
 msgstr ""
@@ -179,7 +179,7 @@ msgid "Sequence"
 msgstr ""
 
 #. module: uom
-#. odoo-python
+#. sigil-python
 #: code:addons/uom/models/uom_uom.py:0
 msgid ""
 "Some critical fields have been modified on %s.\n"
@@ -195,7 +195,7 @@ msgid "The conversion ratio for a unit of measure cannot be 0!"
 msgstr ""
 
 #. module: uom
-#. odoo-python
+#. sigil-python
 #: code:addons/uom/models/uom_uom.py:0
 msgid ""
 "The following units of measure are used by the system and cannot be deleted: %s\n"
@@ -235,13 +235,13 @@ msgid "Units of Measure"
 msgstr ""
 
 #. module: uom
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/uom/static/src/components/many2one_uom/many2one_uom_field.js:0
 msgid "Unnamed"
 msgstr ""
 
 #. module: uom
-#. odoo-python
+#. sigil-python
 #: code:addons/uom/models/uom_uom.py:0
 msgid "Warning for %s"
 msgstr ""

@@ -1,6 +1,6 @@
-/** @odoo-module */
+/** @sigil-module */
 
-import { after, defineTags, describe, expect, test } from "@odoo/hoot";
+import { after, defineTags, describe, expect, test } from "@sigil/hoot";
 import { parseUrl } from "../local_helpers";
 
 import { Runner } from "../../core/runner";

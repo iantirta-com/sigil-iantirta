@@ -1,6 +1,6 @@
-/** @odoo-module */
+/** @sigil-module */
 
-import { Component, onWillRender, useEffect, useRef, useState, xml } from "@odoo/owl";
+import { Component, onWillRender, useEffect, useRef, useState, xml } from "@sigil/owl";
 import { Suite } from "../core/suite";
 import { createUrlFromId } from "../core/url";
 import { lookup, parseQuery } from "../hoot_utils";

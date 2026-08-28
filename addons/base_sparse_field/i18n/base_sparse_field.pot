@@ -1,10 +1,10 @@
-# Translation of Odoo Server.
+# Translation of Sigil Server.
 # This file contains the translation of the following modules:
 # 	* base_sparse_field
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Sigil Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-25 18:36+0000\n"
 "PO-Revision-Date: 2026-01-25 18:36+0000\n"
@@ -26,7 +26,7 @@ msgid "Boolean"
 msgstr ""
 
 #. module: base_sparse_field
-#. odoo-python
+#. sigil-python
 #: code:addons/base_sparse_field/models/models.py:0
 msgid "Changing the storing system for field \"%s\" is not allowed."
 msgstr ""
@@ -112,7 +112,7 @@ msgid "Partner"
 msgstr ""
 
 #. module: base_sparse_field
-#. odoo-python
+#. sigil-python
 #: code:addons/base_sparse_field/models/models.py:0
 msgid "Renaming sparse field \"%s\" is not allowed"
 msgstr ""
@@ -128,7 +128,7 @@ msgid "Serialization Field"
 msgstr ""
 
 #. module: base_sparse_field
-#. odoo-python
+#. sigil-python
 #: code:addons/base_sparse_field/models/models.py:0
 msgid ""
 "Serialization field \"%(serialization_field)s\" not found for sparse field "

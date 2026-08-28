@@ -1,10 +1,10 @@
-# Translation of Odoo Server.
+# Translation of Sigil Server.
 # This file contains the translation of the following modules:
 # 	* payment_iyzico
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Sigil Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-25 18:37+0000\n"
 "PO-Revision-Date: 2026-01-25 18:37+0000\n"
@@ -21,7 +21,7 @@ msgid "API Key"
 msgstr ""
 
 #. module: payment_iyzico
-#. odoo-python
+#. sigil-python
 #: code:addons/payment_iyzico/models/payment_transaction.py:0
 msgid ""
 "An error occurred during processing of your payment (code %(code)s: "
@@ -76,7 +76,7 @@ msgid "Secret Key"
 msgstr ""
 
 #. module: payment_iyzico
-#. odoo-python
+#. sigil-python
 #: code:addons/payment_iyzico/models/payment_provider.py:0
 msgid ""
 "The payment provider rejected the request.\n"
@@ -89,7 +89,7 @@ msgid "The technical code of this payment provider."
 msgstr ""
 
 #. module: payment_iyzico
-#. odoo-python
+#. sigil-python
 #: code:addons/payment_iyzico/models/payment_transaction.py:0
 msgid "Unknown status code: %s"
 msgstr ""

@@ -1,10 +1,10 @@
-# Translation of Odoo Server.
+# Translation of Sigil Server.
 # This file contains the translation of the following modules:
 # 	* fleet
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Sigil Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-25 18:36+0000\n"
 "PO-Revision-Date: 2026-01-25 18:36+0000\n"
@@ -931,7 +931,7 @@ msgid "Employee Car"
 msgstr ""
 
 #. module: fleet
-#. odoo-python
+#. sigil-python
 #: code:addons/fleet/models/fleet_vehicle_log_services.py:0
 msgid "Emptying the odometer value of a vehicle is not allowed."
 msgstr ""
@@ -973,7 +973,7 @@ msgid "Entry into service tax"
 msgstr ""
 
 #. module: fleet
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/fleet/static/src/js/fleet_form.js:0
 msgid ""
 "Every service and contract of this vehicle will be considered as archived. "
@@ -1480,18 +1480,18 @@ msgstr ""
 #: model_terms:ir.actions.act_window,help:fleet.fleet_vehicle_log_contract_action
 msgid ""
 "Manage all your contracts (leasing, insurances, etc.) with\n"
-"            their related services, costs. Odoo will automatically warn\n"
+"            their related services, costs. Sigil will automatically warn\n"
 "            you when some contracts have to be renewed."
 msgstr ""
 
 #. module: fleet
 #: model_terms:ir.actions.act_window,help:fleet.fleet_costs_reporting_action
-msgid "Manage efficiently your different effective vehicles Costs with Odoo."
+msgid "Manage efficiently your different effective vehicles Costs with Sigil."
 msgstr ""
 
 #. module: fleet
 #: model_terms:ir.actions.act_window,help:fleet.fleet_vehicle_odometer_reporting_action
-msgid "Manage efficiently your vehicle Odometers with Odoo."
+msgid "Manage efficiently your vehicle Odometers with Sigil."
 msgstr ""
 
 #. module: fleet
@@ -1506,7 +1506,7 @@ msgid "Manual"
 msgstr ""
 
 #. module: fleet
-#. odoo-python
+#. sigil-python
 #: code:addons/fleet/models/fleet_vehicle_model_brand.py:0
 #: model:ir.model.fields,field_description:fleet.field_fleet_vehicle_model__brand_id
 #: model_terms:ir.ui.view,arch_db:fleet.fleet_vehicle_log_services_view_search
@@ -1589,7 +1589,7 @@ msgid "Model of a vehicle"
 msgstr ""
 
 #. module: fleet
-#. odoo-python
+#. sigil-python
 #: code:addons/fleet/models/fleet_vehicle_model_brand.py:0
 #: model:ir.actions.act_window,name:fleet.fleet_vehicle_model_action
 #: model:ir.ui.menu,name:fleet.fleet_models_configuration
@@ -1690,7 +1690,7 @@ msgid "No"
 msgstr ""
 
 #. module: fleet
-#. odoo-python
+#. sigil-python
 #: code:addons/fleet/models/fleet_vehicle.py:0
 msgid "No Plate"
 msgstr ""
@@ -1706,7 +1706,7 @@ msgid "No data for odometer analysis"
 msgstr ""
 
 #. module: fleet
-#. odoo-python
+#. sigil-python
 #: code:addons/fleet/models/fleet_vehicle.py:0
 msgid "No plate"
 msgstr ""
@@ -2126,7 +2126,7 @@ msgid "Send"
 msgstr ""
 
 #. module: fleet
-#. odoo-python
+#. sigil-python
 #: code:addons/fleet/models/fleet_vehicle.py:0
 msgid "Send Email"
 msgstr ""
@@ -2228,7 +2228,7 @@ msgid ""
 msgstr ""
 
 #. module: fleet
-#. odoo-python
+#. sigil-python
 #: code:addons/fleet/models/fleet_vehicle.py:0
 msgid "Specify the End date of %s"
 msgstr ""
@@ -2335,13 +2335,13 @@ msgid ""
 msgstr ""
 
 #. module: fleet
-#. odoo-python
+#. sigil-python
 #: code:addons/fleet/wizard/fleet_vehicle_send_mail.py:0
 msgid "The following vehicle drivers are missing an email address: %s."
 msgstr ""
 
 #. module: fleet
-#. odoo-python
+#. sigil-python
 #: code:addons/fleet/models/fleet_vehicle.py:0
 msgid "The odometer value cannot be lower than the previous one."
 msgstr ""
@@ -2485,7 +2485,7 @@ msgid "Unit"
 msgstr ""
 
 #. module: fleet
-#. odoo-python
+#. sigil-python
 #: code:addons/fleet/models/fleet_vehicle_model.py:0
 #: model:ir.model,name:fleet.model_fleet_vehicle
 #: model:ir.model.fields,field_description:fleet.field_fleet_vehicle_assignation_log__vehicle_id
@@ -2566,13 +2566,13 @@ msgid "Vehicle Type"
 msgstr ""
 
 #. module: fleet
-#. odoo-python
+#. sigil-python
 #: code:addons/fleet/wizard/fleet_vehicle_send_mail.py:0
 msgid "Vehicle: Mass mail drivers"
 msgstr ""
 
 #. module: fleet
-#. odoo-python
+#. sigil-python
 #: code:addons/fleet/models/fleet_vehicle_model.py:0
 #: model:ir.actions.act_window,name:fleet.fleet_vehicle_action
 #: model:ir.model.fields,field_description:fleet.field_fleet_vehicle_send_mail__vehicle_ids

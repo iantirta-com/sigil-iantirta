@@ -1,10 +1,10 @@
-/** @odoo-module */
+/** @sigil-module */
 
-import { describe, expect, makeExpect, test } from "@odoo/hoot";
+import { describe, expect, makeExpect, test } from "@sigil/hoot";
 import { mountForTest, parseUrl } from "../local_helpers";
 
-import { animationFrame, click } from "@odoo/hoot-dom";
-import { Component, xml } from "@odoo/owl";
+import { animationFrame, click } from "@sigil/hoot-dom";
+import { Component, xml } from "@sigil/owl";
 import { Runner } from "../../core/runner";
 import { Test } from "../../core/test";
 import { HootTestResult } from "../../ui/hoot_test_result";

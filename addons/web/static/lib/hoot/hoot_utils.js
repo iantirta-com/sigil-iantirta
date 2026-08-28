@@ -1,7 +1,7 @@
-/** @odoo-module */
+/** @sigil-module */
 
-import { on, queryAll } from "@odoo/hoot-dom";
-import { reactive, useComponent, useEffect, useExternalListener } from "@odoo/owl";
+import { on, queryAll } from "@sigil/hoot-dom";
+import { reactive, useComponent, useEffect, useExternalListener } from "@sigil/owl";
 import { isNode } from "@web/../lib/hoot-dom/helpers/dom";
 import {
     isInstanceOf,

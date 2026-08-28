@@ -1,6 +1,6 @@
-/** @odoo-module */
+/** @sigil-module */
 
-import { Component, useState, xml } from "@odoo/owl";
+import { Component, useState, xml } from "@sigil/owl";
 import { refresh, subscribeToURLParams } from "../core/url";
 import { STORAGE, storageSet } from "../hoot_utils";
 import { HootLink } from "./hoot_link";

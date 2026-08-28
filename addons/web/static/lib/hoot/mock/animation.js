@@ -1,6 +1,6 @@
-/** @odoo-module */
+/** @sigil-module */
 
-import { on } from "@odoo/hoot-dom";
+import { on } from "@sigil/hoot-dom";
 import { MockEventTarget } from "../hoot_utils";
 import { ensureTest } from "../main_runner";
 

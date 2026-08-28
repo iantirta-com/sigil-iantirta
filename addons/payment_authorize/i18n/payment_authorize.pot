@@ -1,10 +1,10 @@
-# Translation of Odoo Server.
+# Translation of Sigil Server.
 # This file contains the translation of the following modules:
 # 	* payment_authorize
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Sigil Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-03-13 18:39+0000\n"
 "PO-Revision-Date: 2026-03-13 18:39+0000\n"
@@ -91,7 +91,7 @@ msgid "Code"
 msgstr ""
 
 #. module: payment_authorize
-#. odoo-python
+#. sigil-python
 #: code:addons/payment_authorize/models/payment_provider.py:0
 msgid ""
 "Could not fetch merchant details:\n"
@@ -99,7 +99,7 @@ msgid ""
 msgstr ""
 
 #. module: payment_authorize
-#. odoo-python
+#. sigil-python
 #: code:addons/payment_authorize/models/payment_transaction.py:0
 msgid ""
 "Could not retrieve the transaction details. (error code: %(error_code)s; "
@@ -119,7 +119,7 @@ msgid "Expiration"
 msgstr ""
 
 #. module: payment_authorize
-#. odoo-python
+#. sigil-python
 #: code:addons/payment_authorize/models/payment_provider.py:0
 msgid ""
 "Failed to authenticate.\n"
@@ -154,7 +154,7 @@ msgid "Name On Account"
 msgstr ""
 
 #. module: payment_authorize
-#. odoo-python
+#. sigil-python
 #: code:addons/payment_authorize/models/payment_provider.py:0
 msgid "Only one currency can be selected by Authorize.Net account."
 msgstr ""
@@ -175,19 +175,19 @@ msgid "Payment Transaction"
 msgstr ""
 
 #. module: payment_authorize
-#. odoo-javascript
+#. sigil-javascript
 #: code:addons/payment_authorize/static/src/interactions/payment_form.js:0
 msgid "Payment processing failed"
 msgstr ""
 
 #. module: payment_authorize
-#. odoo-python
+#. sigil-python
 #: code:addons/payment_authorize/models/payment_transaction.py:0
 msgid "Received data with status code \"%(status)s\" and error code \"%(error)s\"."
 msgstr ""
 
 #. module: payment_authorize
-#. odoo-python
+#. sigil-python
 #: code:addons/payment_authorize/controllers/main.py:0
 msgid "Received tampered payment request data."
 msgstr ""
@@ -205,7 +205,7 @@ msgstr ""
 #. module: payment_authorize
 #: model:ir.model.fields,help:payment_authorize.field_payment_provider__authorize_client_key
 msgid ""
-"The public client key. To generate directly from Odoo or from Authorize.Net "
+"The public client key. To generate directly from Sigil or from Authorize.Net "
 "backend."
 msgstr ""
 
@@ -215,7 +215,7 @@ msgid "The technical code of this payment provider."
 msgstr ""
 
 #. module: payment_authorize
-#. odoo-python
+#. sigil-python
 #: code:addons/payment_authorize/models/payment_transaction.py:0
 msgid ""
 "The transaction is not in a status to be refunded. (status: %(status)s, "
@@ -230,13 +230,13 @@ msgid ""
 msgstr ""
 
 #. module: payment_authorize
-#. odoo-python
+#. sigil-python
 #: code:addons/payment_authorize/models/payment_provider.py:0
 msgid "This action cannot be performed while the provider is disabled."
 msgstr ""
 
 #. module: payment_authorize
-#. odoo-python
+#. sigil-python
 #: code:addons/payment_authorize/controllers/main.py:0
 msgid "Transaction not found."
 msgstr ""

@@ -1,0 +1,20 @@
+# -*- coding: utf-8 -*-
+
+{
+    'name': "Timesheets/attendances reporting",
+    'description': """
+    Module linking the attendance module to the timesheet app.
+    """,
+    'category': 'Human Resources/Attendances',
+    'version': '1.1',
+
+    'depends': ['hr_timesheet', 'hr_attendance'],
+    'data': [
+        'security/ir.model.access.csv',
+        'security/hr_timesheet_attendance_report_security.xml',
+        'report/hr_timesheet_attendance_report_view.xml',
+    ],
+    'auto_install': True,
+    'author': 'iantirta.com',
+    'license': 'LGPL-3',
+}

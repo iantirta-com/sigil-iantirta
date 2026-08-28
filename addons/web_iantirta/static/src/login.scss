@@ -424,19 +424,19 @@
                     border-radius: 50%;
                     pointer-events: none;
                     filter: blur(2px);
-                    .o_sigil_login_glow_1 {
+                    &.o_sigil_login_glow_1 {
                         top: -180px;
                         right: -120px;
                         width: 420px;
                         height: 420px;
                         background: rgba($m3-primary, .07);
                     }
-                    .o_sigil_login_glow_2 {
+                    &.o_sigil_login_glow_2 {
                         bottom: -220px;
                         left: 15%;
                         width: 480px;
                         height: 480px;
-                        background: rgba($m3-tertiary, .6);
+                        background: rgba($m3-tertiary, .06);
                     }
                 }
                 .o_sigil_login_visual_intro {
@@ -691,53 +691,59 @@
     }
 }
 @include media-breakpoint-down(sm) {
-    .o_sigil_login_content {
-        width: calc(100% - 32px);
-        padding: 24px 0;
+    .o_sigil_login_body {
+        .o_sigil_login_content {
+            width: calc(100% - 32px);
+            padding: 24px 0;
+        }
     }
 }
 
 @include media-breakpoint-down(md) {
-    .o_sigil_login {
-        display: block;
-        min-height: 100vh;
-        .o_sigil_login_panel {
-            border-right: 0;
-            background: $m3-surface;
-            .o_sigil_login_content {
-                width: #{"min(100% - 40px, 420px)"};
-                padding: 32px 0;
+    .o_sigil_login_body {
+        .o_sigil_login {
+            display: block;
+            min-height: 100vh;
+            .o_sigil_login_panel {
+                border-right: 0;
+                background: $m3-surface;
+                .o_sigil_login_content {
+                    width: #{"min(100% - 40px, 420px)"};
+                    padding: 32px 0;
+                }
             }
-        }
-        .o_sigil_login_visual {
-            display: none;
+            .o_sigil_login_visual {
+                display: none;
+            }
         }
     }
 }
 @include media-breakpoint-down(lg) {
-    .o_sigil_login {
-        grid-template-columns: 42% 58%;
-        .o_sigil_login_content {
-            width: #{"min(100% - 48px, 390px)"};
-        }
-        .o_sigil_login_visual_content {
-            width: #{"min(100% - 64px, 680px)"};
-            .o_sigil_login_visual_intro h2 {
-                font-size: 40px;
+    .o_sigil_login_body {
+        .o_sigil_login {
+            grid-template-columns: 42% 58%;
+            .o_sigil_login_content {
+                width: #{"min(100% - 48px, 390px)"};
             }
-            .o_sigil_accounting_preview {
-                grid-template-columns: 1fr;
-                .o_sigil_preview_kpi,
-                .o_sigil_preview_chart_card,
-                .o_sigil_preview_transactions {
-                    grid-column: 1;
-                    grid-row: auto;
+            .o_sigil_login_visual_content {
+                width: #{"min(100% - 64px, 680px)"};
+                .o_sigil_login_visual_intro h2 {
+                    font-size: 40px;
                 }
-                .o_sigil_preview_transactions {
-                    display: none;
-                }
-                .o_sigil_preview_chart_card {
-                    min-height: 250px;
+                .o_sigil_accounting_preview {
+                    grid-template-columns: 1fr;
+                    .o_sigil_preview_kpi,
+                    .o_sigil_preview_chart_card,
+                    .o_sigil_preview_transactions {
+                        grid-column: 1;
+                        grid-row: auto;
+                    }
+                    .o_sigil_preview_transactions {
+                        display: none;
+                    }
+                    .o_sigil_preview_chart_card {
+                        min-height: 250px;
+                    }
                 }
             }
         }

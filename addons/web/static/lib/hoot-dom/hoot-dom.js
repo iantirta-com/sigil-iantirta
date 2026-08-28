@@ -1,4 +1,4 @@
-/** @odoo-module alias=@odoo/hoot-dom default=false */
+/** @sigil-module alias=@sigil/hoot-dom default=false */
 
 import * as dom from "./helpers/dom";
 import * as events from "./helpers/events";

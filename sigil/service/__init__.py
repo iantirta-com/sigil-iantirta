@@ -7,7 +7,7 @@ from . import server
 #.apidoc title: RPC Services
 
 """ Classes of this module implement the network protocols that the
-    Sigil server uses to communicate with remote clients.
+    OpenERP server uses to communicate with remote clients.
 
     Some classes are mostly utilities, whose API need not be visible to
     the average user/developer. Study them only if you are about to

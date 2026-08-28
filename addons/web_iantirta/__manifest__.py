@@ -8,9 +8,12 @@ Long description of module's purpose
     'website': "https://www.iantirta.com.com",
     'category': 'Hidden',
     'version': '0.1',
+    "license": "Other OSI approved licence",
     'depends': ['web'],
     'assets': {
         'web._assets_primary_variables': [
+            ('before', 'web/static/src/scss/primary_variables.scss',
+                'web_iantirta/static/src/scss/m3.variables.scss'),
             ('before', 'web/static/src/scss/primary_variables.scss',
                 'web_iantirta/static/src/scss/primary_variables.scss'),
             ('after', 'web/static/src/scss/primary_variables.scss',
@@ -34,14 +37,18 @@ Long description of module's purpose
         'web._assets_backend_helpers': [
             ('prepend', 'web_iantirta/static/src/scss/bootstrap_overridden.scss'),
         ],
+        'web._assets_secondary_variables': [
+            ('prepend', 'web_iantirta/static/src/scss/bootstrap_overridden.scss'),
+            'web_iantirta/static/src/scss/secondary_variables.scss',
+        ],
     },
     'data': [
+        'data/res_company_data.xml',
         'views/webclient_templates.xml',
     ],
-    # only loaded in demonstration mode
-    # 'demo': [
-    #     'demo/res_partner_demo.xml',
-    #     'demo/demo.xml',
-    # ],
+    'demo': [
+        'demo/res_users_demo.xml',
+        'demo/res_partner_demo.xml',
+    ],
 }
 

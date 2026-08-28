@@ -1,6 +1,6 @@
-/** @odoo-module */
+/** @sigil-module */
 
-import { advanceTime, describe, expect, freezeTime, mockDate, test } from "@odoo/hoot";
+import { advanceTime, describe, expect, freezeTime, mockDate, test } from "@sigil/hoot";
 import { parseUrl } from "../local_helpers";
 
 describe(parseUrl(import.meta.url), () => {

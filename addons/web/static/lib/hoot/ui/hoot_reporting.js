@@ -1,6 +1,6 @@
-/** @odoo-module */
+/** @sigil-module */
 
-import { Component, onWillRender, useState, xml } from "@odoo/owl";
+import { Component, onWillRender, useState, xml } from "@sigil/owl";
 import { Test } from "../core/test";
 import { formatTime, parseQuery } from "../hoot_utils";
 import { HootJobButtons } from "./hoot_job_buttons";

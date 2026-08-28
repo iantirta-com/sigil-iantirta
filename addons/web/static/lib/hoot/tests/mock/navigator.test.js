@@ -1,6 +1,6 @@
-/** @odoo-module */
+/** @sigil-module */
 
-import { describe, expect, mockSendBeacon, mockTouch, mockVibrate, test } from "@odoo/hoot";
+import { describe, expect, mockSendBeacon, mockTouch, mockVibrate, test } from "@sigil/hoot";
 import { parseUrl } from "../local_helpers";
 
 /**

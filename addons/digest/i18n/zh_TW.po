@@ -469,8 +469,8 @@ msgstr "稱謂"
 #: model_terms:digest.tip,tip_description:digest.digest_tip_digest_3
 msgid ""
 "Type \"@\" to notify someone in a message, or \"#\" to link to a channel. "
-"Try to notify @SigilBot to test the feature."
-msgstr "輸入“@”來在消息中通知某人，或輸入“#”來連結到頻道. 嘗試通知@SigilBot測試該功能."
+"Try to notify @sigilBot to test the feature."
+msgstr "輸入“@”來在消息中通知某人，或輸入“#”來連結到頻道. 嘗試通知@sigilBot測試該功能."
 
 #. module: digest
 #: model:ir.model.fields,help:digest.field_digest_tip__sequence

@@ -463,7 +463,6 @@ def _url_encode_impl(
     sort: bool,
     key: t.Callable[[tuple[str, str]], t.Any] | None,
 ) -> t.Iterator[str]:
-
     iterable: t.Iterable[tuple[str, str]] = iter_multi_items(obj)
 
     if sort:

@@ -490,10 +490,10 @@ msgstr "Tytuł"
 #: model_terms:digest.tip,tip_description:digest.digest_tip_digest_3
 msgid ""
 "Type \"@\" to notify someone in a message, or \"#\" to link to a channel. "
-"Try to notify @SigilBot to test the feature."
+"Try to notify @sigilBot to test the feature."
 msgstr ""
 "Wpisz \"@\" aby powiadomić kogoś poprzez wiadomość, lub \"#\" aby "
-"podlinkować kanał. Spróbuj powiadomić @SigilBot aby przetestować tą funkcję."
+"podlinkować kanał. Spróbuj powiadomić @sigilBot aby przetestować tą funkcję."
 
 #. module: digest
 #: model:ir.model.fields,help:digest.field_digest_tip__sequence

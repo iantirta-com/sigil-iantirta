@@ -11,7 +11,7 @@ from unittest.mock import patch
 
 from sigil.tests.case import TestCase
 from sigil.tests.common import BaseCase, TransactionCase, users, warmup, RegistryRLock
-from sigil.tests.result import sigilTestResult
+from sigil.tests.result import SigilTestResult
 
 _logger = logging.getLogger(__name__)
 

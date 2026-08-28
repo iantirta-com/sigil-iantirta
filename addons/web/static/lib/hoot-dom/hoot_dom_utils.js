@@ -1,4 +1,4 @@
-/** @odoo-module */
+/** @sigil-module */
 
 /**
  * @typedef {ArgumentPrimitive | `${ArgumentPrimitive}[]` | null} ArgumentType

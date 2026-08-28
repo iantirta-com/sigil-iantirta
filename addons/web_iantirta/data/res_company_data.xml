@@ -2,10 +2,10 @@
 <sigil>
     <data noupdate="1">
         <record id="base.main_company" model="res.company">
-            <field name="name">iantirta.com</field>
+            <field name="name">Iantirta Labs</field>
             <field name="partner_id" ref="base.main_partner"/>
             <field name="currency_id" ref="base.IDR"/>
-            <field name="logo" type="base64" file="iantirta_website/static/src/img/iantirta_website_logo.svg"/>
+            <field name="logo" type="base64" file="web_iantirta/static/src/img/iantirta-logo.png"/>
             <field name="street">Jl. Duripulo 1 No.24 Rt/09 Rw/02</field>
             <field name="zip">10140</field>
             <field name="city">Jakarta Pusat</field>

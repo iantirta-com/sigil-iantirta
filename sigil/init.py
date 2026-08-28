@@ -1,4 +1,7 @@
 # ruff: noqa: E402, F401
+
+""" Sigil initialization. """
+
 import gc
 import sys
 from .release import MIN_PY_VERSION

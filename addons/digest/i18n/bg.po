@@ -476,10 +476,10 @@ msgstr "Заглавие"
 #: model_terms:digest.tip,tip_description:digest.digest_tip_digest_3
 msgid ""
 "Type \"@\" to notify someone in a message, or \"#\" to link to a channel. "
-"Try to notify @SigilBot to test the feature."
+"Try to notify @sigilBot to test the feature."
 msgstr ""
 "Напишете \"@\", за да уведомите някого в съобщение, или \"#\", за да "
-"създадете връзка към канал. Опитайте да уведомите @SigilBot, за да тествате "
+"създадете връзка към канал. Опитайте да уведомите @sigilBot, за да тествате "
 "функцията."
 
 #. module: digest

@@ -1,3 +1,4 @@
+
 """The Sigil API module defines Sigil Environments.
 """
 from __future__ import annotations

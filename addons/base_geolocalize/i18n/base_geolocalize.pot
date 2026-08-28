@@ -1,10 +1,10 @@
-# Translation of Odoo Server.
+# Translation of Sigil Server.
 # This file contains the translation of the following modules:
 # 	* base_geolocalize
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Sigil Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-25 18:36+0000\n"
 "PO-Revision-Date: 2026-01-25 18:36+0000\n"
@@ -21,7 +21,7 @@ msgid "API"
 msgstr ""
 
 #. module: base_geolocalize
-#. odoo-python
+#. sigil-python
 #: code:addons/base_geolocalize/models/base_geocoder.py:0
 msgid ""
 "API key for GeoCoding (Places) required.\n"
@@ -77,7 +77,7 @@ msgid "Display Name"
 msgstr ""
 
 #. module: base_geolocalize
-#. odoo-python
+#. sigil-python
 #: code:addons/base_geolocalize/models/base_geocoder.py:0
 msgid "Error with geolocation server: %s"
 msgstr ""
@@ -152,13 +152,13 @@ msgid "Name"
 msgstr ""
 
 #. module: base_geolocalize
-#. odoo-python
+#. sigil-python
 #: code:addons/base_geolocalize/models/res_partner.py:0
 msgid "No match found for %(partner_names)s address(es)."
 msgstr ""
 
 #. module: base_geolocalize
-#. odoo-python
+#. sigil-python
 #: code:addons/base_geolocalize/models/base_geocoder.py:0
 msgid "OpenStreetMap calls disabled in testing environment."
 msgstr ""
@@ -169,7 +169,7 @@ msgid "Partner Assignment"
 msgstr ""
 
 #. module: base_geolocalize
-#. odoo-python
+#. sigil-python
 #: code:addons/base_geolocalize/models/base_geocoder.py:0
 msgid "Provider %s is not implemented for geolocation service."
 msgstr ""
@@ -191,7 +191,7 @@ msgid "Technical Name"
 msgstr ""
 
 #. module: base_geolocalize
-#. odoo-python
+#. sigil-python
 #: code:addons/base_geolocalize/models/base_geocoder.py:0
 msgid ""
 "Unable to geolocate, received the error:\n"
@@ -204,7 +204,7 @@ msgid ""
 msgstr ""
 
 #. module: base_geolocalize
-#. odoo-python
+#. sigil-python
 #: code:addons/base_geolocalize/models/base_geocoder.py:0
 msgid "Unknown"
 msgstr ""
@@ -222,7 +222,7 @@ msgid ""
 msgstr ""
 
 #. module: base_geolocalize
-#. odoo-python
+#. sigil-python
 #: code:addons/base_geolocalize/models/res_partner.py:0
 msgid "Warning"
 msgstr ""

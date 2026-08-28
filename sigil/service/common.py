@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import logging
 
 import sigil.release
@@ -34,13 +36,13 @@ def exp_version():
     return RPC_VERSION_1
 
 def exp_about(extended=False):
-    """Return information about the Sigil Server.
+    """Return information about the OpenERP Server.
 
     @param extended: if True then return version info
     @return string if extended is False else tuple
     """
 
-    info = _('See http://iantirta.com')
+    info = _('See http://openerp.com')
 
     if extended:
         return info, sigil.release.version

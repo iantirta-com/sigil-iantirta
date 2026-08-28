@@ -1,8 +1,8 @@
-/** @odoo-module */
+/** @sigil-module */
 
-import { describe, expect, makeExpect, test } from "@odoo/hoot";
-import { check, manuallyDispatchProgrammaticEvent, tick, waitFor } from "@odoo/hoot-dom";
-import { Component, xml } from "@odoo/owl";
+import { describe, expect, makeExpect, test } from "@sigil/hoot";
+import { check, manuallyDispatchProgrammaticEvent, tick, waitFor } from "@sigil/hoot-dom";
+import { Component, xml } from "@sigil/owl";
 import { mountForTest, parseUrl } from "../local_helpers";
 
 import { Test } from "../../core/test";

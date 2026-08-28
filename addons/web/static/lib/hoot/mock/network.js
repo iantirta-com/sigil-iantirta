@@ -1,6 +1,6 @@
-/** @odoo-module */
+/** @sigil-module */
 
-import { delay, tick } from "@odoo/hoot-dom";
+import { delay, tick } from "@sigil/hoot-dom";
 import {
     mockedCancelAnimationFrame,
     mockedRequestAnimationFrame,

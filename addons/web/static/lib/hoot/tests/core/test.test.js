@@ -1,6 +1,6 @@
-/** @odoo-module */
+/** @sigil-module */
 
-import { describe, expect, test } from "@odoo/hoot";
+import { describe, expect, test } from "@sigil/hoot";
 import { parseUrl } from "../local_helpers";
 
 import { Suite } from "../../core/suite";

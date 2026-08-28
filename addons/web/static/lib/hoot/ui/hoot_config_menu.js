@@ -1,6 +1,6 @@
-/** @odoo-module */
+/** @sigil-module */
 
-import { Component, useState, xml } from "@odoo/owl";
+import { Component, useState, xml } from "@sigil/owl";
 import { CONFIG_KEYS } from "../core/config";
 import { LOG_LEVELS } from "../core/logger";
 import { refresh } from "../core/url";

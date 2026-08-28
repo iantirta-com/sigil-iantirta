@@ -1,4 +1,4 @@
-/** @odoo-module */
+/** @sigil-module */
 
 import {
     Deferred,
@@ -11,7 +11,7 @@ import {
     test,
     tick,
     waitUntil,
-} from "@odoo/hoot";
+} from "@sigil/hoot";
 import { parseUrl } from "../local_helpers";
 
 // timeout of 1 second to ensure all timeouts are actually mocked

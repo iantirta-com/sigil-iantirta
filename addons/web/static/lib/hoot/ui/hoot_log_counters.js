@@ -1,6 +1,6 @@
-/** @odoo-module */
+/** @sigil-module */
 
-import { Component, xml } from "@odoo/owl";
+import { Component, xml } from "@sigil/owl";
 
 /**
  * @typedef {{

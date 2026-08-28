@@ -1,6 +1,6 @@
-/** @odoo-module */
+/** @sigil-module */
 
-import { markRaw } from "@odoo/owl";
+import { markRaw } from "@sigil/owl";
 import {
     formatXml,
     getActiveElement,
@@ -90,13 +90,13 @@ import { Test } from "./test";
  * @typedef {import("../hoot_utils").DeepEqualOptions} DeepEqualOptions
  * @typedef {import("../hoot_utils").Label} Label
  *
- * @typedef {import("@odoo/hoot-dom").Dimensions} Dimensions
- * @typedef {import("@odoo/hoot-dom").FormatXmlOptions} FormatXmlOptions
+ * @typedef {import("@sigil/hoot-dom").Dimensions} Dimensions
+ * @typedef {import("@sigil/hoot-dom").FormatXmlOptions} FormatXmlOptions
  * @typedef {import("@web/../lib/hoot-dom/hoot_dom_utils").InteractionDetails} InteractionDetails
  * @typedef {import("@web/../lib/hoot-dom/hoot_dom_utils").InteractionType} InteractionType
- * @typedef {import("@odoo/hoot-dom").QueryRectOptions} QueryRectOptions
- * @typedef {import("@odoo/hoot-dom").QueryTextOptions} QueryTextOptions
- * @typedef {import("@odoo/hoot-dom").Target} Target
+ * @typedef {import("@sigil/hoot-dom").QueryRectOptions} QueryRectOptions
+ * @typedef {import("@sigil/hoot-dom").QueryTextOptions} QueryTextOptions
+ * @typedef {import("@sigil/hoot-dom").Target} Target
  */
 
 /**
@@ -1538,7 +1538,7 @@ export class Matcher {
      *  // Partial equality can be performed on nested objects
      *  expect({
      *      company: {
-     *          name: "Odoo",
+     *          name: "Sigil",
      *          location: "Belgium",
      *      },
      *      employees: new Set([
@@ -1548,7 +1548,7 @@ export class Matcher {
      *          },
      *      ]),
      *  }).toMatchObject({
-     *      company: { name: "Odoo" }
+     *      company: { name: "Sigil" }
      *      employees: new Set([{ age: 28 }]),
      *  });
      * @example
@@ -2042,7 +2042,7 @@ export class Matcher {
      * @example
      *  expect("p").toHaveText("lorem ipsum dolor sit amet");
      * @example
-     *  expect("header h1").toHaveText(/odoo/i);
+     *  expect("header h1").toHaveText(/sigil/i);
      */
     toHaveText(text, options) {
         this._ensureArguments(arguments, ["string", "regex", null]);

@@ -1,10 +1,10 @@
-# Translation of Odoo Server.
+# Translation of Sigil Server.
 # This file contains the translation of the following modules:
 # 	* base_vat
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Sigil Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-07-24 17:38+0000\n"
 "PO-Revision-Date: 2026-07-24 17:38+0000\n"
@@ -16,51 +16,51 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: base_vat
-#. odoo-python
+#. sigil-python
 #: code:addons/base_vat/models/res_partner.py:0
 msgid "1-01-85004-3 or 101850043"
 msgstr ""
 
 #. module: base_vat
-#. odoo-python
+#. sigil-python
 #: code:addons/base_vat/models/res_partner.py:0
 msgid ""
 "10XXXXXXXXY or 20XXXXXXXXY or 15XXXXXXXXY or 16XXXXXXXXY or 17XXXXXXXXY"
 msgstr ""
 
 #. module: base_vat
-#. odoo-python
+#. sigil-python
 #: code:addons/base_vat/models/res_partner.py:0
 msgid "11111111111 (NIN) or 2222222222 (VKN)"
 msgstr ""
 
 #. module: base_vat
-#. odoo-python
+#. sigil-python
 #: code:addons/base_vat/models/res_partner.py:0
 msgid ""
 "12345678 or UA12345678 (EDRPOU), 1234567890 (RNOPP) or 123456789012 (IPN)"
 msgstr ""
 
 #. module: base_vat
-#. odoo-python
+#. sigil-python
 #: code:addons/base_vat/models/res_partner.py:0
 msgid "123456789 (TIN) or 12345678901234 (PINFL)"
 msgstr ""
 
 #. module: base_vat
-#. odoo-python
+#. sigil-python
 #: code:addons/base_vat/models/res_partner.py:0
 msgid "1792060346001 or 1792060346"
 msgstr ""
 
 #. module: base_vat
-#. odoo-python
+#. sigil-python
 #: code:addons/base_vat/models/res_partner.py:0
 msgid "310175397400003 [Fifteen digits, first and last digits should be \"3\"]"
 msgstr ""
 
 #. module: base_vat
-#. odoo-python
+#. sigil-python
 #: code:addons/base_vat/models/res_partner.py:0
 msgid "49-098-576 or 49098576"
 msgstr ""
@@ -71,7 +71,7 @@ msgid "Base VAT: Sync updates from IAP VIES"
 msgstr ""
 
 #. module: base_vat
-#. odoo-python
+#. sigil-python
 #: code:addons/base_vat/models/res_partner.py:0
 msgid "CHE-123.456.788 TVA or CHE-123.456.788 MWST or CHE-123.456.788 IVA"
 msgstr ""
@@ -104,7 +104,7 @@ msgid "Create a Customer"
 msgstr ""
 
 #. module: base_vat
-#. odoo-python
+#. sigil-python
 #: code:addons/base_vat/models/res_partner.py:0
 msgid "DE123456788 or 12/345/67890"
 msgstr ""
@@ -124,26 +124,26 @@ msgid "European VAT numbers are automatically checked on the VIES database."
 msgstr ""
 
 #. module: base_vat
-#. odoo-python
+#. sigil-python
 #: code:addons/base_vat/models/res_partner.py:0
 msgid ""
 "Example: '219999830019' (format: 12 digits, all numbers, valid check digit)"
 msgstr ""
 
 #. module: base_vat
-#. odoo-python
+#. sigil-python
 #: code:addons/base_vat/models/res_partner.py:0
 msgid "GB123456782 or XI123456782"
 msgstr ""
 
 #. module: base_vat
-#. odoo-python
+#. sigil-python
 #: code:addons/base_vat/models/res_partner.py:0
 msgid "GODE561231GR8"
 msgstr ""
 
 #. module: base_vat
-#. odoo-python
+#. sigil-python
 #: code:addons/base_vat/models/res_partner.py:0
 msgid "HU12345676 or 12345678-1-11 or 8071592153"
 msgstr ""
@@ -169,7 +169,7 @@ msgid ""
 msgstr ""
 
 #. module: base_vat
-#. odoo-python
+#. sigil-python
 #: code:addons/base_vat/models/res_partner.py:0
 msgid ""
 "If you are trying to input a European number, this is the expected format: "
@@ -182,13 +182,13 @@ msgid "Intra-Community Valid"
 msgstr ""
 
 #. module: base_vat
-#. odoo-python
+#. sigil-python
 #: code:addons/base_vat/models/res_partner.py:0
 msgid "Invalid IAP VIES endpoint"
 msgstr ""
 
 #. module: base_vat
-#. odoo-python
+#. sigil-python
 #: code:addons/base_vat/models/res_partner.py:0
 msgid "Note: the expected format is %(expected_format)s"
 msgstr ""
@@ -207,7 +207,7 @@ msgid "Tax ID"
 msgstr ""
 
 #. module: base_vat
-#. odoo-python
+#. sigil-python
 #: code:addons/base_vat/models/res_partner.py:0
 msgid ""
 "The %(vat_label)s number [%(wrong_vat)s] does not seem to be valid. "
@@ -215,7 +215,7 @@ msgid ""
 msgstr ""
 
 #. module: base_vat
-#. odoo-python
+#. sigil-python
 #: code:addons/base_vat/models/res_partner.py:0
 msgid ""
 "The %(vat_label)s number [%(wrong_vat)s] for %(record_label)s does not seem "
@@ -223,31 +223,31 @@ msgid ""
 msgstr ""
 
 #. module: base_vat
-#. odoo-python
+#. sigil-python
 #: code:addons/base_vat/models/res_partner.py:0
 msgid "The Intra-Community validity has been updated to: %s."
 msgstr ""
 
 #. module: base_vat
-#. odoo-python
+#. sigil-python
 #: code:addons/base_vat/models/res_partner.py:0
 msgid "The VIES check failed. Please check the Tax ID manually."
 msgstr ""
 
 #. module: base_vat
-#. odoo-python
+#. sigil-python
 #: code:addons/base_vat/models/res_partner.py:0
 msgid "The VIES check is pending. The status will be updated soon."
 msgstr ""
 
 #. module: base_vat
-#. odoo-python
+#. sigil-python
 #: code:addons/base_vat/models/res_partner.py:0
 msgid "To explicitly indicate no (valid) VAT, use '/' instead. "
 msgstr ""
 
 #. module: base_vat
-#. odoo-python
+#. sigil-python
 #: code:addons/base_vat/models/res_partner.py:0
 msgid "VAT"
 msgstr ""
@@ -264,7 +264,7 @@ msgid "Verify VAT numbers using the European VIES service"
 msgstr ""
 
 #. module: base_vat
-#. odoo-python
+#. sigil-python
 #: code:addons/base_vat/models/res_partner.py:0
 msgid "XXXXXXXXX [9 digits] and it should respect the Luhn algorithm checksum"
 msgstr ""
@@ -276,13 +276,13 @@ msgid "You can use '/' to indicate that the customer has no Tax ID."
 msgstr ""
 
 #. module: base_vat
-#. odoo-python
+#. sigil-python
 #: code:addons/base_vat/models/res_partner.py:0
 msgid "either 11 digits for CPF or 14 characters for CNPJ"
 msgstr ""
 
 #. module: base_vat
-#. odoo-python
+#. sigil-python
 #: code:addons/base_vat/models/res_partner.py:0
 msgid "partner [%s]"
 msgstr ""

@@ -1,14 +1,14 @@
-/** @odoo-module */
+/** @sigil-module */
 
-import { after, destroy, getFixture } from "@odoo/hoot";
-import { App, Component, xml } from "@odoo/owl";
+import { after, destroy, getFixture } from "@sigil/hoot";
+import { App, Component, xml } from "@sigil/owl";
 
 //-----------------------------------------------------------------------------
 // Exports
 //-----------------------------------------------------------------------------
 
 /**
- * @param {import("@odoo/owl").ComponentConstructor} ComponentClass
+ * @param {import("@sigil/owl").ComponentConstructor} ComponentClass
  * @param {ConstructorParameters<typeof App>[1]} [config]
  */
 export async function mountForTest(ComponentClass, config) {

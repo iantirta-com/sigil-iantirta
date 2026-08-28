@@ -4669,7 +4669,7 @@ msgstr "例如. 燈"
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_variant_easy_edit_view
 msgid "e.g. Sigil Enterprise Subscription"
-msgstr "例如. Sigil企業訂閱"
+msgstr "例如. sigil企業訂閱"
 
 #. module: product
 #: model_terms:ir.ui.view,arch_db:product.product_template_form_view

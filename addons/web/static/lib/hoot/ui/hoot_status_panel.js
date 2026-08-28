@@ -1,6 +1,6 @@
-/** @odoo-module */
+/** @sigil-module */
 
-import { Component, onWillRender, useEffect, useRef, useState, xml } from "@odoo/owl";
+import { Component, onWillRender, useEffect, useRef, useState, xml } from "@sigil/owl";
 import { getColorHex } from "../../hoot-dom/hoot_dom_utils";
 import { Test } from "../core/test";
 import { formatTime } from "../hoot_utils";

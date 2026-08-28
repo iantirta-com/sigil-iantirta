@@ -1,4 +1,4 @@
-/** @odoo-module alias=@odoo/hoot default=false */
+/** @sigil-module alias=@sigil/hoot default=false */
 
 import { logger } from "./core/logger";
 import { Runner } from "./core/runner";
@@ -159,7 +159,7 @@ export {
     waitFor,
     waitForNone,
     waitUntil,
-} from "@odoo/hoot-dom";
+} from "@sigil/hoot-dom";
 
 // Debug
 export { exposeHelpers } from "../hoot-dom/hoot_dom_utils";

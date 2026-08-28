@@ -1,0 +1,19 @@
+# -*- coding: utf-8 -*-
+
+{
+    'name': 'Purchase Requisition Stock',
+    'version': '1.2',
+    'category': 'Supply Chain/Purchase',
+    'sequence': 70,
+    'depends': ['purchase_requisition', 'purchase_stock'],
+    'data': [
+        'security/ir.model.access.csv',
+        'data/purchase_requisition_stock_data.xml',
+        'views/purchase_views.xml',
+        'views/purchase_requisition_views.xml',
+    ],
+    'installable': True,
+    'auto_install': True,
+    'author': 'iantirta.com',
+    'license': 'LGPL-3',
+}

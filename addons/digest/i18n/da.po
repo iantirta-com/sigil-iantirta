@@ -476,10 +476,10 @@ msgstr "Titel"
 #: model_terms:digest.tip,tip_description:digest.digest_tip_digest_3
 msgid ""
 "Type \"@\" to notify someone in a message, or \"#\" to link to a channel. "
-"Try to notify @SigilBot to test the feature."
+"Try to notify @sigilBot to test the feature."
 msgstr ""
 "Skriv \"@\" for at underrette en person i en besked, eller \"#\" for at "
-"linke til en kanal. Prøv f.eks. at nævne @SigilBot for at teste funktionen."
+"linke til en kanal. Prøv f.eks. at nævne @sigilBot for at teste funktionen."
 
 #. module: digest
 #: model:ir.model.fields,help:digest.field_digest_tip__sequence
