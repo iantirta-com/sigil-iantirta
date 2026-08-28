@@ -20,16 +20,24 @@ jobs:
       - name: Create Publish Directory
         run: mkdir -p publish
 
-      
-
       - name: Build the .deb Package
         run: |
           # This runs your exact build script
-          pip install pexpect && python3 setup/package.py --build-deb -p ./publish
+          pip install pexpect
+          python3 setup/package.py --build-deb -p ./publish
+
+      - name: Find where the .deb went (Debugging)
+        run: |
+          echo "Searching for the built .deb file..."
+          find . -name "*.deb"
+          find .. -maxdepth 2 -name "*.deb"
 
       - name: Upload .deb File for Download
         uses: actions/upload-artifact@v4
         with:
           name: built-deb-package
-          path: ./publish/**/*.deb
+          # Tell GitHub to grab any .deb file anywhere in the workspace or parent folder
+          path: |
+            **/*.deb
+            ../*.deb
           if-no-files-found: error
