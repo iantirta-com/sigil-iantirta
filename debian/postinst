@@ -1,0 +1,44 @@
+#!/bin/sh
+
+set -e
+
+SIGIL_CONFIGURATION_FILE=/etc/sigil/sigil.conf
+SIGIL_GROUP="sigil"
+SIGIL_DATA_DIR=/var/lib/sigil
+SIGIL_LOG_DIR=/var/log/sigil
+SIGIL_USER="sigil"
+GSFONTS_DIR=/usr/share/fonts/type1/gsfonts
+
+case "${1}" in
+    configure)
+        if ! getent passwd | grep -q "^sigil:"; then
+            adduser --system --home $SIGIL_DATA_DIR --quiet --group $SIGIL_USER
+            # Data dir
+            chown $SIGIL_USER:$SIGIL_GROUP $SIGIL_DATA_DIR
+        fi
+        # Register "$SIGIL_USER" as a postgres user with "Create DB" role attribute
+        su - postgres -c "createuser -d -R -S $SIGIL_USER" 2> /dev/null || true
+        # Configuration file
+        chown $SIGIL_USER:$SIGIL_GROUP $SIGIL_CONFIGURATION_FILE
+        chmod 0640 $SIGIL_CONFIGURATION_FILE
+        # Log
+        mkdir -p $SIGIL_LOG_DIR
+        chown $SIGIL_USER:$SIGIL_GROUP $SIGIL_LOG_DIR
+        chmod 0750 $SIGIL_LOG_DIR
+        	# work around https://bugs.debian.org/1059326
+
+        if ! [ -e ${GSFONTS_DIR}/n021003l.pfb ] ; then
+            if ! [ -d ${GSFONTS_DIR} ] ; then
+                mkdir ${GSFONTS_DIR}
+                touch ${GSFONTS_DIR}/.created-by-sigil-package
+            fi
+            ln -s /usr/share/fonts/X11/Type1/C059-Roman.pfb ${GSFONTS_DIR}/n021003l.pfb
+        fi
+        ;;
+    *)
+        ;;
+esac
+
+#DEBHELPER#
+
+exit 0

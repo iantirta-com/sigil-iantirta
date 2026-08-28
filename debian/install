@@ -1,0 +1,2 @@
+debian/sigil.conf /etc/sigil
+README.md /usr/share/doc/sigil

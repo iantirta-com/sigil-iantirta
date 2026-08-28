@@ -1,0 +1,14 @@
+[Unit]
+Description=Sigil ERP and CRM
+After=network.target
+
+[Service]
+Type=simple
+User=sigil
+Group=sigil
+ExecStart=/usr/bin/sigil --config /etc/sigil/sigil.conf --logfile /var/log/sigil/sigil-server.log
+KillMode=mixed
+
+[Install]
+WantedBy=multi-user.target
+
