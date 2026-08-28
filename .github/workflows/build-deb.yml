@@ -17,6 +17,9 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        
       - name: Create Publish Directory
         run: mkdir -p ~/publish
 
@@ -24,6 +27,9 @@ jobs:
         run: |
           pip install pexpect
           python3 setup/package.py --build-deb -p ~/publish
+        env:
+          # This is a hint for BuildKit to use the GitHub cache
+          DOCKER_BUILDKIT: 1
 
       - name: Move .deb file into the workspace
         run: |
