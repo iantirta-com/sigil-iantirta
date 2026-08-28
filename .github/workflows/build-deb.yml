@@ -22,15 +22,14 @@ jobs:
 
       - name: Build the .deb Package
         run: |
-          # This runs your exact build script
           pip install pexpect
           python3 setup/package.py --build-deb -p ~/publish
 
       - name: Move .deb file into the workspace
         run: |
-          # Let's list the files to prove it is here!
-          echo "Files ready for upload:"
           ls -la
+          ls -la ~/
+          ls -la ~/publish
 
       - name: Upload .deb File for Download
         uses: actions/upload-artifact@v4
