@@ -26,18 +26,19 @@ jobs:
           pip install pexpect
           python3 setup/package.py --build-deb -p ./publish
 
-      - name: Find where the .deb went (Debugging)
+      - name: Move .deb file into the workspace
         run: |
-          echo "Searching for the built .deb file..."
-          find . -name "*.deb"
-          find .. -maxdepth 2 -name "*.deb"
+          # This grabs any .deb file from the parent folder and moves it here
+          mv ../*.deb ./ || echo "No files in parent directory"
+          
+          # Let's list the files to prove it is here!
+          echo "Files ready for upload:"
+          ls -la *.deb
 
       - name: Upload .deb File for Download
         uses: actions/upload-artifact@v4
         with:
           name: built-deb-package
-          # Tell GitHub to grab any .deb file anywhere in the workspace or parent folder
-          path: |
-            **/*.deb
-            ../*.deb
+          # Now it just looks safely inside the current folder
+          path: ./**/*.deb
           if-no-files-found: error
