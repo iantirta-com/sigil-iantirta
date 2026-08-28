@@ -407,12 +407,12 @@
                     circle at 70% 30%,
                     color-mix(
                         in srgb,
-                        var(--md-sys-color-primary) 9%,
+                        #{$m3-primary} 9%,
                         transparent
                     ),
                     transparent 38%
                 ),
-                var(--md-sys-color-surface-container-low);
+                $m3-surface-container-low;
             .o_sigil_login_visual_content {
                 position: relative;
                 z-index: 2;
@@ -429,22 +429,14 @@
                         right: -120px;
                         width: 420px;
                         height: 420px;
-                        background: color-mix(
-                            in srgb,
-                            var(--md-sys-color-primary) 7%,
-                            transparent
-                        );
+                        background: rgba($m3-primary, .07);
                     }
                     .o_sigil_login_glow_2 {
                         bottom: -220px;
                         left: 15%;
                         width: 480px;
                         height: 480px;
-                        background: color-mix(
-                            in srgb,
-                            var(--md-sys-color-tertiary) 6%,
-                            transparent
-                        );
+                        background: rgba($m3-tertiary, .6);
                     }
                 }
                 .o_sigil_login_visual_intro {
@@ -453,27 +445,27 @@
                     h2 {
                         max-width: 620px;
                         margin: 0 0 16px;
-                        color: var(--md-sys-color-on-surface);
+                        color: $m3-onsurface;
                         font-size: clamp(34px, 4vw, 56px);
                         font-weight: 650;
                         line-height: 1.05;
                         letter-spacing: -.035em;
                         span {
                             display: block;
-                            color: var(--md-sys-color-primary);
+                            color: $m3-primary;
                         }
                     }
                     p {
                         max-width: 500px;
                         margin: 0;
-                        color: var(--md-sys-color-on-surface-variant);
+                        color: $m3-onsurface-var;
                         font-size: 16px;
                         line-height: 1.65;
                     }
                     .o_sigil_login_visual_eyebrow {
                         display: inline-block;
                         margin-bottom: 16px;
-                        color: var(--md-sys-color-primary);
+                        color: $m3-primary;
                         font-size: 11px;
                         font-weight: 750;
                         letter-spacing: .14em;
@@ -489,14 +481,9 @@
                     .o_sigil_preview_chart_card,
                     .o_sigil_preview_transactions {
                         position: relative;
-                        border: 1px solid var(--md-sys-color-outline-variant);
+                        border: 1px solid $m3-outline-var;
                         border-radius: 18px;
-                        background:
-                            color-mix(
-                                in srgb,
-                                var(--md-sys-color-surface-container-lowest) 88%,
-                                transparent
-                            );
+                        background: rgba($m3-surface-container-lowest, .88);
                         box-shadow:
                             0 10px 30px
                             color-mix(
@@ -513,25 +500,25 @@
                             align-items: center;
                             justify-content: space-between;
                             margin-bottom: 24px;
-                            color: var(--md-sys-color-on-surface-variant);
+                            color: $m3-onsurface-var;
                             font-size: 12px;
                             .o_sigil_preview_status {
                                 display: inline-flex;
                                 align-items: center;
                                 gap: 4px;
-                                color: var(--md-sys-color-tertiary);
+                                color: $m3-tertiary;
                                 font-weight: 650;
                             }
                         }
                         .o_sigil_preview_amount {
                             margin-bottom: 6px;
-                            color: var(--md-sys-color-on-surface);
+                            color: $m3-onsurface;
                             font-size: clamp(20px, 2vw, 28px);
                             font-weight: 650;
                             letter-spacing: -.025em;
                         }
                         .o_sigil_preview_period {
-                            color: var(--md-sys-color-on-surface-variant);
+                            color: $m3-onsurface-var;
                             font-size: 11px;
                         }
                     }
@@ -543,13 +530,13 @@
                         strong {
                             display: block;
                             margin-bottom: 4px;
-                            color: var(--md-sys-color-on-surface);
+                            color: $m3-onsurface;
                             font-size: 14px;
                             font-weight: 650;
                         }
                         span {
                             display: block;
-                            color: var(--md-sys-color-on-surface-variant);
+                            color: $m3-onsurface-var;
                             font-size: 11px;
                         }
                         .o_sigil_preview_chart_legend {
@@ -570,14 +557,14 @@
                                 border-radius: 50%;
                             }
                             .o_sigil_legend_expense {
-                                background: var(--md-sys-color-tertiary);
+                                background: $m3-tertiary;
                             }
                             .o_sigil_legend_income {
-                                background: var(--md-sys-color-primary);
+                                background: $m3-primary;
                             }
                         }
                         .o_sigil_preview_more {
-                            color: var(--md-sys-color-on-surface-variant);
+                            color: $m3-onsurface-var;
                         }
                     }
                     .o_sigil_preview_chart_card {
@@ -596,7 +583,7 @@
                                 span {
                                     display: block;
                                     width: 100%;
-                                    border-top: 1px dashed var(--md-sys-color-outline-variant);
+                                    border-top: 1px dashed $m3-outline-var;
                                 }
                             }
                             .o_sigil_chart_svg {
@@ -606,7 +593,7 @@
                                 height: calc(100% - 24px);
                                 overflow: visible;
                                 .o_sigil_chart_income_area {
-                                    fill: var(--md-sys-color-primary);
+                                    fill: $m3-primary;
                                     opacity: .08;
                                 }
                                 .o_sigil_chart_income,
@@ -616,11 +603,11 @@
                                     stroke-linejoin: round;
                                 }
                                 .o_sigil_chart_income {
-                                    stroke: var(--md-sys-color-primary);
+                                    stroke: $m3-primary;
                                     stroke-width: 3;
                                 }
                                 .o_sigil_chart_expense {
-                                    stroke: var(--md-sys-color-tertiary);
+                                    stroke: $m3-tertiary;
                                     stroke-width: 2;
                                 }
                             }
@@ -631,7 +618,7 @@
                                 right: 0;
                                 display: flex;
                                 justify-content: space-between;
-                                color: var(--md-sys-color-on-surface-variant);
+                                color: $m3-onsurface-var;
                                 font-size: 10px;
                             }
                         }
@@ -644,7 +631,7 @@
                             align-items: center;
                             gap: 11px;
                             padding: 10px 0;
-                            border-bottom: 1px solid var(--md-sys-color-outline-variant);
+                            border-bottom: 1px solid $m3-outline-var;
                             &:last-child {
                                 border-bottom: 0;
                             }
@@ -658,12 +645,12 @@
                                 border-radius: 9px;
                                 font-size: 11px;
                                 &.o_income {
-                                    background: var(--md-sys-color-primary-container);
-                                    color: var(--md-sys-color-on-primary-container);
+                                    background: $m3-primary-container;
+                                    color: $m3-onprimary-container;
                                 }
                                 &.o_expense {
-                                    background: var(--md-sys-color-tertiary-container);
-                                    color: var(--md-sys-color-on-tertiary-container);
+                                    background: $m3-tertiary-container;
+                                    color: $m3-ontertiary-container;
                                 }
                             }
                             .o_sigil_transaction_info {
@@ -677,22 +664,22 @@
                                 }
                                 strong {
                                     margin-bottom: 2px;
-                                    color: var(--md-sys-color-on-surface);
+                                    color: $m3-onsurface;
                                     font-size: 11px;
                                     font-weight: 600;
                                 }
                                 span {
-                                    color: var(--md-sys-color-on-surface-variant);
+                                    color: $m3-onsurface-var;
                                     font-size: 9px;
                                 }
                             }
                             .o_sigil_transaction_value {
                                 flex: 0 0 auto;
-                                color: var(--md-sys-color-on-surface);
+                                color: $m3-onsurface;
                                 font-size: 10px;
                                 font-weight: 600;
                                 &.o_positive {
-                                    color: var(--md-sys-color-tertiary);
+                                    color: $m3-tertiary;
                                 }
                             }
                         }
@@ -716,7 +703,7 @@
         min-height: 100vh;
         .o_sigil_login_panel {
             border-right: 0;
-            background: var(--md-sys-color-background);
+            background: $m3-surface;
             .o_sigil_login_content {
                 width: #{"min(100% - 40px, 420px)"};
                 padding: 32px 0;

@@ -4,7 +4,13 @@
 // $o-navbar-entry-color: $o-gray-100 !default;
 // $o-navbar-background: rgba($o-white, .1) !default;
 
-// $o-navbar-entry-bg--hover: rgba($o-white, .2) !default;
+// $o-navbar-entry-bg--h$m3-surface-container-lowestover: rgba($o-white, .2) !default;
 // $o-navbar-entry-color--hover: $o-white !default;
 
 // $o-navbar-brand-color: $o-navbar-entry-color !default;
+
+$o-navbar-height: 60px !default;
+
+$o-navbar-background: $m3-surface-container-lowest !default;
+
+$o-navbar-entry-border-radius: 11px !default;

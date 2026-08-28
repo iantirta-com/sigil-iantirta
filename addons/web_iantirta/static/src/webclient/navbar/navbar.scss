@@ -1,43 +1,320 @@
-
-
 .o_main_navbar {
-    // --NavBar-entry-backgroundColor--hover: #{rgba($o-white, .2)};
-    // --NavBar-entry-backgroundColor--focus: #{rgba($o-white, .2)};
-    // --NavBar-entry-backgroundColor--active: #{rgba($o-white, .2)};
-    // --NavBar-entry-color--active: #{$o-white};
-
-    padding-right: 22px;
-    padding-left: 0;
-    // background: rgba(255, 255, 255, .82) !important;
-    // backdrop-filter: blur(20px) saturate(1.6);
-    // border-bottom: 1px solid var(--border-color);
-    // box-shadow: 0 1px 12px rgba(0, 0, 0, .05);
-
-    @include media-breakpoint-down(md) {
-        padding-left: 0;
-        padding-right: 0;
+    .o_menu_brand {
+        
     }
+}
 
-    // .o_menu_toggle {
-        // @include media-breakpoint-up(md) {
-            // .o_menu_brand_icon {
-                // background: #E8291C;
-                // border-radius: 9px;
-                // box-shadow: 0 2px 8px rgba(232, 41, 28, .3);
-                // padding-left: 0 !important;
-                // object-fit: none;
-            // }
-        // }
-    // }
-    .o_menu_sections {
-        .o-dropdown,
-        .o_nav_entry {
-
-            // @include transparent-bg;
-
-            // &:hover {
-            //     @include transparent-bg;
-            // }
+.o_sigil_navbar {
+    // .o_main_navbar
+    --sigil-navbar-gap: 4px;
+    padding: 0 10px;
+    gap: var(--sigil-navbar-gap);
+    border-bottom: 1px solid $m3-outline-var;
+    color: $m3-onsurface;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .03);
+    
+    .o_sigil_navbar_brand_group {
+        // not :user-invalid
+        display: flex;
+        align-items: center;
+        flex: 0 0 auto;
+        margin-right: 4px;
+    }
+    .o_sigil_navbar_app {
+        // .o_menu_brand
+        //display: inline-flex;
+        //align-items: center;
+        //min-height: 40px;
+        padding: 0 14px;
+        //border-radius: 11px;
+        background: $m3-primary-container;
+        color: $m3-onprimary-container;
+        //font-size: 14px;
+        font-weight: 650;
+        //line-height: 1;
+        //text-decoration: none;
+        //white-space: nowrap;
+        transition: background-color .14s ease, color .14s ease;
+        &:hover {
+            background: darken($m3-primary-container, 3%);
+            color: $m3-onprimary-container;
         }
+        &:focus-visible {
+            outline: 2px solid $m3-primary;
+            outline-offset: 2px;
+        }
+    }
+    .o_sigil_navbar_spacer {
+        // not needed
+        flex: 1 1 auto;
+        min-width: 8px;
+    }
+    .o_sigil_navbar_systray {
+        align-items: center;
+        gap: 2px;
+        margin-left: auto;
+        height: 100%;
+        > * {
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+    }
+    .o_sigil_navbar_icon_button {
+        // .dropdown-toogle
+        //display: inline-flex;
+        align-items: center;
+        //justify-content: center;
+        //width: 40px;
+        //height: 40px;
+        //padding: 0;
+        //border: 0;
+        //border-radius: 11px;
+        background: transparent;
+        color: $m3-onsurface-var;
+        cursor: pointer;
+        transition: background-color .14s ease, color .14s ease;
+        &:hover {
+            background: $m3-surface-container;
+            color: $m3-onsurface;
+        }
+        &:focus-visible {
+            outline: 2px solid $m3-primary;
+            outline-offset: 2px;
+        }
+    }
+    .o_sigil_app_launcher {
+        // .dropdown-toggle
+        //flex: 0 0 auto;
+        margin-right: 2px;
+        //font-size: 15px;
+    }
+    .o_menu_sections {
+        display: flex;
+        align-items: center;
+        flex: 0 1 auto;
+        width: auto;
+        min-width: 0;
+        margin-left: 2px;
+    }
+    .o_menu_sections > .o-dropdown,
+    .o_menu_sections > .o-dropdown-group {
+        display: flex;
+        align-items: center;
+        min-width: 0;
+        gap: 2px;
+    }
+    .o_sigil_navbar_section {
+        // .o_nav_entry
+        //display: inline-flex;
+        //align-items: center;
+        //justify-content: center;
+        //min-height: 40px;
+        padding: 0 12px;
+        border: 0;
+        border-radius: 11px;
+        // Navbar Background
+        background: $m3-primary;
+        color: $m3-onsurface-var;
+        font-size: 13px;
+        font-weight: 500;
+        //line-height: 1;
+        //white-space: nowrap;
+        //text-decoration: none;
+        cursor: pointer;
+        transition: background-color .14s ease, color .14s ease;
+        &:hover,
+        &:focus {
+            // Entry BackgroundColor, hover/focus
+            background: $m3-surface-container-low;
+            color: $m3-onsurface;
+        }
+        &:focus-visible {
+            outline: 2px solid $m3-primary;
+            outline-offset: 2px;
+        }
+    }
+    .o_sigil_navbar_section_dropdown {
+        // .dropdown-toggle
+        gap: 7px;
+        .o_sigil_navbar_section_chevron {
+            // this should be at dropdown level chevron
+            font-size: 10px;
+            opacity: .7;
+            transition: transform .14s ease;
+        }
+    }
+    .o-dropdown.show .o_sigil_navbar_section_dropdown {
+        // Entry BackgroundColor Active
+        background: $m3-surface-container;
+        color: $m3-onsurface;
+        .o_sigil_navbar_section_chevron {
+            transform: rotate(180deg);
+        }
+    }
+    .o_menu_sections .o-dropdown-group > .o-dropdown,
+    .o_menu_sections .o-dropdown-group > .o-dropdown-item {
+        flex: 0 0 auto;
+    }
+    .o_menu_sections_more {
+        display: flex;
+        align-items: center;
+    }
+    .o_sigil_navbar_more_button {
+        width: 40px;
+        height: 40px;
+        font-size: 13px;
+    }
+    .dropdown-menu {
+        margin-top: 6px;
+        padding: 6px;
+        min-width: 220px;
+        border: 1px solid $m3-outline-var;
+        border-radius: 14px;
+        background: $m3-surface-container-lowest;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, .10);
+    }
+    .dropdown-item {
+        min-height: 40px;
+        padding: 9px 12px;
+        border-radius: 9px;
+        color: $m3-onsurface-var;
+        font-size: 13px;
+        line-height: 1.25;
+        &:hover,
+        &:focus {
+            background: $m3-surface-container;
+            color: $m3-onsurface;
+        }
+        &:active,
+        &.focus {
+            background: $m3-primary-container;
+            color: $m3-onprimary-container;
+        }
+    }
+    .dropdown-menu_group {
+        padding: 9px 12px 5px;
+        color: $m3-onsurface-var;
+        font-size: 10px;
+        font-weight: 750;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+}
+.o_sigil_mobile_drawer {
+    width: #{"min(340px, 88vw)"};
+    background: $m3-surface-container-lowest;
+    border-right: 1px solid $m3-outline-var;
+    box-shadow: 12px 0 32px rgba(0, 0, 0, .12);
+}
+.o_sigil_mobile_all_apps_button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 0 14px;
+    border-radius: 11px;
+    background: $m3-primary;
+    color: $m3-onprimary;
+    font-size: 13px;
+    font-weight: 650;
+    text-decoration: none;
+    transition: background-color .14s ease;
+    &:hover {
+        background: darken($m3-primary, 4%);
+        color: $m3-onprimary;
+    }
+}
+.o_sigil_mobile_close_button {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    color: $m3-onsurface-var;
+    font-size: 18px;
+    cursor: pointer;
+    &:hover {
+        background: $m3-surface-container;
+        color: $m3-onsurface;
+    }
+    &:focus-visible {
+        outline: 2px solid $m3-primary;
+        outline-offset: 2px;
+    }
+}
+.o_sigil_mobile_menu_content {
+    padding: 10px 12px 18px;
+}
+.o_sigil_mobile_current_app {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 8px 8px 12px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid $m3-outline-var;
+    .o_app_icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+        object-fit: cover;
+    }
+}
+.o_sigil_mobile_current_app_name {
+    color: $m3-onsurface;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+.o_sigil_mobile_menu_group {
+    margin-bottom: 4px;
+}
+.o_sigil_mobile_menu_group_title {
+    padding: 14px 10px 6px;
+    color: $m3-onsurface-var;
+    font-size: 10px;
+    font-weight: 750;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+.o_sigil_mobile_menu_item {
+    padding: 11px 10px;
+    border-radius: 10px;
+    color: $m3-onsurface;
+    font-size: 14px;
+    line-height: 1.3;
+    cursor: pointer;
+    transition: background-color .12s ease, color .12s ease;
+    &:hover {
+        background: $m3-surface-container;
+    }
+}
+@media (max-width: 1199.98px) {
+    .o_sigil_navbar {
+        .o_sigil_navbar_app {
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .o_sigil_navbar_section {
+            padding-inline: 10px;
+        }
+    }
+}
+@media (max-width: 767.98px) {
+    .o_sigil_navbar {
+        height: 56px;
+        min-height: 56px;
+        padding-inline: 8px;
+        .o_sigil_navbar_brand_group {
+            display: none;
+        }
+        .o_menu_systray {
+            display: none !important;
+        }
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .o_sigil_navbar *,
+    .o_sigil_mobile_drawer * {
+        transition: none !important;
     }
 }
