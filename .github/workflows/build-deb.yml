@@ -18,27 +18,24 @@ jobs:
           python-version: '3.12'
 
       - name: Create Publish Directory
-        run: mkdir -p publish
+        run: mkdir -p ~/publish
 
       - name: Build the .deb Package
         run: |
           # This runs your exact build script
           pip install pexpect
-          python3 setup/package.py --build-deb -p ./publish
+          python3 setup/package.py --build-deb -p ~/publish
 
       - name: Move .deb file into the workspace
         run: |
-          # This grabs any .deb file from the parent folder and moves it here
-          mv ../*.deb ./ || echo "No files in parent directory"
-          
           # Let's list the files to prove it is here!
           echo "Files ready for upload:"
-          ls -la *.deb
+          ls -la
 
       - name: Upload .deb File for Download
         uses: actions/upload-artifact@v4
         with:
           name: built-deb-package
           # Now it just looks safely inside the current folder
-          path: ./**/*.deb
+          path: ~/**/*.deb
           if-no-files-found: error
