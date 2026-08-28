@@ -106,6 +106,10 @@
         0 8px 24px rgba($m3-shadow, .10),
         0 2px 6px rgba($m3-shadow, .06);
 
+    backdrop-filter: saturate(220%) blur(16px);
+    background: rgba(245, 245, 247, .55);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, .1);
+
     .dropdown-toggle:focus,
     .dropdown-item:focus {
         outline: none;

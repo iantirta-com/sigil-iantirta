@@ -48,6 +48,7 @@ Long description of module's purpose
     ],
     'demo': [
         'demo/res_users_demo.xml',
+        'demo/res_currency_demo.xml',
         'demo/res_partner_demo.xml',
     ],
 }
