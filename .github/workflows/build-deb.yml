@@ -1,0 +1,29 @@
+name: Build Debian Package
+
+on:
+  workflow_dispatch: # Allows you to trigger it manually from GitHub
+  push:
+    branches: [ "main", "master" ] # Builds automatically when you push code
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Build the .deb Package
+        run: |
+          # This runs your exact build script
+          python3 setup/package.py --build-deb
+
+      - name: Upload .deb File for Download
+        uses: actions/upload-artifact@v4
+        with:
+          name: built-deb-package
+          path: ./**/*.deb
