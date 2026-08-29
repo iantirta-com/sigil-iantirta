@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-inherit="web.NavBar" t-inherit-mode="extension" owl="1">
+        <xpath expr="//DropdownItem" position="replace">
+            <div class="o_sigil_menu_brand">
+                <!-- App Brand -->
+                <DropdownItem
+                t-if="!this.ui.isSmall and currentApp"
+                t-esc="currentApp.name"
+                class="'o_menu_brand d-flex'"
+                onSelected="() => this.onNavBarDropdownItemSelection(currentApp)"
+                attrs="{ href: getMenuItemHref(currentApp), 'data-menu-xmlid': currentApp.xmlid, 'data-section': currentApp.id }"
+                />
+            </div>
+        </xpath>
+    </t>
+</templates>

@@ -1,0 +1,88 @@
+
+// Dropdowns
+//
+// Dropdown menu container and contents.
+
+$dropdown-bg: $m3-surface-container-lowest !default;
+$dropdown-color: $m3-onsurface !default;
+$dropdown-border-color: $m3-outline-var !default;
+
+$dropdown-link-color: $m3-onsurface !default;
+$dropdown-link-hover-color: $m3-onsurface !default;
+$dropdown-link-hover-bg: $m3-surface-container !default;
+
+$dropdown-link-active-color: $m3-onprimary-container !default;
+$dropdown-link-active-bg: $m3-primary-container !default;
+
+$dropdown-link-disabled-color: rgba($m3-onsurface, .38) !default;
+
+$dropdown-item-padding-y: 9px !default;
+$dropdown-item-padding-x: 10px !default;
+
+// $dropdown-link-color:               $o-gray-100 !default;
+// $dropdown-header-color:             $o-gray-400 !default;
+
+// ============================================================================
+// SIGIL — DROPDOWN TOKENS
+// ============================================================================
+
+$dropdown-border-width: 1px !default;
+$dropdown-border-radius: 12px !default;
+
+$dropdown-padding-y: 6px !default;
+$dropdown-padding-x: 6px !default;
+
+$dropdown-box-shadow:
+    0 8px 24px rgba($m3-shadow, .10),
+    0 2px 6px rgba($m3-shadow, .06) !default;
+
+$dropdown-font-size: 14px !default;
+
+
+// Modals
+
+// Padding applied to the modal body
+$modal-inner-padding: 20px !default;
+$modal-header-padding: 18px 20px !default;
+$modal-footer-padding: 14px 20px !default;
+
+$modal-sm: 360px !default;
+$modal-md: 560px !default;
+$modal-lg: 880px !default;
+$modal-xl: 1120px !default;
+
+$modal-content-bg: $m3-surface-container-lowest !default;
+$modal-content-color: $m3-onsurface !default;
+$modal-content-border-color: $m3-outline-var !default;
+$modal-content-border-width: 1px !default;
+$modal-content-border-radius: 16px !default;
+$modal-content-box-shadow-xs: 0 16px 48px rgba($m3-shadow, .14) !default;
+
+// ============================================================================
+// SIGIL — MODAL TOKENS
+// ============================================================================
+
+$modal-backdrop-bg: $m3-scrim !default;
+$modal-backdrop-opacity: .32 !default;
+
+$modal-header-border-color: $m3-outline-var !default;
+$modal-footer-border-color: $m3-outline-var !default;
+
+$modal-fade-transform: translateY(8px) !default;
+
+
+// Navs
+
+$nav-tabs-border-color: $m3-outline-var !default;
+$nav-tabs-link-hover-border-color: transparent !default;
+$nav-tabs-link-active-color: $o-main-text-color !default;
+$nav-tabs-link-active-bg: transparent !default;
+$nav-tabs-link-active-border-color: transparent !default;
+
+$nav-link-padding-y: .625rem !default;
+$nav-link-padding-x: .875rem !default;
+
+$o-notebook-active-color: $o-brand-primary !default;
+$o-notebook-hover-bg: $m3-surface-container-low !default;
+$o-notebook-active-bg: transparent !default;
+$o-notebook-disabled-opacity: .42 !default;

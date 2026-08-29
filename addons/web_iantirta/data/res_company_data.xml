@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sigil>
+    <data noupdate="1">
+        <record id="base.main_company" model="res.company">
+            <field name="name">Iantirta Labs</field>
+            <field name="partner_id" ref="base.main_partner"/>
+            <field name="currency_id" ref="base.IDR"/>
+            <field name="logo" type="base64" file="web_iantirta/static/src/img/iantirta-logo.png"/>
+            <field name="street">Jl. Duripulo 1 No.24 Rt/09 Rw/02</field>
+            <field name="zip">10140</field>
+            <field name="city">Jakarta Pusat</field>
+            <field name="state_id" ref="base.state_id_jk"/>
+            <field name="country_id" ref="base.id"/>
+            <field name="website">iantirta.com</field>
+            <field name="phone">+62 857-1756-1912</field>
+            <field name="email">info@iantirta.com</field>
+            <!-- <field name=""></field> -->
+        </record>
+    </data>
+</sigil>

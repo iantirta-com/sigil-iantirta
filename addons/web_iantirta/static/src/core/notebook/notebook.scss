@@ -1,0 +1,125 @@
+// ============================================================================
+// NOTEBOOK
+// ============================================================================
+
+.o_notebook {
+    --Notebook-margin-x: 0;
+    --Notebook-padding-x: 0;
+
+    .o_notebook_headers {
+        margin: 0 var(--Notebook-margin-x, 0);
+        overflow-x: auto;
+        overflow-y: hidden;
+        border-bottom: 1px solid $m3-outline-var;
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    .nav {
+        padding: 0 var(--Notebook-padding-x, 0);
+        background: $o-view-background-color;
+        border: 0;
+    }
+
+    .nav-item {
+        position: relative;
+        margin: 0;
+        white-space: nowrap;
+
+        &.disabled {
+            .nav-link {
+                cursor: not-allowed;
+                opacity: $o-notebook-disabled-opacity;
+            }
+        }
+    }
+
+    .nav-link {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+
+        min-height: 44px;
+
+        padding: $nav-link-padding-y $nav-link-padding-x;
+
+        border: 0;
+        border-radius: 8px 8px 0 0;
+
+        background: transparent;
+        color: $o-main-text-color;
+
+        font-size: 14px;
+        font-weight: 500;
+
+        transition:
+            color .14s ease,
+            background-color .14s ease;
+
+        &:hover {
+            border-color: transparent;
+            background: $o-notebook-hover-bg;
+            color: $o-main-text-color;
+        }
+
+        &:focus,
+        &:active {
+            outline: none;
+            border-color: transparent;
+        }
+
+        &:focus-visible {
+            box-shadow: inset 0 0 0 $focus-ring-width $focus-ring-color;
+        }
+
+        &.active {
+            background: $o-notebook-active-bg;
+            color: $o-notebook-active-color;
+            font-weight: 600;
+
+            &::after {
+                position: absolute;
+                right: 10px;
+                bottom: -1px;
+                left: 10px;
+
+                height: 3px;
+
+                border-radius: 3px 3px 0 0;
+
+                background: $o-notebook-active-color;
+
+                content: "";
+            }
+
+            &:hover,
+            &:focus,
+            &:active {
+                border-color: transparent;
+                background: $o-notebook-active-bg;
+                color: $o-notebook-active-color;
+            }
+        }
+
+        &.o_page_invalid {
+            color: o-text-color('danger') !important;
+            background: $o-input-invalid-bg !important;
+
+            &.active::after {
+                background: o-text-color('danger');
+            }
+        }
+
+        .fa {
+            font-size: 13px;
+        }
+    }
+
+    .tab-pane:not(.show) {
+        transition: none;
+    }
+}

@@ -1,0 +1,50 @@
+// ============================================================================
+// SIGIL DIALOG / MODAL
+// ============================================================================
+
+.o_dialog {
+    .modal {
+
+        .modal-header {
+            .modal-title {
+                color: $o-main-text-color;
+            }
+
+            .btn-close,
+            .o_expand_button {
+                border-radius: 9px;
+            }
+
+            .btn-close {
+                &:hover {
+                    background-color: $m3-surface-container-low;
+                }
+            }
+
+            .o_expand_button {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+
+                width: 38px;
+                height: 38px;
+
+                padding: 0;
+                color: $o-main-text-color;
+
+                &:hover {
+                    background: $gray-100;
+                }
+            }
+        }
+
+        .modal-body {
+            color: $o-main-text-color;
+        }
+
+        .modal-footer {
+            justify-content: flex-end;
+            gap: 8px;
+        }
+    }
+}

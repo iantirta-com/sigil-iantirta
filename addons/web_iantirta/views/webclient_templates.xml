@@ -1,0 +1,582 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sigil>
+    <template inherit_id="web.layout" id="web_layout" name="Web layout">
+        <xpath expr="//html//head" position="before">
+            <!-- Here can also be used for loading -->
+<t t-set="uIaai9tMEK">&lt;!--</t>
+<t t-set="j8yrzlAbXE">--&gt;</t>
+<t t-out="uIaai9tMEK"/>
+    Sigil Server Initiative,
+    IG: @iantirtaa
+    Site: www.iantirta.com
+<t t-out="j8yrzlAbXE"/>
+        </xpath>
+        <xpath expr="//link[@type='image/x-icon']" position="replace">
+            <link type="image/svg+xml" rel="shortcut icon" t-att-href="x_icon or '/web_iantirta/static/img/favicon.svg'"/>
+        </xpath>
+    </template>
+
+    <template id="web.login_layout" name="Login Layout">
+        <t t-call="web.frontend_layout">
+            <t t-set="html_data" t-value="{'style': 'height: 100%;'}"/>
+            <t t-set="body_classname" t-value="'o_sigil_login_body'"/>
+            <t t-set="no_header" t-value="True"/>
+            <t t-set="no_footer" t-value="True"/>
+
+            <div class="o_sigil_login">
+                <section class="o_sigil_login_panel">
+                    <div class="o_sigil_login_content">
+                        <div class="text-center pb-3 mb-4">
+                            <img t-attf-src="/web/binary/company_logo{{ '?dbname='+db if db else '' }}" alt="Logo" style="max-height:120px; max-width: 100%; width:auto"/>
+                        </div>
+                        <div class="o_sigil_login_heading mb-4">
+                            <h1>Welcome back</h1>
+                            <p>Sign in to continue to your accounting workspace.</p>
+                        </div>
+                        <div class="o_sigil_login_form">
+                            <t t-out="0"/>
+                        </div>
+                        <div class="o_sigil_login_footer text-center small mt-4 pt-3 border-top" t-if="not disable_footer">
+                            <t t-if="not disable_database_manager">
+                                <a href="/web/database/manager" class="border-end pe-2 me-1">Manage Databases</a>
+                            </t>
+                            <a href="https://www.iantirta.com?utm_source=db&amp;utm_medium=auth" target="_blank" class="">
+                                Powered by <span>Sigil</span>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+                <section class="o_sigil_login_visual">
+                    <div class="o_sigil_login_visual_content">
+                        <div class="o_sigil_login_glow o_sigil_login_glow_1"/>
+                        <div class="o_sigil_login_glow o_sigil_login_glow_2"/>
+                        <div class="o_sigil_login_visual_intro">
+                            <span class="o_sigil_login_visual_eyebrow">SIGIL ACCOUNTING</span>
+                            <h2>
+                                Your finances,
+                                <span>clearly in control.</span>
+                            </h2>
+                            <p>
+                                Keep your books, transactions, and financial
+                                insights together in one place.
+                            </p>
+                        </div>
+                        <div class="o_sigil_accounting_preview">
+                            <div class="o_sigil_preview_kpi">
+                                <div class="o_sigil_preview_kpi_header">
+                                    <span>Net position</span>
+                                    <span class="o_sigil_preview_status">
+                                        <i class="fa fa-arrow-up"/>
+                                        12.8%
+                                    </span>
+                                </div>
+                                <div class="o_sigil_preview_amount">Rp 2,481,240,000</div>
+                                <div class="o_sigil_preview_period">Compared with previous period</div>
+                            </div>
+                            <div class="o_sigil_preview_chart_card">
+                                <div class="o_sigil_preview_card_header">
+                                    <div>
+                                        <strong>Cash flow</strong>
+                                        <span>Last 6 months</span>
+                                    </div>
+                                    <div class="o_sigil_preview_chart_legend">
+                                        <span>
+                                            <i class="o_sigil_legend_income"/>
+                                            Income
+                                        </span>
+                                        <span>
+                                            <i class="o_sigil_legend_expense"/>
+                                            Expenses
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="o_sigil_preview_chart">
+                                    <div class="o_sigil_chart_grid">
+                                        <span/>
+                                        <span/>
+                                        <span/>
+                                        <span/>
+                                    </div>
+                                    <svg class="o_sigil_chart_svg" viewBox="0 0 600 180" preserveAspectRatio="none" aria-hidden="true">
+                                        <defs>
+                                            <linearGradient id="sigilIncomeGradient" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="0%" stop-opacity=".20"/>
+                                                <stop offset="100%" stop-opacity="0"/>
+                                            </linearGradient>
+                                        </defs>
+                                        <path class="o_sigil_chart_income_area"
+                                            d="M0 145
+                                            C50 130 75 140 110 112
+                                            S170 105 205 116
+                                            S260 70 300 86
+                                            S355 95 390 58
+                                            S450 62 480 48
+                                            S545 34 600 20
+                                            L600 180
+                                            L0 180 Z"
+                                        />
+                                        <path class="o_sigil_chart_income"
+                                            d="M0 145
+                                            C50 130 75 140 110 112
+                                            S170 105 205 116
+                                            S260 70 300 86
+                                            S355 95 390 58
+                                            S450 62 480 48
+                                            S545 34 600 20"
+                                        />
+                                        <path class="o_sigil_chart_expense"
+                                            d="M0 160
+                                            C50 150 75 155 110 142
+                                            S170 145 205 134
+                                            S260 122 300 128
+                                            S355 120 390 110
+                                            S450 116 480 98
+                                            S545 102 600 86"
+                                        />
+                                    </svg>
+                                    <div class="o_sigil_chart_labels">
+                                        <span>Mar</span>
+                                        <span>Apr</span>
+                                        <span>May</span>
+                                        <span>Jun</span>
+                                        <span>Jul</span>
+                                        <span>Aug</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="o_sigil_preview_transactions">
+                                <div class="o_sigil_preview_card_header">
+                                    <div>
+                                        <strong>Recent activity</strong>
+                                        <span>Latest transactions</span>
+                                    </div>
+                                    <span class="o_sigil_preview_more"><i class="fa fa-ellipsis-h"/></span>
+                                </div>
+                                <div class="o_sigil_transaction">
+                                    <div class="o_sigil_transaction_icon o_income"><i class="fa fa-arrow-down"/></div>
+                                    <div class="o_sigil_transaction_info">
+                                        <strong>Sales invoice</strong>
+                                        <span>INV-2026-00842</span>
+                                    </div>
+                                    <div class="o_sigil_transaction_value o_positive">+ Rp 18,450,000</div>
+                                </div>
+                                <div class="o_sigil_transaction">
+                                    <div class="o_sigil_transaction_icon o_income"><i class="fa fa-university"/></div>
+                                    <div class="o_sigil_transaction_info">
+                                        <strong>Bank settlement</strong>
+                                        <span>Bank account •••• 2481</span>
+                                    </div>
+                                    <div class="o_sigil_transaction_value o_positive">+ Rp 42,000,000</div>
+                                </div>
+                                <div class="o_sigil_transaction">
+                                    <div class="o_sigil_transaction_icon o_expense"><i class="fa fa-arrow-up"/></div>
+                                    <div class="o_sigil_transaction_info">
+                                        <strong>Office expense</strong>
+                                        <span>EXP-2026-00124</span>
+                                    </div>
+                                    <div class="o_sigil_transaction_value">- Rp 2,840,000</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+
+    <template id="web.webclient_offline">
+        <t t-call="web.layout">
+            <t t-set="html_data" t-value="{'style': 'height: 100%;'}"/>
+            <t t-set="title">Connection lost</t>
+
+            <t t-set="head">
+                <script type="text/javascript">
+                    document.addEventListener("DOMContentLoaded", () => {
+                        const root = document.documentElement;
+                        const body = document.body;
+                        const cookies = document.cookie.split(";").map(cookie => cookie.trim());
+                        const colorScheme = cookies
+                            .find(cookie => cookie.startsWith("color_scheme="))
+                            ?.split("=")[1];
+                        if (colorScheme === "dark") {
+                            root.classList.add("o_offline_dark");
+                            body.classList.add("o_offline_dark");
+                        }
+                        const lastChecked = document.getElementById("offline-last-checked");
+                        const updateLastChecked = () => {
+                            if (lastChecked) {
+                                const now = new Date();
+                                lastChecked.textContent =
+                                    "Last checked " +
+                                    now.toLocaleTimeString([], {
+                                        hour: "2-digit",
+                                        minute: "2-digit"
+                                    });
+                            }
+                        };
+                        updateLastChecked();
+                        window.addEventListener("online", () => {
+                            location.reload();
+                        });
+                    });
+                </script>
+                <style>
+                    :root {
+                        color-scheme: light;
+                    }
+                    html.o_offline_dark {
+                        color-scheme: dark;
+                    }
+                    body {
+                        font-family:
+                            -apple-system,
+                            BlinkMacSystemFont,
+                            "Segoe UI",
+                            Roboto,
+                            "Helvetica Neue",
+                            Ubuntu,
+                            "Noto Sans",
+                            Arial,
+                            sans-serif,
+                            "Apple Color Emoji",
+                            "Segoe UI Emoji",
+                            "Segoe UI Symbol",
+                            "Noto Color Emoji";
+                        padding: 0;
+                        margin: 0;
+                        background: #faf8ff;
+                        color: #1a1b20;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        min-height: 100vh;
+                        min-height: 100dvh;
+                        width: 100vw;
+
+                        user-select: none;
+                        -webkit-font-smoothing: antialiased;
+                        text-rendering: optimizeLegibility;
+                        transition:
+                            background-color 0.2s ease,
+                            color 0.2s ease;
+                    }
+                    .o_offline_page {
+                        width: 100%;
+                        padding: 32px 24px;
+                        box-sizing: border-box;
+                    }
+                    .o_offline_card {
+                        width: min(100%, 520px);
+                        margin: 0 auto;
+                        padding: 40px;
+                        background: #ffffff;
+                        border: 1px solid #e5e7eb;
+                        border-radius: 12px;
+                        box-shadow:
+                            0 1px 2px rgba(0, 0, 0, 0.03),
+                            0 8px 24px rgba(0, 0, 0, 0.04);
+                        box-sizing: border-box;
+                    }
+
+                    .o_offline_header {
+                        display: flex;
+                        align-items: center;
+                        gap: 14px;
+                        margin-bottom: 32px;
+                    }
+
+                    .o_offline_logo {
+                        width: 42px;
+                        height: 42px;
+
+                        object-fit: contain;
+
+                        flex: 0 0 auto;
+                    }
+
+                    .o_offline_brand {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 2px;
+
+                        text-align: left;
+                    }
+
+                    .o_offline_brand_name {
+                        font-size: 15px;
+                        line-height: 20px;
+                        font-weight: 600;
+                        letter-spacing: -0.01em;
+                    }
+
+                    .o_offline_brand_context {
+                        font-size: 12px;
+                        line-height: 16px;
+                        color: #6b7280;
+                    }
+
+                    .o_offline_status {
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 8px;
+
+                        margin-bottom: 16px;
+
+                        font-size: 13px;
+                        line-height: 18px;
+                        font-weight: 500;
+
+                        color: #6b7280;
+                    }
+
+                    .o_offline_status_dot {
+                        width: 7px;
+                        height: 7px;
+
+                        border-radius: 50%;
+                        background: #9ca3af;
+
+                        flex: 0 0 auto;
+                    }
+
+                    .o_offline_title {
+                        margin: 0 0 10px;
+
+                        font-size: 28px;
+                        line-height: 36px;
+                        font-weight: 600;
+                        letter-spacing: -0.025em;
+
+                        color: #111827;
+                    }
+
+                    .o_offline_description {
+                        margin: 0;
+
+                        max-width: 440px;
+
+                        font-size: 15px;
+                        line-height: 24px;
+
+                        color: #6b7280;
+                    }
+
+                    .o_offline_actions {
+                        display: flex;
+                        align-items: center;
+                        gap: 16px;
+
+                        margin-top: 28px;
+                    }
+
+                    .o_offline_button {
+                        appearance: none;
+                        -webkit-appearance: none;
+
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+
+                        min-height: 40px;
+                        padding: 8px 16px;
+
+                        border: 1px solid #d9e2ff;
+                        border-radius: 6px;
+
+                        background: #d9e2ff;
+                        color: #2e4578;
+
+                        font-family: inherit;
+                        font-size: 14px;
+                        line-height: 20px;
+                        font-weight: 500;
+
+                        cursor: pointer;
+
+                        transition:
+                            background-color 0.15s ease,
+                            border-color 0.15s ease,
+                            box-shadow 0.15s ease;
+                    }
+
+                    .o_offline_button:hover {
+                        background: #475d91;
+                        color: #ffffff;
+                    }
+
+                    .o_offline_button:focus-visible {
+                        outline: none;
+                        box-shadow: 0 0 0 3px rgba(113, 75, 103, 0.22);
+                    }
+
+                    .o_offline_last_checked {
+                        font-size: 12px;
+                        line-height: 18px;
+                        color: #9ca3af;
+                    }
+
+                    .o_offline_hint {
+                        margin-top: 32px;
+                        padding-top: 20px;
+
+                        border-top: 1px solid #e5e7eb;
+
+                        font-size: 12px;
+                        line-height: 18px;
+                        color: #9ca3af;
+
+                        text-align: left;
+                    }
+
+                    /* Dark mode */
+
+                    body.o_offline_dark {
+                        background: #1f232b;
+                        color: #e5e7eb;
+                    }
+
+                    body.o_offline_dark .o_offline_card {
+                        background: #262a33;
+                        border-color: #373c47;
+
+                        box-shadow:
+                            0 1px 2px rgba(0, 0, 0, 0.2),
+                            0 8px 24px rgba(0, 0, 0, 0.15);
+                    }
+
+                    body.o_offline_dark .o_offline_brand_name {
+                        color: #f3f4f6;
+                    }
+
+                    body.o_offline_dark .o_offline_brand_context,
+                    body.o_offline_dark .o_offline_status,
+                    body.o_offline_dark .o_offline_description {
+                        color: #9ca3af;
+                    }
+
+                    body.o_offline_dark .o_offline_title {
+                        color: #f9fafb;
+                    }
+
+                    body.o_offline_dark .o_offline_hint {
+                        border-color: #373c47;
+                        color: #6b7280;
+                    }
+
+                    body.o_offline_dark .o_offline_last_checked {
+                        color: #6b7280;
+                    }
+
+                    /* Mobile */
+
+                    @media (max-width: 576px) {
+                        .o_offline_page {
+                            padding: 20px 16px;
+                        }
+
+                        .o_offline_card {
+                            padding: 28px 24px;
+                            border-radius: 10px;
+                        }
+
+                        .o_offline_header {
+                            margin-bottom: 28px;
+                        }
+
+                        .o_offline_title {
+                            font-size: 24px;
+                            line-height: 32px;
+                        }
+
+                        .o_offline_description {
+                            font-size: 14px;
+                            line-height: 22px;
+                        }
+
+                        .o_offline_actions {
+                            align-items: flex-start;
+                            flex-direction: column;
+                            gap: 12px;
+                        }
+
+                        .o_offline_button {
+                            width: 100%;
+                        }
+                    }
+
+                    @media (prefers-reduced-motion: reduce) {
+                        body,
+                        .o_offline_button {
+                            transition: none;
+                        }
+                    }
+                </style>
+
+                <meta name="viewport" content="width=device-width, initial-scale=1"/>
+            </t>
+
+            <main class="o_offline_page">
+                <section class="o_offline_card" aria-labelledby="offline-title">
+
+                    <header class="o_offline_header">
+                        <img
+                            t-attf-src="data:image/png;base64,{{sigil_icon}}"
+                            alt="Sigil"
+                            class="o_offline_logo"
+                        />
+
+                        <div class="o_offline_brand">
+                            <div class="o_offline_brand_name">
+                                Sigil
+                            </div>
+                            <div class="o_offline_brand_context">
+                                Enterprise Resource Planning
+                            </div>
+                        </div>
+                    </header>
+
+                    <div class="o_offline_status">
+                        <span class="o_offline_status_dot" aria-hidden="true"></span>
+                        <span>Connection unavailable</span>
+                    </div>
+
+                    <h1 id="offline-title" class="o_offline_title">
+                        Connection lost
+                    </h1>
+
+                    <p class="o_offline_description">
+                        Sigil could not connect to the server. Check your network
+                        connection and try again. The application will reconnect
+                        automatically when the connection is restored.
+                    </p>
+
+                    <div class="o_offline_actions">
+                        <button
+                            type="button"
+                            class="o_offline_button"
+                            onclick="location.reload()"
+                        >
+                            Try again
+                        </button>
+
+                        <span
+                            id="offline-last-checked"
+                            class="o_offline_last_checked"
+                        >
+                            Last checked
+                        </span>
+                    </div>
+
+                    <div class="o_offline_hint">
+                        Your work remains safe. No changes can be synchronized
+                        while the connection is unavailable.
+                    </div>
+
+                </section>
+            </main>
+        </t>
+    </template>
+
+
+    
+</sigil>

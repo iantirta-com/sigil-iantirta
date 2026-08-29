@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="SettingsBlock" t-inherit="web.SettingsBlock" t-inherit-mode="extension">
+        <xpath expr="//h2/HighlightText" position="before">
+            <t t-if="props.icon">
+                <span class="icon d-block" t-attf-style="background : url('{{props.icon}}') no-repeat center;background-size:contain;"/>
+                <!-- <t t-out="props.icon"/> -->
+            </t>
+        </xpath>
+        <xpath expr="//h2" position="attributes">
+            <attribute name="class" add="d-flex align-items-center" separator=" "/>
+        </xpath>
+        <xpath expr="//div[hasclass('o_settings_container')]" position="attributes">
+            <attribute name="class" remove="mt16" separator=" "/>
+        </xpath>
+    </t>
+</templates>

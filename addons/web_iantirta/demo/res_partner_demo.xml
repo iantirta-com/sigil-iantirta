@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sigil>
+    <data noupdate="0">
+        <!--
+        Resource: res.partner.category
+        -->
+        <record id="base.res_partner_category_0" model="res.partner.category">
+            <field name="name">Pemasok</field>
+            <field name="color" eval="2"/>
+        </record>
+        <record id="base.res_partner_category_2" model="res.partner.category">
+            <field name="name">Prospek</field>
+            <field name="color" eval="3"/>
+        </record>
+        <record id="base.res_partner_category_3" model="res.partner.category">
+            <field name="name">Karyawan</field>
+            <field name="color" eval="4"/>
+        </record>
+        <record id="base.res_partner_category_8" model="res.partner.category">
+            <field name="name">Jasa Konsultasi</field>
+            <field name="color" eval="5"/>
+        </record>
+        <record id="base.res_partner_category_11" model="res.partner.category">
+            <field name="name">Jasa</field>
+            <field name="color" eval="7"/>
+        </record>
+        <record id="base.res_partner_category_12" model="res.partner.category">
+            <field name="name">Perlengkapan Kantor</field>
+            <field name="parent_id" ref="base.res_partner_category_0"/>
+            <field name="color" eval="8"/>
+        </record>
+        <record id="base.res_partner_category_14" model="res.partner.category">
+            <field name="name">Produsen Furnitur</field>
+            <field name="color" eval="10"/>
+            <field name="parent_id" ref="base.res_partner_category_0"/>
+        </record>
+        <!--
+        Resource: res.partner
+        -->
+        <record model="res.partner" id="base.partner_admin">
+            <field name="email">admin@iantirta.com</field>
+        </record>
+
+        <record id="base.res_partner_1" model="res.partner">
+            <field name="name">PT Kayu Indah Nusantara</field>
+            <field eval="[Command.set([ref('base.res_partner_category_14'), ref('base.res_partner_category_12')])]" name="category_id"/>
+            <field name="is_company">1</field>
+            <field name="street">Jl. Industri Raya No. 18</field>
+            <field name="city">Bekasi</field>
+            <field name="state_id" model="res.country.state" search="[('code','=','JB')]"/>
+            <field name="zip">17143</field>
+            <field name="country_id" ref="base.id"/>
+            <field name="email">info@kayuindahnusantara.id</field>
+            <field name="phone">+62 21 8899 1122</field>
+            <field name="website">http://www.kayuindahnusantara.id</field>
+            <field name="image_1920" type="base64" file="base/static/img/res_partner_1-image.png"/>
+            <field name="vat">01.234.567.8-091.000</field>
+        </record>
+
+        <record id="base.res_partner_2" model="res.partner">
+            <field name="name">PT Mitra Usaha Sejahtera</field>
+            <field eval="[Command.set([ref('base.res_partner_category_14')])]" name="category_id"/>
+            <field name="is_company">1</field>
+            <field name="street">Jl. Ahmad Yani No. 77</field>
+            <field name="city">Depok</field>
+            <field name="state_id" model="res.country.state" search="[('code','=','JB')]"/>
+            <field name="zip">16424</field>
+            <field name="country_id" ref="base.id"/>
+            <field name="email">finance@mitrausahasejahtera.id</field>
+            <field name="phone">+62 21 7712 3344</field>
+            <field name="website">http://www.mitrausahasejahtera.id</field>
+            <field name="image_1920" type="base64" file="base/static/img/res_partner_2-image.png"/>
+            <field name="vat">02.345.678.9-092.000</field>
+        </record>
+
+        <record id="base.res_partner_3" model="res.partner">
+            <field name="name">PT Furnitur Kreasi Indonesia</field>
+            <field eval="[Command.set([ref('base.res_partner_category_8'), ref('base.res_partner_category_14')])]" name="category_id"/>
+            <field name="is_company" eval="True"/>
+            <field name="street">Jl. Raya Industri No. 21</field>
+            <field name="city">Surabaya</field>
+            <field name="state_id" model="res.country.state" search="[('code','=','JI')]"/>
+            <field name="zip">60293</field>
+            <field name="country_id" ref="base.id"/>
+            <field name="email">info@furniturkreasi.id</field>
+            <field name="phone">+62 31 8899 5566</field>
+            <field name="website">http://www.furniturkreasi.id</field>
+            <field name="image_1920" type="base64" file="base/static/img/res_partner_3-image.png"/>
+            <field name="vat">03.456.789.0-093.000</field>
+        </record>
+
+        <record id="base.res_partner_4" model="res.partner">
+            <field name="name">CV Solusi Matra Utama</field>
+            <field eval="[Command.set([ref('base.res_partner_category_14'), ref('base.res_partner_category_12')])]" name="category_id"/>
+            <field name="is_company">1</field>
+            <field name="street">Jl. Raya Pajajaran No. 75</field>
+            <field name="city">Bogor</field>
+            <field name="state_id" model="res.country.state" search="[('code','=','JB')]"/>
+            <field name="zip">16143</field>
+            <field name="country_id" ref="base.id"/>
+            <field name="email">info@solusimatra.id</field>
+            <field name="phone">+62 251 7788 9900</field>
+            <field name="website">http://www.solusimatra.id</field>
+            <field name="image_1920" type="base64" file="base/static/img/res_partner_4-image.png"/>
+            <field name="vat">04.567.890.1-094.000</field>
+        </record>
+
+        <record id="base.res_partner_5" model="res.partner">
+            <field name="city">Semarang</field>
+            <field name="state_id" model="res.country.state" search="[('code','=','JT')]"/>
+            <field name="country_id" ref="base.id"/>
+            <field name="email">info@karyakayu.id</field>
+            <field name="image_1920" file="base/static/img/partner_open_wood.png" type="base64"/>
+            <field name="is_company" eval="True"/>
+            <field name="name">PT Karya Kayu Indonesia</field>
+            <field name="phone">+62 24 7654 3210</field>
+            <field name="street">Jl. Industri No. 12</field>
+            <field name="website">www.karyakayu.id</field>
+            <field name="zip">50184</field>
+            <field name="vat">05.678.901.2-095.000</field>
+        </record>
+
+        <record id="base.res_partner_6" model="res.partner">
+            <field name="city">Yogyakarta</field>
+            <field name="state_id" model="res.country.state" search="[('code','=','YO')]"/>
+            <field name="country_id" ref="base.id"/>
+            <field name="email">info@cahayaterang.id</field>
+            <field name="image_1920" file="base/static/img/partner_lightsup.png" type="base64"/>
+            <field name="is_company" eval="True"/>
+            <field name="name">PT Cahaya Terang Abadi</field>
+            <field name="phone">+62 274 556 7788</field>
+            <field name="street">Jl. Kaliurang Km. 8 No. 12</field>
+            <field name="website">www.cahayaterang.id</field>
+            <field name="zip">55581</field>
+            <field name="vat">06.789.012.3-096.000</field>
+        </record>
+
+        <record id="base.res_partner_10" model="res.partner">
+            <field name="name">PT Sentra Bisnis Mandiri</field>
+            <field name="is_company">1</field>
+            <field name="street">Jl. HR Rasuna Said No. 16</field>
+            <field name="city">Jakarta Selatan</field>
+            <field name="state_id" model="res.country.state" search="[('code','=','JK')]"/>
+            <field name="zip">12940</field>
+            <field name="country_id" ref="base.id"/>
+            <field name="email">finance@sentrabisnis.id</field>
+            <field name="phone">+62 21 5221 3344</field>
+            <field name="image_1920" type="base64" file="base/static/img/res_partner_10-image.jpg"/>
+            <field name="vat">10.123.456.7-100.000</field>
+        </record>
+
+        <record id="base.res_partner_12" model="res.partner">
+            <field name="name">PT Azure Interior Nusantara</field>
+            <field eval="[Command.set([ref('base.res_partner_category_11')])]" name="category_id"/>
+            <field name="is_company">1</field>
+            <field name="street">Jl. Merdeka No. 45</field>
+            <field name="city">Tangerang</field>
+            <field name="state_id" model="res.country.state" search="[('code','=','BT')]"/>
+            <field name="zip">15111</field>
+            <field name="phone">+62 21 5577 8899</field>
+            <field name="country_id" ref="base.id"/>
+            <field name="email">info@azureinterior.id</field>
+            <field name="website">http://www.azure-interior.id</field>
+            <field name="image_1920" type="base64" file="base/static/img/res_partner_12-image.png"/>
+            <field name="vat">12.234.567.8-102.000</field>
+        </record>
+
+        <record id="base.res_partner_18" model="res.partner">
+            <field name="name">PT Kayu Lestari Indonesia</field>
+            <field name="is_company">1</field>
+            <field name="street">Jl. Industri Utama No. 13</field>
+            <field name="city">Sidoarjo</field>
+            <field name="state_id" model="res.country.state" search="[('code','=','JI')]"/>
+            <field name="zip">61253</field>
+            <field name="email">info@kayulestari.id</field>
+            <field name="phone">+62 31 7888 2233</field>
+            <field name="country_id" ref="base.id"/>
+            <field name="website">http://www.kayulestari.id</field>
+            <field name="image_1920" type="base64" file="base/static/img/res_partner_18-image.png"/>
+            <field name="vat">18.345.678.9-108.000</field>
+        </record>
+
+        <record id="base.res_partner_address_1" model="res.partner">
+            <field name="name">Agus Setiawan</field>
+            <field name="parent_id" ref="base.res_partner_1"/>
+            <field name="function">Manajer Layanan</field>
+            <field name="email">agus.setiawan@example.id</field>
+            <field name="phone">+62 812-1100-2233</field>
+        </record>
+
+        <record id="base.res_partner_address_2" model="res.partner">
+            <field name="name">Rizky Hidayat</field>
+            <field name="parent_id" ref="base.res_partner_1"/>
+            <field name="function">Manajer Toko</field>
+            <field name="email">rizky.hidayat@example.id</field>
+            <field name="phone">+62 813-2200-3344</field>
+        </record>
+
+        <record id="base.res_partner_address_3" model="res.partner">
+            <field name="name">Dimas Saputra</field>
+            <field name="parent_id" ref="base.res_partner_2"/>
+            <field name="function">Konsultan Fungsional</field>
+            <field name="email">dimas.saputra@example.id</field>
+            <field name="phone">+62 811-3300-4455</field>
+        </record>
+
+        <record id="base.res_partner_address_4" model="res.partner">
+            <field name="name">Fajar Nugroho</field>
+            <field name="parent_id" ref="base.res_partner_2"/>
+            <field name="function">Analis</field>
+            <field name="email">fajar.nugroho@example.id</field>
+            <field name="phone">+62 812-4400-5566</field>
+        </record>
+
+        <record id="base.res_partner_address_5" model="res.partner">
+            <field name="name">Eko Prasetyo</field>
+            <field name="parent_id" ref="base.res_partner_3"/>
+            <field name="function">Manajer Pemasaran</field>
+            <field name="email">eko.prasetyo@example.id</field>
+            <field name="phone">+62 813-5500-6677</field>
+        </record>
+
+        <record id="base.res_partner_address_7" model="res.partner">
+            <field name="name">Bayu Firmansyah</field>
+            <field name="parent_id" ref="base.res_partner_4"/>
+            <field name="function">Supervisor Produksi</field>
+            <field name="email">bayu.firmansyah@example.id</field>
+            <field name="phone">+62 811-6600-7788</field>
+        </record>
+
+        <record id="base.res_partner_address_10" model="res.partner">
+            <field name="name">Yoga Permana</field>
+            <field name="parent_id" ref="base.res_partner_3"/>
+            <field name="function">Konsultan Senior</field>
+            <field name="email">yoga.permana@example.id</field>
+            <field name="phone">+62 812-7700-8899</field>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+
+        <record id="base.res_partner_address_11" model="res.partner">
+            <field name="name">Satria Wijaya</field>
+            <field name="parent_id" ref="base.res_partner_3"/>
+            <field name="function">Direktur</field>
+            <field name="email">satria.wijaya@example.id</field>
+            <field name="phone">+62 813-8800-9900</field>
+        </record>
+
+        <record id="base.res_partner_address_13" model="res.partner">
+            <field name="name">Nadia Putri</field>
+            <field name="parent_id" ref="base.res_partner_4"/>
+            <field name="function">Associate Senior</field>
+            <field name="email">nadia.putri@example.id</field>
+            <field name="phone">+62 811-9900-1122</field>
+        </record>
+
+        <record id="base.res_partner_address_14" model="res.partner">
+            <field name="name">Siti Rahmawati</field>
+            <field name="parent_id" ref="base.res_partner_4"/>
+            <field name="function">Analis</field>
+            <field name="email">siti.rahmawati@example.id</field>
+            <field name="phone">+62 812-1000-2233</field>
+        </record>
+
+        <record id="base.res_partner_address_15" model="res.partner">
+            <field name="name">Maya Lestari</field>
+            <field name="function">Direktur Kreatif</field>
+            <field name="parent_id" ref="base.res_partner_12"/>
+            <field name="email">maya.lestari@example.id</field>
+            <field name="phone">+62 813-1100-3344</field>
+        </record>
+
+        <record id="base.res_partner_address_16" model="res.partner">
+            <field name="name">Putri Anggraini</field>
+            <field name="function">Direktur</field>
+            <field name="parent_id" ref="base.res_partner_12"/>
+            <field name="email">putri.anggraini@example.id</field>
+            <field name="phone">+62 811-2200-4455</field>
+        </record>
+
+        <record id="base.res_partner_address_17" model="res.partner">
+            <field name="name">Hendra Gunawan</field>
+            <field name="function">Managing Partner</field>
+            <field name="parent_id" ref="base.res_partner_10"/>
+            <field name="email">hendra.gunawan@example.id</field>
+            <field name="phone">+62 812-3300-5566</field>
+        </record>
+
+        <record id="base.res_partner_address_18" model="res.partner">
+            <field name="name">Arief Kurniawan</field>
+            <field name="function">Konsultan Senior</field>
+            <field name="parent_id" ref="base.res_partner_10"/>
+            <field name="email">arief.kurniawan@example.id</field>
+            <field name="phone">+62 813-4400-6677</field>
+        </record>
+
+        <record id="base.res_partner_address_24" model="res.partner">
+            <field name="name">Rangga Maulana</field>
+            <field name="function">Analis Sistem</field>
+            <field name="parent_id" ref="base.res_partner_4"/>
+            <field name="email">rangga.maulana@example.id</field>
+            <field name="phone">+62 811-5500-7788</field>
+        </record>
+
+        <record id="base.res_partner_address_25" model="res.partner">
+            <field name="name">Ilham Ramadhan</field>
+            <field name="parent_id" ref="base.res_partner_3"/>
+            <field name="function">Staf Administrasi Pesanan</field>
+            <field name="email">ilham.ramadhan@example.id</field>
+            <field name="phone">+62 812-6600-8899</field>
+        </record>
+
+        <record id="base.res_partner_address_27" model="res.partner">
+            <field name="name">Raka Aditya</field>
+            <field name="parent_id" ref="base.res_partner_1"/>
+            <field name="function">Pengembang Perangkat Lunak</field>
+            <field name="email">raka.aditya@example.id</field>
+            <field name="phone">+62 813-7700-9900</field>
+        </record>
+
+        <record id="base.res_partner_address_28" model="res.partner">
+            <field name="name">Dewi Kartika</field>
+            <field name="function">Eksekutif Bisnis</field>
+            <field name="parent_id" ref="base.res_partner_12"/>
+            <field name="email">dewi.kartika@example.id</field>
+            <field name="phone">+62 811-8800-1122</field>
+        </record>
+
+        <record id="base.res_partner_address_30" model="res.partner">
+            <field name="name">Intan Permata</field>
+            <field name="function">Konsultan Fungsional</field>
+            <field name="parent_id" ref="base.res_partner_18"/>
+            <field name="email">intan.permata@example.id</field>
+            <field name="phone">+62 812-9900-2233</field>
+        </record>
+
+        <record id="base.res_partner_address_31" model="res.partner">
+            <field name="name">Galih Pranoto</field>
+            <field name="parent_id" ref="base.res_partner_2"/>
+            <field name="function">Perwakilan Penjualan</field>
+            <field name="email">galih.pranoto@example.id</field>
+            <field name="phone">+62 813-1000-3344</field>
+        </record>
+
+        <record id="base.res_partner_address_32" model="res.partner">
+            <field name="name">Ayu Wulandari</field>
+            <field name="parent_id" ref="base.res_partner_4"/>
+            <field name="function">Manajer Penjualan</field>
+            <field name="email">ayu.wulandari@example.id</field>
+            <field name="phone">+62 811-2100-4455</field>
+        </record>
+
+        <record id="base.res_partner_address_33" model="res.partner">
+            <field name="name">Lia Oktaviani</field>
+            <field name="parent_id" ref="base.res_partner_4"/>
+            <field name="function">Manajer Keuangan</field>
+            <field name="email">lia.oktaviani@example.id</field>
+            <field name="phone">+62 812-3200-5566</field>
+        </record>
+
+        <record id="base.res_partner_address_34" model="res.partner">
+            <field name="name">Taufik Hidayat</field>
+            <field name="parent_id" ref="base.res_partner_4"/>
+            <field name="function">Manajer Pengetahuan</field>
+            <field name="email">taufik.hidayat@example.id</field>
+            <field name="phone">+62 813-4300-6677</field>
+        </record>
+
+        <record id="base.res_partner_main1" model="res.partner">
+            <field name="name">Chandra Wijaya</field>
+            <field name="parent_id" ref="base.main_partner"/>
+            <field name="function">Direktur Utama (CEO)</field>
+            <field name="email">chandra.wijaya@example.id</field>
+            <field name="phone">+62 811-5400-7788</field>
+        </record>
+
+        <record id="base.res_partner_main2" model="res.partner">
+            <field name="name">Doni Setiawan</field>
+            <field name="function">Direktur Operasional (COO)</field>
+            <field name="parent_id" ref="base.main_partner"/>
+            <field name="email">doni.setiawan@example.id</field>
+            <field name="phone">+62 812-6500-8899</field>
+        </record>
+
+    </data>
+</sigil>

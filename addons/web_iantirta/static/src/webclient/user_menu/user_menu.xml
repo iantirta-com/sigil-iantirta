@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="UserMenu" t-inherit="web.UserMenu" t-inherit-mode="extension">
+        <xpath expr="//img[hasclass('o_avatar')]" position="replace">
+            <span class="o_sigil_user_menu_avatar rounded-circle">
+                <img class="o_avatar o_user_avatar rounded-circle" t-att-src="source" alt="User"/>
+            </span>
+        </xpath>
+        <xpath expr="//t[@t-out='element.description']" position="replace">
+            <div class="d-flex align-items-center justify-content-between p-0 w-100">
+                <t t-if="element.icon">
+                    <i t-attf-class="fa fa-{{element.icon}}"></i>
+                </t>
+                <t t-out="element.description"/>
+            </div>
+        </xpath>
+    </t>
+</templates>

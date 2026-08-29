@@ -1,0 +1,46 @@
+name: Build Debian Package
+
+on:
+  workflow_dispatch: # Allows you to trigger it manually from GitHub
+  push:
+    branches: [ "main", "master" ] # Builds automatically when you push code
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        
+      - name: Create Publish Directory
+        run: mkdir -p ~/publish
+
+      - name: Build the .deb Package
+        run: |
+          pip install pexpect
+          python3 setup/package.py --build-deb -p ~/publish
+        env:
+          # This is a hint for BuildKit to use the GitHub cache
+          DOCKER_BUILDKIT: 1
+
+      - name: Move .deb file into the workspace
+        run: |
+          ls -la
+          ls -la ~/
+          ls -la ~/publish
+
+      - name: Upload .deb File for Download
+        uses: actions/upload-artifact@v4
+        with:
+          name: built-deb-package
+          # Now it just looks safely inside the current folder
+          path: ~/**/*.deb
+          if-no-files-found: error

@@ -1,0 +1,35 @@
+<svg class="logo-svg" viewBox="0 0 100 100" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+            <path fill="currentColor"
+                  stroke="white"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  pathLength="1"
+                  stroke-dasharray="1"
+                  stroke-dashoffset="1">
+                <animate 
+                    attributeName="d" 
+                    dur="9s" 
+                    repeatCount="indefinite"
+                    calcMode="spline"
+                    keyTimes="0; 0.333; 0.666; 1"
+                    keySplines="0.4 0 0.2 1; 0.4 0 0.2 1; 0.4 0 0.2 1"
+                    values="
+                        M50 10C60 16.6667 70 23.3333 80 30 80 43.3333 80 56.6667 80 70 70 76.6667 60 83.3333 50 90 40 83.3333 30 76.6667 20 70 20 56.6667 20 43.3333 20 30 30 23.3333 40 16.6667 50 10Z;
+                        M50 15C61.6667 35 73.3333 55 85 75 85 80 83 82 78 82 68.6667 82 59.3333 82 50 82 40.6667 82 31.3333 82 22 82 17 82 15 80 15 75 26.6667 55 38.3333 35 50 15Z;
+                        M50 20C66 20 70 20 70 35 70 45 70 55 70 65 70 80 66 80 50 80 34 80 30 80 30 65 30 55 30 45 30 35 30 20 34 20 50 20Z;
+                        M50 10C60 16.6667 70 23.3333 80 30 80 43.3333 80 56.6667 80 70 70 76.6667 60 83.3333 50 90 40 83.3333 30 76.6667 20 70 20 56.6667 20 43.3333 20 30 30 23.3333 40 16.6667 50 10Z
+                    "
+                />
+                <animate
+                  attributeName="stroke-dashoffset"
+                  from="1"
+                  to="0"
+                  repeatCount="indefinite"
+                  dur="9s"
+                  keyTimes="0; 0.333"
+                  begin="0s"
+                  calcMode="spline"
+                  keySplines="0.4 0 0.2 1"/>
+            </path>
+        </svg>

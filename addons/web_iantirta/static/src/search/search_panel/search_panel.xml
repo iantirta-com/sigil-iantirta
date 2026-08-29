@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="SearchPanel.Category" t-inherit="web.SearchPanel.Category" t-inherit-mode="extension">
+        <xpath expr="//header" position="attributes">
+            <attribute name="class" add="" remove="py-lg-0" separator=" "/>
+        </xpath>
+        <xpath expr="//li[hasclass('o_search_panel_category_value')]" position="attributes">
+            <attribute name="class" remove="py-1" add="py-0" separator=" "/>
+        </xpath>
+    </t>
+
+    <t t-name="SearchPanel.Regular" t-inherit="web.SearchPanel.Regular" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('o_search_panel')]" position="attributes">
+            <attribute name="t-attf-class">#{env.isSmall ? 'px-3' : 'px-3'}</attribute>
+        </xpath>
+    </t>
+</templates>

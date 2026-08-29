@@ -1,0 +1,21 @@
+#!/usr/bin/make -f
+export DH_VERBOSE=1
+export PYBUILD_NAME=sigil-bin
+export PYBUILD_DISABLE=test
+
+%:
+	dh ${@} --with=python3 --buildsystem=pybuild
+
+override_dh_auto_build:
+	cp -r addons/* sigil/addons/
+	dh_auto_build
+
+override_dh_auto_install:
+	dh_auto_install
+	rm -f debian/sigil/usr/lib/python3*/dist-packages/sigil/addons/point_of_sale/static/src/fonts/Inconsolata.otf
+	for LINKTARGET in `awk '{ print $2 }' sigil.links`; do rm debian/sigil/${LINKTARGET} ; done
+	find debian/sigil -name LICENSE.txt -exec rm {} \;
+
+override_dh_auto_clean:
+	dh_auto_clean
+	for d in addons/* ; do rm -fr sigil/$$d ; done

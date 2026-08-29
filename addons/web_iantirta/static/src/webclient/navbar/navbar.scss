@@ -1,0 +1,174 @@
+.o_main_navbar {
+    border-bottom: 1px solid $m3-outline-var;
+    .o_sigil_menu_brand {
+        display: flex;
+        align-items: center;
+        flex: 0 0 auto;
+        margin-right: var(--NavBar-entry-padding-right, 0.63em);
+    }
+    .o_menu_brand {
+        background: $m3-primary-container;
+        color: $m3-onprimary-container;
+        transition: background-color .14s ease, color .14s ease;
+        padding: 0 14px;
+        font-size: 14px;
+        line-height: 1;
+        font-weight: 500;
+        &:hover, &:focus, &.focus {
+            background: darken($m3-primary-container, 3%);
+            color: $m3-onprimary-container;
+        }
+    }
+    .o_navbar_apps_menu  {
+        .dropdown-toggle {
+            --NavBar-entry-margin-right: var(--NavBar-entry-padding-right, 0.63em);
+            --NavBar-entry-margin-left: #{$o-horizontal-padding};
+            --NavBar-entry-padding-left: unset;
+            align-items: center;
+            background: transparent;
+            color: $m3-onsurface-var;
+            cursor: pointer;
+            transition: background-color .14s ease, color .14s ease;
+            &:hover {
+                background: $m3-surface-container;
+                color: $m3-onsurface;
+            }
+            &:focus-visible {
+                outline: 2px solid $m3-primary;
+                outline-offset: 2px;
+            }
+        }
+    }
+    .o_menu_sections {
+        .o_nav_entry, .dropdown-toggle {
+            --NavBar-entry-backgroundColor: transparent;
+            color: $m3-onsurface-var;
+            padding: 0 12px;
+            border: 0;
+            font-size: 13px;
+            transition: background-color .14s ease, color .14s ease;
+            &:hover,
+            &:focus {
+                color: $m3-onsurface;
+            }
+        }
+    }
+}
+
+.o_sigil_mobile_drawer {
+    width: #{"min(340px, 88vw)"};
+    background: $m3-surface-container-lowest;
+    border-right: 1px solid $m3-outline-var;
+    box-shadow: 12px 0 32px rgba(0, 0, 0, .12);
+}
+.o_sigil_mobile_all_apps_button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 0 14px;
+    border-radius: 11px;
+    background: $m3-primary;
+    color: $m3-onprimary;
+    font-size: 13px;
+    font-weight: 650;
+    text-decoration: none;
+    transition: background-color .14s ease;
+    &:hover {
+        background: darken($m3-primary, 4%);
+        color: $m3-onprimary;
+    }
+}
+.o_sigil_mobile_close_button {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    color: $m3-onsurface-var;
+    font-size: 18px;
+    cursor: pointer;
+    &:hover {
+        background: $m3-surface-container;
+        color: $m3-onsurface;
+    }
+    &:focus-visible {
+        outline: 2px solid $m3-primary;
+        outline-offset: 2px;
+    }
+}
+.o_sigil_mobile_menu_content {
+    padding: 10px 12px 18px;
+}
+.o_sigil_mobile_current_app {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 8px 8px 12px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid $m3-outline-var;
+    .o_app_icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+        object-fit: cover;
+    }
+}
+.o_sigil_mobile_current_app_name {
+    color: $m3-onsurface;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+.o_sigil_mobile_menu_group {
+    margin-bottom: 4px;
+}
+.o_sigil_mobile_menu_group_title {
+    padding: 14px 10px 6px;
+    color: $m3-onsurface-var;
+    font-size: 10px;
+    font-weight: 750;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+.o_sigil_mobile_menu_item {
+    padding: 11px 10px;
+    border-radius: 10px;
+    color: $m3-onsurface;
+    font-size: 14px;
+    line-height: 1.3;
+    cursor: pointer;
+    transition: background-color .12s ease, color .12s ease;
+    &:hover {
+        background: $m3-surface-container;
+    }
+}
+@media (max-width: 1199.98px) {
+    .o_sigil_navbar {
+        .o_sigil_navbar_app {
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .o_sigil_navbar_section {
+            padding-inline: 10px;
+        }
+    }
+}
+@media (max-width: 767.98px) {
+    .o_sigil_navbar {
+        height: 56px;
+        min-height: 56px;
+        padding-inline: 8px;
+        .o_sigil_navbar_brand_group {
+            display: none;
+        }
+        .o_menu_systray {
+            display: none !important;
+        }
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .o_sigil_navbar *,
+    .o_sigil_mobile_drawer * {
+        transition: none !important;
+    }
+}

@@ -1,0 +1,99 @@
+.o_home_menu {
+    .ie-home-menu-header {
+        font-weight: 800;
+        letter-spacing: -.6px;
+        margin-bottom: 6px;
+        // color: $white;
+    }
+    .ie-home-menu-subheader {
+        font-size: 14px;
+        font-weight: 400;
+        // color: $white;
+    }
+    .ie-home-menu-search {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: #{"min(440px, 90vw)"};
+        background: #{rgba($o-black, .1)};
+        backdrop-filter: blur(20px);
+        border-radius: 4px;
+        padding: 5px 10px;
+        // color: $white;
+        transition: border-color .2s;
+        &:focus-within {
+            svg {
+                // color: rgb(232,41,28);
+                color: $primary;
+            }
+        }
+        input {
+            flex:1;
+            border:none;
+            outline:none;
+            background:transparent;
+            font-size:14px;
+            // color: $white;
+        }
+        svg {
+            flex-shrink:0;
+        }
+        .ie-home-menu-kbd {
+            font-size:11px;
+            font-weight:600;
+            padding:2px 7px;
+            white-space:nowrap;
+        }
+    }
+    .o_no_result {
+        height: 100%;
+        margin: 42px auto;
+        // color: $white;
+        text-align: center;
+        font-weight: 900;
+        // &::before {
+        //     content: "";
+        //     display: block;
+        //     margin: auto;
+        //     background-size: cover;
+        //     width: 120px;
+        //     height: 140px;
+        //     background: transparent url(/web_enterprise_iantirta/static/src/img/no_search_result.svg) no-repeat center;
+        // }
+    }
+
+    .o_app {
+        background: rgba(255, 255, 255, .8);
+        backdrop-filter: blur(10px);
+        position: relative;
+        transition: transform .2s, box-shadow .2s;
+
+        &:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 16px 40px rgba(0,0,0,.1), 0 0 0 1px rgba(232,41,28,.1);
+
+            .o_app_icon {
+                box-shadow: none;
+                transform: none !important;
+            }
+        }
+
+        &:active:not(.o_dragged_app) {
+            transform:scale(.98);transition-duration:.08s;
+            
+            .o_app_icon {
+                transform: none !important;
+            }
+        }
+
+        .o_app_icon {
+            background: none !important;
+            box-shadow: none !important;
+        }
+
+        &.o_focused {
+            background: #{rgba($component-active-bg, .2)};
+            outline: none !important;
+        }
+    }
+}

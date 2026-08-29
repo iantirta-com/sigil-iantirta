@@ -1,0 +1,15 @@
+.o_search_panel {
+    .o_search_panel_counter {
+        background: var(--border-color);
+        color: var(--text-muted);
+        font-size: 11px;
+        padding: 2px 6px;
+        border-radius: 12px;
+    }
+
+    .o_search_panel_category_value {
+        border-radius: 6px !important;
+        font-size: 13px;
+        transition: 0.2s;
+    }
+}

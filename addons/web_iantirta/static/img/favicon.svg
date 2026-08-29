@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Black Hexagon Background -->
+  <path d="M 256 48 L 445 156 L 445 356 L 256 464 L 67 356 L 67 156 Z" fill="#1A1B20"/>
+  
+  <!-- Bold Geometric S -->
+  <path d="M 180 180 L 332 180 L 332 220 L 220 220 L 220 236 L 332 236 L 332 332 L 180 332 L 180 292 L 292 292 L 292 276 L 180 276 Z" fill="#FFFFFF"/>
+</svg>

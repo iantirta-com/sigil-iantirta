@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="CogMenu" t-inherit="web.CogMenu" t-inherit-mode="extension">
+        
+    </t>
+</templates>

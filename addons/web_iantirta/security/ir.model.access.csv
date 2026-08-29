@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_web_iantirta_web_iantirta,web_iantirta.web_iantirta,model_web_iantirta_web_iantirta,base.group_user,1,1,1,1
