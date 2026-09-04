@@ -1,23 +1,51 @@
 .o_field_radio {
-    background-color: $m3-surface;
-    border: $input-border-width solid $border-color;
-    border-radius: $input-border-radius;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
     .o_sigil_radio {
+        background-color: $m3-surface;
+        border: $input-border-width solid;
+        border-color: transparent;
+        border-radius: $input-border-radius;
+        padding: 3px;
+        gap: 2px;
         .o_radio_item {
-            label {
-                border: 0;
+            display: flex;
+            align-items: center;
+            padding-left: 0;
+            margin: 0;
+            .o_radio_input:checked + .btn {
+                font-weight: 700;
+                box-shadow: 0 1px 3px rgba(0,0,0,.12);
+                transform: scale(.985);
             }
-        }
-        &.o_horizontal {
-            
-        }
-        &.o_vertical {
-            
-        }
-        &.o_horizontal, &.o_vertical {
-            //gap: $o-form-spacing-unit * 2;
-            .o_radio_item {
-                margin: 0;
+            .o_radio_input:focus-visible + .btn {
+                box-shadow: 0 0 0 3px rgba($m3-primary, .16) !important;
+            }
+            label.btn {
+                min-height: 36px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0 14px;
+                border: 0;
+                border-radius: calc(#{$input-border-radius} - 3px);
+                white-space: nowrap;
+                transition:
+                    background-color 140ms ease,
+                    color 140ms ease,
+                    box-shadow 140ms ease,
+                    transform 100ms ease;
+
+                @include button-variant(
+                    transparent,
+                    transparent,
+                    $color: $m3-onsurface-var,
+                    $hover-background: $m3-surface-container-low,
+                    $active-background: $m3-surface-container-lowest,
+                    $active-border: $m3-surface-container-lowest,
+                    $active-color: $m3-primary,
+                );
             }
         }
     }

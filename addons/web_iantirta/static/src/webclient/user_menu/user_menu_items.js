@@ -59,7 +59,6 @@ if (prefItem) {
     userMenuRegistry.add("preferences", (env) => {
         const res = prefItem(env);
         res.icon = "fa-sliders";
-        res.hide = !env.debug;
         return res;
     }, {force:true});
 }
@@ -69,6 +68,7 @@ if (accountItem) {
     userMenuRegistry.add("sigil_account", (env) => {
         const res = accountItem(env);
         res.icon = "fa-user-circle-o";
+        res.hide = !env.debug;
         return res;
     }, {force:true});
 }
@@ -89,7 +89,7 @@ if (logoutItem) {
         const res = logoutItem(env);
         res.description = markup`
             <div class="text-danger d-flex align-items-center gap-2 p-0 w-100">
-                <i class="fa fa-fw fa-sign-out"/>
+                <i class="fa fa-fw fa-sign-out"></i>
                 ${_t(res.description)}
             </div>`;
         logout_sequence = res.sequence;

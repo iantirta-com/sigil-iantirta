@@ -29,6 +29,7 @@ Long description of module's purpose
             "web_iantirta/static/src/views/view.scss",
             "web_iantirta/static/src/views/list/*",
             "web_iantirta/static/src/views/fields/**/*",
+            "web_iantirta/static/src/views/form/**/*"
         ],
         'web._assets_core': [
             'web_iantirta/static/src/core/**/*',
@@ -48,6 +49,8 @@ Long description of module's purpose
     'data': [
         'data/res_company_data.xml',
         'views/webclient_templates.xml',
+        "views/res_users_views.xml",
+        "views/res_users_identitycheck_views.xml",
     ],
     'demo': [
         'demo/res_users_demo.xml',

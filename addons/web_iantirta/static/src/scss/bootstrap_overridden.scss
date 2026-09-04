@@ -1,3 +1,183 @@
+//////////////////////
+// Config
+//////////////////////
+
+//////////////////////
+// Opacity Helper
+//////////////////////
+
+//////////////////////
+// Default Color Helper
+//////////////////////
+/// DATA:
+///     - gray 100 == surface container
+///     - gray 300 == outline variant
+///     - gray 700 == $m3-onsurface-var
+///     - gray 900 == onsurface
+$white:                             $o-white !default;
+$black:                             $o-black !default;
+$primary:                           $o-brand-primary !default;
+$secondary:                         $m3-outline-var !default; // grey 300
+$dark:                              $m3-onsurface !default; // grey 900
+
+$success:                           $o-success !default;
+$info:                              $o-info !default;
+$warning:                           $o-warning !default;
+$danger:                            $o-danger !default;
+
+//////////////////////
+// Fonts
+//////////////////////
+
+//////////////////////
+// Border
+//////////////////////
+$border-width:                      1px !default;
+$border-widths: (
+  1: 1px,
+  2: 2px,
+  3: 3px,
+  4: 4px,
+  5: 5px
+) !default;
+$border-style:                      solid !default;
+$border-color:                      $m3-outline-var !default;
+$border-color-translucent:          rgba($m3-outline-var, .175) !default;
+
+$border-radius:                     $o-border-radius !default;
+$border-radius-sm:                  $o-border-radius-sm !default;
+$border-radius-lg:                  $o-border-radius-lg !default;
+// $border-radius:                     .375rem !default;
+// $border-radius-sm:                  .25rem !default;
+// $border-radius-lg:                  .5rem !default;
+$border-radius-xl:                  1rem !default;
+$border-radius-xxl:                 2rem !default;
+$border-radius-pill:                50rem !default;
+
+//////////////////////
+// Box Shadow
+//////////////////////
+$box-shadow:                        0 .5rem 1rem rgba($black, .15) !default;
+$box-shadow-sm:                     0 .125rem .25rem rgba($black, .075) !default;
+$box-shadow-lg:                     0 1rem 3rem rgba($black, .175) !default;
+$box-shadow-inset:                  inset 0 1px 2px rgba($black, .075) !default;
+
+
+//////////////////////
+// Spacer
+//////////////////////
+
+//////////////////////
+// Component
+//////////////////////
+
+//////////////////////
+// Modal
+//////////////////////
+$modal-inner-padding:               $o-horizontal-padding !default;
+
+$modal-footer-margin-between:       1px !default;
+
+$modal-dialog-margin:               .5rem !default;
+$modal-dialog-margin-y-sm-up:       1.75rem !default;
+
+$modal-lg:                          $o-modal-lg !default;
+$modal-md:                          $o-modal-md !default;
+
+$modal-content-color:               $m3-onsurface !default;
+$modal-content-bg:                  $m3-surface-container-lowest !default; // body-bg / $o-view-background-color
+$modal-content-border-color:        $m3-outline-var !default; // border-color-translucent
+$modal-content-border-width:        $border-width !default; // 1px
+$modal-content-border-radius:       $border-radius !default; // border-radius-lg
+$modal-content-inner-border-radius: subtract($modal-content-border-radius, $modal-content-border-width) !default;
+// $modal-content-box-shadow-xs:    0 16px 48px rgba($m3-shadow, .14) !default;
+$modal-content-box-shadow-xs:       $box-shadow-sm !default;
+$modal-content-box-shadow-sm-up:    $box-shadow !default;
+
+$modal-backdrop-bg:                 $m3-scrim !default; // black
+$modal-backdrop-opacity:            .32 !default; // .5
+
+$modal-header-border-color:         $m3-outline-var !default; // border-color
+$modal-header-border-width:         $modal-content-border-width !default;
+$modal-header-padding-y:            $modal-inner-padding !default;
+$modal-header-padding-x:            $modal-inner-padding !default;
+$modal-header-padding:              18px $o-horizontal-padding !default;
+// $modal-header-padding:              $modal-header-padding-y $modal-header-padding-x !default; // Keep this for backwards compatibility
+
+$modal-footer-bg:                   $m3-surface-container-low !default;
+$modal-footer-padding:              14px $o-horizontal-padding !default;
+$modal-footer-border-width:         0;
+$modal-footer-border-color:         $modal-header-border-color !default;
+
+// $modal-fade-transform:              translateY(8px) !default;
+$modal-fade-transform:              translate(0, -50px) !default; // bootstrapt
+$modal-show-transform:              none !default;
+$modal-transition:                  transform .3s ease-out !default; // bootstrapt
+// $modal-scale-transform:             none !default;
+$modal-scale-transform:             scale(1.02) !default; // bootstrapt
+
+
+//////////////////////
+// Table
+//////////////////////
+
+//////////////////////
+// Sheet
+//////////////////////
+
+//////////////////////
+// Form
+//////////////////////
+
+//////////////////////
+// List
+//////////////////////
+
+//////////////////////
+// Dropdown
+//////////////////////
+
+//////////////////////
+// Tooltip
+//////////////////////
+
+//////////////////////
+// Breadcrumb
+//////////////////////
+
+//////////////////////
+// Badge
+//////////////////////
+
+//////////////////////
+// Card
+//////////////////////
+
+//////////////////////
+// Mobile
+//////////////////////
+
+//////////////////////
+// Easing
+//////////////////////
+
+//////////////////////
+// Button
+//////////////////////
+
+
+// Buttons + Forms
+//
+// Shared variables that are reassigned to `$input-` and `$btn-` specific variables.
+
+$input-btn-padding-y: o-to-rem(8) !default;
+$input-btn-padding-x: o-to-rem(24) !default;
+
+$input-btn-padding-y-sm: o-to-rem(3) !default;
+$input-btn-padding-x-sm: o-to-rem(8) !default;
+
+$input-btn-padding-y-lg: o-to-rem(6) !default;
+$input-btn-padding-x-lg: o-to-rem(12) !default;
 
 // Dropdowns
 //
@@ -39,37 +219,6 @@ $dropdown-box-shadow:
 $dropdown-font-size: 14px !default;
 
 
-// Modals
-
-// Padding applied to the modal body
-$modal-inner-padding: 20px !default;
-$modal-header-padding: 18px 20px !default;
-$modal-footer-padding: 14px 20px !default;
-
-$modal-sm: 360px !default;
-$modal-md: 560px !default;
-$modal-lg: 880px !default;
-$modal-xl: 1120px !default;
-
-$modal-content-bg: $m3-surface-container-lowest !default;
-$modal-content-color: $m3-onsurface !default;
-$modal-content-border-color: $m3-outline-var !default;
-$modal-content-border-width: 1px !default;
-$modal-content-border-radius: 16px !default;
-$modal-content-box-shadow-xs: 0 16px 48px rgba($m3-shadow, .14) !default;
-
-// ============================================================================
-// SIGIL — MODAL TOKENS
-// ============================================================================
-
-$modal-backdrop-bg: $m3-scrim !default;
-$modal-backdrop-opacity: .32 !default;
-
-$modal-header-border-color: $m3-outline-var !default;
-$modal-footer-border-color: $m3-outline-var !default;
-
-$modal-fade-transform: translateY(8px) !default;
-
 
 // Navs
 
@@ -88,4 +237,3 @@ $o-notebook-active-bg: transparent !default;
 $o-notebook-disabled-opacity: .42 !default;
 
 
-$border-color: $m3-outline-var !default;
