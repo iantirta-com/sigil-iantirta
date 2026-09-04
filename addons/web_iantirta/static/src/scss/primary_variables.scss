@@ -125,6 +125,14 @@ $o-horizontal-padding: $o-spacer !default;
 
 
 //////////////////////
+// Component
+//////////////////////
+$o-component-active-color:  $o-black !default;
+$o-component-active-bg: mix($o-action, $o-gray-100, 20%) !default;
+$o-component-active-border: $o-action !default;
+
+
+//////////////////////
 // Modal
 //////////////////////
 $o-modal-lg:                                880px !default;
@@ -136,14 +144,6 @@ $o-modal-md:                                560px !default;
 //////////////////////
 $o-table-cell-padding-x-sm: .3rem !default;
 $o-table-cell-padding-y-sm: .5rem !default;
-
-
-//////////////////////
-// Component
-//////////////////////
-$o-component-active-color:  $o-black !default;
-$o-component-active-bg: mix($o-action, $o-gray-100, 20%) !default;
-$o-component-active-border: $o-action !default;
 
 
 //////////////////////
@@ -193,7 +193,7 @@ $o-dropdown-max-height: 70vh !default;
 
 
 //////////////////////
-// Tooltip
+// Tooltip (undefined)
 //////////////////////
 $tooltip-border-radius: 8px !default;
 $tooltip-padding-y: 14px !default;
