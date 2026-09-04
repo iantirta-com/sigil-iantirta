@@ -1,60 +1,29 @@
-.o_form_view {
-    @include media-breakpoint-up(sm) {
-        .o_inner_group:not(:has(.o_horizontal_separator)) {
-            --fieldWidget-margin-bottom: 0;
-            grid-template-columns: minmax(0, 1fr);
-            --inner-group-row-gap: 4px;
-        }
-    }
-    
-    .o_form_label {
-        font-size: .75rem;
-        color: $text-muted;
-    }
-    
-    .o_field_widget {
-        
-        &.o_field_html {
-            border-radius: 8px;
-        }
 
-        .o_input:not(.o_input .o_input) {
-            
-            &:not(.o_input ~ .o_input) {
-                background: #{rgba($o-black, .1)};
-            }
+:root {
+    @include print-variable(o-input-border-color, $m3-outline-var);
+    //@include print-variable(o-caret-color, $input-color);
+}
 
-            border-style: dashed;
-            border-radius: 4px;
-            padding: 5px 10px;
-            transition: border-color .2s;
-        }
+.o_input {
+    border-width: $input-border-width;
+    border-radius: $input-border-radius;
+    height: 42px;
+    transition:
+        border-color 140ms ease,
+        background-color 140ms ease,
+        box-shadow 140ms ease;
+
+    &::placeholder {
+        color: $m3-onsurface-var;
+        opacity: .7;
     }
 }
 
 .o_field_widget {
-    .o_input_dropdown, .o_datepicker {
-        .o_dropdown_button, .o_datepicker_button {
-            right: 2%;
-            display: flex;
-            align-items: center;
+    .o_row_handle {
+        color: $m3-onsurface-var;
+        &:hover {
+            color: $m3-onsurface;
         }
     }
-}
-
-.o_input {
-    // border-style: dashed;
-    // background: #{rgba($o-black, .1)};
-    // border-radius: 4px;
-    // padding: 5px 10px;
-    // transition: border-color .2s;
-}
-
-.form-switch .form-check-input {
-    position: relative;
-    width: 38px;
-    height: 21px;
-    background-color: #CDD4DF;
-    border-radius: 99px;
-    --form-switch-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23F6F6F6'/%3e%3c/svg%3e")
 }

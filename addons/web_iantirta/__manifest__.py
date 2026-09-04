@@ -28,6 +28,7 @@ Long description of module's purpose
 
             "web_iantirta/static/src/views/view.scss",
             "web_iantirta/static/src/views/list/*",
+            "web_iantirta/static/src/views/fields/**/*",
         ],
         'web._assets_core': [
             'web_iantirta/static/src/core/**/*',

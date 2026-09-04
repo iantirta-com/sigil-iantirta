@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-inherit="web.RadioField" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('form-check')]" position="replace">
+            <div class="form-check o_radio_item" aria-atomic="true">
+                <input
+                    type="radio"
+                    class="btn-check o_radio_input"
+                    t-att-checked="item[0] === value"
+                    t-att-disabled="props.readonly"
+                    t-att-name="id"
+                    t-att-data-value="item[0]"
+                    t-att-data-index="item_index"
+                    t-att-id="`${id}_${item[0]}`"
+                    t-on-change="() => this.onChange(item)"
+                />
+                <label class="btn o_form_label" t-att-for="`${id}_${item[0]}`" t-esc="item[1]" />
+            </div>
+        </xpath>
+    </t>
+</templates>

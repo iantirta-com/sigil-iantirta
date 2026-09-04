@@ -1,0 +1,24 @@
+.o_field_radio {
+    background-color: $m3-surface;
+    border: $input-border-width solid $border-color;
+    border-radius: $input-border-radius;
+    .o_sigil_radio {
+        .o_radio_item {
+            label {
+                border: 0;
+            }
+        }
+        &.o_horizontal {
+            
+        }
+        &.o_vertical {
+            
+        }
+        &.o_horizontal, &.o_vertical {
+            //gap: $o-form-spacing-unit * 2;
+            .o_radio_item {
+                margin: 0;
+            }
+        }
+    }
+}

@@ -7,12 +7,19 @@
             </span>
         </xpath>
         <xpath expr="//t[@t-out='element.description']" position="replace">
-            <div class="d-flex align-items-center justify-content-between p-0 w-100">
+            <div class="d-flex align-items-center gap-2 p-0 w-100">
                 <t t-if="element.icon">
-                    <i t-attf-class="fa fa-{{element.icon}}"></i>
+                    <i t-attf-class="fa fa-fw {{element.icon}}"></i>
                 </t>
                 <t t-out="element.description"/>
             </div>
         </xpath>
     </t>
+    
+    <div t-name="web.profileSummary" class="d-flex align-items-center gap-2">
+        <img style="height: 44px;" class="o_avatar rounded" t-att-src="source" alt="user"/>
+        <div>
+            <t t-out="userName"></t>
+        </div>
+    </div>
 </templates>

@@ -4,7 +4,7 @@
     <t t-name="web.RadioField">
         <div
             role="radiogroup"
-            t-attf-class="o_{{ props.orientation }}"
+            t-attf-class="o_sigil_radio o_{{ props.orientation }}"
             t-att-aria-label="props.label"
         >
             <t t-foreach="items" t-as="item" t-key="item[0]">

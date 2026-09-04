@@ -25,6 +25,15 @@ $o-main-color-muted: rgba($m3-onsurface-var, $o-opacity-muted) !default;
 $o-view-background-color: $m3-surface-container-lowest !default;
 $o-shadow-color: $m3-shadow !default;
 
+// o-inputs
+$o-input-padding-y: 0px !default;
+$o-input-padding-x: 12px !default;
+
+$o-input-bg: $m3-surface !default;
+//$o-input-invalid-bg: mix($o-danger, $o-input-bg, 10%) !default;
+$o-input-border-required: $m3-outline-var !default;
+
+
 $o-border-radius: o-to-rem(11px) !default;
 $o-border-radius-sm: o-to-rem(9px) !default;
 $o-border-radius-lg: o-to-rem(15px) !default;
