@@ -1,0 +1,13 @@
+
+// Shared with web client and login screen
+.o_home_menu_background, .o_web_client.o_home_menu_background {
+    background: {
+        size: cover;
+        attachment: fixed;
+        // color: var(--homeMenu-bg-color, #{$o-gray-200});
+        // image: var(--homeMenu-bg-image, url("/web_enterprise_iantirta/static/img/background-light.jpg"));
+        color: var(--homeMenu-bg-color, #{$o-white});
+        image: repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(0, 0, 0, 0.035) 59px, rgba(0, 0, 0, 0.035) 60px), repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(0, 0, 0, 0.035) 59px, rgba(0, 0, 0, 0.035) 60px);
+    }
+}
+

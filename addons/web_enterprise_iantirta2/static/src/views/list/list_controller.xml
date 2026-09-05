@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="ListView" t-inherit="web.ListView" t-inherit-mode="extension">
+        <xpath expr="//button[@t-if='!editedRecord and activeActions.create and props.showButtons']" position="replace">
+            <button t-if="!editedRecord and activeActions.create and props.showButtons" type="button" class="btn btn-primary o_list_button_add d-flex align-items-center gap-1" data-hotkey="c" t-on-click="onClickCreate" data-bounce-button="">
+                <svg class="ie_icon_svg" width="100%" height="100%" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false">
+                    <path d="M8.90992 2.91063C8.90992 2.4077 8.50222 2 7.99929 2C7.49636 2 7.08865 2.4077 7.08865 2.91063V7.09079H2.91063C2.4077 7.09079 2 7.49849 2 8.00142C2 8.50435 2.4077 8.91205 2.91063 8.91205H7.08865V13.0894C7.08865 13.5923 7.49636 14 7.99929 14C8.50222 14 8.90992 13.5923 8.90992 13.0894V8.91205H13.0894C13.5923 8.91205 14 8.50435 14 8.00142C14 7.49849 13.5923 7.09079 13.0894 7.09079H8.90992V2.91063Z" fill="currentColor"></path>
+                </svg>
+                New
+            </button>
+        </xpath>
+    </t>
+</templates>

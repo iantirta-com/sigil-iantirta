@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sigil>
+    <record id="res_config_settings_view_form_1" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.base.setup.iantirta</field>
+            <field name="model">res.config.settings</field>
+            <field name="priority" eval="0"/>
+            <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//app[@name='general_settings']" position="attributes">
+                    <attribute name="logo">/web_enterprise_iantirta/static/description/settings/icon.png</attribute>
+                </xpath>
+                <xpath expr="//block[@name='users_setting_container']" position="replace">
+                    <block title="Users &amp; Companies" name="users_setting_container" icon="/web_enterprise_iantirta/static/img/icons/users.svg">
+                        <setting id="invite_users_setting">
+                            <widget name='res_config_invite_users'/>
+                            <div class="mt8">
+                                <button name="%(base.action_res_users)d" icon="oi-arrow-right" type="action" string="Manage Users" class="btn-link o_web_settings_access_rights"/>
+                            </div>
+                        </setting>
+                        <!-- <setting id="active_user_setting">
+                            <span class="fa fa-lg fa-users" aria-label="Number of active users"/>
+                            <field name='active_user_count' class="w-auto ps-3 fw-bold"/>
+                            <span class='o_form_label' invisible="active_user_count &gt; 1">
+                                Active User
+                            </span>
+                            <span class='o_form_label' invisible="active_user_count &lt;= 1">
+                                Active Users
+                            </span>
+                            <widget name="documentation_link" path="/applications/general/users.html" icon="fa-question-circle"/>
+                            <br/>
+                            <button name="%(base.action_res_users)d" icon="oi-arrow-right" type="action" string="Manage Users" class="btn-link o_web_settings_access_rights"/>
+                        </setting> -->
+                        <setting id="companies_setting">
+                            <div class="mt8">
+                                <button name="%(base.action_res_company_form)d" icon="oi-arrow-right" type="action" string="Manage Companies" class="btn-link"/>
+                            </div>
+                            <div class="mt8">
+                                <button name="open_company" icon="oi-arrow-right" type="object" string="Update Info" class="btn-link"/>
+                            </div>
+                            <div class="mt8">
+                                <button name="%(web.action_base_document_layout_configurator)d" string="Configure Document Layout" type="action" class="oe_link" icon="oi-arrow-right"/>
+                            </div>
+                        </setting>
+                    </block>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="res_config_settings_view_form_2" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.website.iantirta</field>
+            <field name="model">res.config.settings</field>
+            <field name="priority" eval="20"/>
+            <field name="inherit_id" ref="website.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//app[@name='website']" position="attributes">
+                    <attribute name="logo">/web_enterprise_iantirta/static/description/website/icon.png</attribute>
+                </xpath>
+            </field>
+        </record>
+</sigil>

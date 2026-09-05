@@ -1,0 +1,295 @@
+<sigil>
+    <data>
+        <record id="base.res_partner_1" model="res.partner">
+            <field name="name">PT. Jaya Elektronik Nusantara</field>
+            <field name="phone">0812-9988-7766</field>
+            <field name="city">Jakarta Barat</field>
+            <field name="street">Jl. Mangga Dua Raya No. 88</field>
+            <field name="zip">10730</field>
+            <field name="email">jayaelektroniknusantara@example.com</field>
+            <field name="website">http://www.jayaelektroniknusantara.com</field>
+            <field name="country_id" ref="base.id"/>
+            <field name="state_id"></field>
+        </record>
+
+        <record id="base.res_partner_2" model="res.partner">
+            <field name="name">Berkah Fashion Studio</field>
+            <field name="phone">0856-1122-3344</field>
+            <field name="city">Bandung</field>
+            <field name="street">Jl. Riau No. 15</field>
+            <field name="zip">40115</field>
+            <field name="email">berkahfashionstudio@example.com</field>
+            <field name="website">http://www.berkahfashionstudio.com</field>
+            <field name="country_id" ref="base.id"/>
+            <field name="state_id"></field>
+        </record>
+
+        <record id="base.res_partner_3" model="res.partner">
+            <field name="name">Intara Furniture</field>
+            <field name="phone">+62 813 8054 3103</field>
+            <field name="city">Jakarta Barat</field>
+            <field name="street">Letjen S. Parman No.Kav. 28</field>
+            <field name="zip">11470</field>
+            <field name="email">intara@yourcompany.example.com</field>
+            <field name="website">http://www.intara-company.com</field>
+            <field name="country_id" ref="base.id"/>
+            <field name="state_id"></field>
+        </record>
+
+        <record id="base.res_partner_4" model="res.partner">
+            <field name="name">Rahmat Jaya Karpet</field>
+            <field name="phone">+62 857 7891 2783</field>
+            <field name="city">Jakarta Pusat</field>
+            <field name="street">Jl. K.H. Mas Mansyur Jl. Kb. Kacang 6 No.17B</field>
+            <field name="zip">10240</field>
+            <field name="email">RJK@yourcompany.example.com</field>
+            <field name="website">http://www.rj-karpet-company.com</field>
+            <field name="country_id" ref="base.id"/>
+            <field name="state_id"></field>
+        </record>
+
+        <record id="base.res_partner_5" model="res.partner">
+            <field name="name">Gianyar Kayu</field>
+            <field name="phone">+62 361 222 3333</field>
+            <field name="city">Bali</field>
+            <field name="street">Jl. Raya Ubud</field>
+            <field name="zip">80571</field>
+            <field name="email">wow@example.com</field>
+            <field name="website">www.openwood.example.com</field>
+            <field name="country_id" ref="base.id"/>
+            <field name="state_id"></field>
+        </record>
+
+        <record id="base.res_partner_6" model="res.partner">
+            <field name="name">Surabaya Lampu</field>
+            <field name="phone">+62 31 8880 7777</field>
+            <field name="city">Surabaya</field>
+            <field name="street">Jl. HR Muhammad No. 31</field>
+            <field name="zip">60226</field>
+            <field name="email">surabaya.lampu@example.com</field>
+            <field name="website">www.surabaya-lampu.example.com</field>
+            <field name="country_id" ref="base.id"/>
+            <field name="state_id"></field>
+        </record>
+
+        <record id="base.res_partner_10" model="res.partner">
+            <field name="name">The Jackson Group</field>
+            <field name="is_company">1</field>
+            <field name="street">Jl. Pahlawan No. 1</field>
+            <field name="city">Purbalingga</field>
+            <field name="zip">53311</field>
+            <field name="country_id" ref="base.id"/>
+            <field name="email">jackson.group82@example.com</field>
+            <field name="phone">+62 281 111 2222</field>
+            <field name="vat">ID12345676</field>
+        </record>
+
+        <record id="base.res_partner_12" model="res.partner">
+            <field name="name">Azure Interior</field>
+            <field name="is_company">1</field>
+            <field name="street">Jl. Medan Merdeka Barat</field>
+            <field name="city">Medan</field>
+            <field name="zip">20111</field>
+            <field name="phone">+62 61 9990 0000</field>
+            <field name="country_id" ref="base.id"/>
+            <field name="email">azure.Interior24@example.com</field>
+            <field name="website">http://www.azure-interior.com</field>
+            <field name="vat">ID12345677</field>
+        </record>
+
+        <record id="base.res_partner_18" model="res.partner">
+            <field name="name">Lumber Inc</field>
+            <field name="is_company">1</field>
+            <field name="street">Jl. Jend. A. Yani No. 14</field>
+            <field name="city">Balikpapan</field>
+            <field name="zip">76111</field>
+            <field name="email">lumber-inv92@example.com</field>
+            <field name="phone">+62 542 6660 5555</field>
+            <field name="country_id" ref="base.id"/>
+            <field name="website">http://www.lumber-inc.com</field>
+            <field name="vat">ID12345678</field>
+        </record>
+
+        <!-- <record id="base.res_partner_address_1" model="res.partner">
+            <field name="name">Budi Santoso</field>
+            <field name="phone">0819-5555-4444</field>
+            <field name="city">Surabaya</field>
+            <field name="street">Jl. Gubeng Kertajaya</field>
+            <field name="company_type">person</field>
+            <field name="country_id" ref="base.id"/>
+            <field name="parent_id" eval="False"/>
+            <field name="function" eval="False"/>
+        </record> -->
+
+        <record id="base.res_partner_address_1" model="res.partner">
+            <field name="name">Budi Santoso</field>
+            <field name="email">budi.santoso33@example.com</field>
+            <field name="phone">+62 819-5555-4444</field>
+        </record>
+
+        <record id="base.res_partner_address_2" model="res.partner">
+            <field name="name">Soleh</field>
+            <field name="email">soleh76@example.com</field>
+            <field name="phone">+62 813-3974-0912</field>
+        </record>
+
+        <!-- <record id="base.res_partner_address_3" model="res.partner">
+            <field name="name">Andi Wijaya</field>
+            <field name="phone">0811-2233-4455</field>
+            <field name="city">Semarang</field>
+            <field name="street">Jl. Pemuda No. 10</field>
+            <field name="company_type">person</field>
+            <field name="country_id" ref="base.id"/>
+            <field name="parent_id" eval="False"/>
+            <field name="function" eval="False"/>
+        </record> -->
+
+        <record id="base.res_partner_address_3" model="res.partner">
+            <field name="name">Henry</field>
+            <field name="email">henry82@example.com</field>
+            <field name="phone">+62 821-1460-3342</field>
+        </record>
+
+        <record id="base.res_partner_address_4" model="res.partner">
+            <field name="name">Yadi</field>
+            <field name="email">yadi66@example.com</field>
+            <field name="phone">+62 812-8082-2244</field>
+        </record>
+
+        <!-- <record id="base.res_partner_address_5" model="res.partner">
+            <field name="name">Rina Melati</field>
+            <field name="phone">0822-3344-5566</field>
+            <field name="city">Malang</field>
+            <field name="street">Jl. Ijen No. 42</field>
+            <field name="company_type">person</field>
+            <field name="country_id" ref="base.id"/>
+            <field name="parent_id" eval="False"/>
+            <field name="function" eval="False"/>
+        </record> -->
+
+        <record id="base.res_partner_address_5" model="res.partner">
+            <field name="name">Teguh Beriman</field>
+            <field name="email">teguh.beriman33@example.com</field>
+            <field name="phone">+62 895-4141-74247</field>
+        </record>
+
+        <record id="base.res_partner_address_7" model="res.partner">
+            <field name="name">Bilal</field>
+            <field name="email">bilal45@example.com</field>
+            <field name="phone">+62 813-4985-6116</field>
+        </record>
+
+        <!-- <record id="base.res_partner_address_10" model="res.partner">
+            <field name="name">PT. Maju Mundur Logistics</field>
+            <field name="phone">021-55667788</field>
+            <field name="city">Tangerang</field>
+            <field name="street">Kawasan Industri Cikupa</field>
+            <field name="company_type">person</field>
+            <field name="country_id" ref="base.id"/>
+            <field name="parent_id" eval="False"/>
+            <field name="function" eval="False"/>
+        </record> -->
+
+        <record id="base.res_partner_address_10" model="res.partner">
+            <field name="name">Zaky Ahmad</field>
+            <field name="email">zaky.ahmad32@example.com</field>
+            <field name="phone">+62 811-1918-356</field>
+        </record>
+
+        <record id="base.res_partner_address_11" model="res.partner">
+            <field name="name">Atwal</field>
+            <field name="email">atwal88@example.com</field>
+            <field name="phone">+62 821-8088-8088</field>
+        </record>
+
+        <record id="base.res_partner_address_13" model="res.partner">
+            <field name="name">Adzra</field>
+            <field name="email">adzra83@example.com</field>
+            <field name="phone">+62 813-6785-6653</field>
+        </record>
+
+        <record id="base.res_partner_address_14" model="res.partner">
+            <field name="name">Safnah</field>
+            <field name="email">safnah80@example.com</field>
+            <field name="phone">+62 813-8524-0881</field>
+        </record>
+        
+        <record id="base.res_partner_address_15" model="res.partner">
+            <field name="name">Raihan</field>
+            <field name="email">raihan77@example.com</field>
+            <field name="phone">+62 855-2324-5580</field>
+        </record>
+
+        <record id="base.res_partner_address_16" model="res.partner">
+            <field name="name">Ica</field>
+            <field name="email">ica33@example.com</field>
+            <field name="phone">+62 822-7938-5493</field>
+        </record>
+
+        <record id="base.res_partner_address_17" model="res.partner">
+            <field name="name">Saslia</field>
+            <field name="email">saslia12@example.com</field>
+            <field name="phone">+62 857-7892-1024</field>
+        </record>
+
+        <record id="base.res_partner_address_18" model="res.partner">
+            <field name="name">Ghifari</field>
+            <field name="email">ghirafi76@example.com</field>
+            <field name="phone">+62 851-5646-6412</field>
+        </record>
+
+        <record id="base.res_partner_address_24" model="res.partner">
+            <field name="name">Adenan</field>
+            <field name="email">adenan54@example.com</field>
+            <field name="phone">+62 851-5890-0923</field>
+        </record>
+
+        <record id="base.res_partner_address_25" model="res.partner">
+            <field name="name">Alexander</field>
+            <field name="email">alexander99@example.com</field>
+            <field name="phone">+62 811-1013-8767</field>
+        </record>
+
+        <record id="base.res_partner_address_27" model="res.partner">
+            <field name="name">Naufal Febian</field>
+            <field name="email">naufal.febian@example.com</field>
+            <field name="phone">+62 813-8050-3333</field>
+        </record>
+
+        <record id="base.res_partner_address_28" model="res.partner">
+            <field name="name">Nurul</field>
+            <field name="email">nurul34@example.com</field>
+            <field name="phone">+62 855-1661-190</field>
+        </record>
+
+        <record id="base.res_partner_address_30" model="res.partner">
+            <field name="name">Shally</field>
+            <field name="email">shally88@example.com</field>
+            <field name="phone">+62 822-9773-6123</field>
+        </record>
+
+        <record id="base.res_partner_address_31" model="res.partner">
+            <field name="name">Abeth</field>
+            <field name="email">abeth33@example.com</field>
+            <field name="phone">+62 858-1744-2727</field>
+        </record>
+
+        <record id="base.res_partner_address_32" model="res.partner">
+            <field name="name">Mita</field>
+            <field name="email">mita65@example.com</field>
+            <field name="phone">+62 858-8195-0551</field>
+        </record>
+
+        <record id="base.res_partner_address_33" model="res.partner">
+            <field name="name">Diya Paramitha</field>
+            <field name="email">diya.paramita24@example.com</field>
+            <field name="phone">+62 856-1231-6696</field>
+        </record>
+
+        <record id="base.res_partner_address_34" model="res.partner">
+            <field name="name">Darrel</field>
+            <field name="email">darrel84@example.com</field>
+            <field name="phone">+62 834-8847-8888</field>
+        </record>
+    </data>
+</sigil>

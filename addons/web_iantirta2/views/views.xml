@@ -1,0 +1,60 @@
+<sigil>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="web_iantirta.list">
+      <field name="name">web_iantirta list</field>
+      <field name="model">web_iantirta.web_iantirta</field>
+      <field name="arch" type="xml">
+        <list>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </list>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="web_iantirta.action_window">
+      <field name="name">web_iantirta window</field>
+      <field name="res_model">web_iantirta.web_iantirta</field>
+      <field name="view_mode">list,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="web_iantirta.action_server">
+      <field name="name">web_iantirta server</field>
+      <field name="model_id" ref="model_web_iantirta_web_iantirta"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "list,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="web_iantirta" id="web_iantirta.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="web_iantirta.menu_1" parent="web_iantirta.menu_root"/>
+    <menuitem name="Menu 2" id="web_iantirta.menu_2" parent="web_iantirta.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="web_iantirta.menu_1_list" parent="web_iantirta.menu_1"
+              action="web_iantirta.action_window"/>
+    <menuitem name="Server to list" id="web_iantirta" parent="web_iantirta.menu_2"
+              action="web_iantirta.action_server"/>
+-->
+  </data>
+</sigil>

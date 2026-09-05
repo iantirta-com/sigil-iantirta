@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="UserMenu" t-inherit="web.UserMenu" t-inherit-mode="extension">
+        <xpath expr="//img[hasclass('o_user_avatar')]" position="attributes">
+            <attribute name="class" remove="rounded" add="rounded-circle" separator=" "/>
+        </xpath>
+        <xpath expr="//div[hasclass('o_user_menu')]" position="attributes">
+            <attribute name="class" remove="bg-inherit" add="" separator=" "/>
+        </xpath>
+    </t>
+</templates>

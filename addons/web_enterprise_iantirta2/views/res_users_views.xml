@@ -1,0 +1,134 @@
+<sigil>
+    <data>
+        <record id="view_users_form" model="ir.ui.view">
+            <field name="name">res.users.form</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+                <!-- replace original -->
+                <xpath expr="//sheet/div[hasclass('d-flex')]" position="replace"/>
+                <xpath expr="//sheet/group" position="replace"/>
+                <xpath expr="//sheet" position="before">
+                    <sheet class="ie_form_sheet_aside">
+                        <field name="state" widget="statusbar"/>
+                        <div class="d-flex flex-column mt-3">
+                            <field name="image_1920" widget="contact_image" options="{'preview_image': 'avatar_128', 'img_class': 'rounded-4', 'size': [100, 100],}"/>
+                            <field name="avatar_128" invisible="1"/>
+                            <div class="oe_title d-flex flex-column flex-grow-1">
+                                <!-- <h1 class="mb-0">
+                                    <field name="name" placeholder="e.g. Budi Santoso" required="1"/>
+                                </h1> -->
+                                <h5 class="mb-0">
+                                    <label for="name"/>
+                                    <field name="name" placeholder="e.g. Budi Santoso" required="1"/>
+                                </h5>
+                                <!-- EXTENSION OF: -->
+                                <!-- HR -->
+                                <h5 name="h5_email" class="mb-0" invisible="not employee_id">
+                                    <group string="Access">
+                                        <span>
+                                            <i class="fa fa-fw fa-envelope me-1 text-primary" title="Login / Email" invisible="login != work_email"/>
+                                            <i class="fa fa-fw fa-key me-1 text-primary" title="Login" invisible="login == work_email"/>
+                                            <label for="login" class=""/>
+                                        </span>
+                                        <field name="login" nolabel="1" placeholder="Login" class=""/>
+                                        <span>
+                                            <i class="fa fa-fw fa-envelope me-1 text-primary" title="Work Email" invisible="login == work_email"/>
+                                            <label for="work_email" invisible="login == work_email" class=""/>
+                                        </span>
+                                        <field name="email_domain_placeholder" invisible="1" />
+                                        <field name="work_email" nolabel="1" widget="email" string="Work Email" class="" options="{'placeholder_field': 'email_domain_placeholder'}" invisible="login == work_email"/>
+                                        <!-- <field name="email" placeholder="Email" nolabel="1" class=""  invisible="login == work_email"/> -->
+                                    </group>
+                                </h5>
+                                <h5 name="h5_phone" class="mb-0" invisible="not employee_id">
+                                    <group string="Information">
+                                        <span>
+                                            <i class="fa fa-fw fa-phone me-1 text-primary" title="Work Phone"/>
+                                            <label for="work_phone" class=""/>
+                                        </span>
+                                        <field name="work_phone" nolabel="1" widget="phone" placeholder="Work Phone" string="Work Phone" class=""/>
+                                        <!-- <field name="phone" nolabel="1" placeholder="Phone" class=""/> -->
+                                        <span>
+                                            <i class="fa fa-mobile fa-fw me-1 text-primary" title="Work Mobile"/>
+                                            <label for="mobile_phone" class=""/>
+                                        </span>
+                                        <field name="mobile_phone" nolabel="1" widget="phone" placeholder="Work Mobile" string="Work Mobile" class=""/>
+                                    </group>
+                                </h5>
+                            </div>
+                        </div>
+                        <separator string="Related Partner" invisible="not id" groups="base.group_no_one"/>
+                        <group invisible="not id">
+                            <field name="partner_id" groups="base.group_no_one"
+                                readonly="1"
+                                required="0"
+                                nolabel="1"/>
+                        </group>
+                        <separator string="Quick Actions" invisible="state != 'new'"/>
+                        <group invisible="state != 'new'">
+                            <button string="Send an Invitation Email"
+                                type="object" name="action_reset_password" context="{'create_user': 1}"
+                                invisible="state != 'new'"/>
+                        </group>
+                        <!-- HR SPECIFIC -->
+                        <group invisible="not id or share or employee_id">
+                            <field name="share" invisible="1"/>
+                            <field name="employee_ids" invisible="1"/>
+                            <field name="employee_id" invisible="1"/>
+                            <button string="Create employee"
+                                    type="object" name="action_create_employee"
+                                    invisible="not id or share or employee_id"
+                                    groups="hr.group_hr_user"/>
+                        </group>
+                        
+                    </sheet>
+                </xpath>
+                <xpath expr="//header" position="replace"/>
+            </field>
+        </record>
+        <record id="view_users_tree" model="ir.ui.view">
+            <field name="name">res.users.list</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='role']" position="attributes">
+                    <attribute name="decoration-warning">role == 'group_system'</attribute>
+                    <attribute name="decoration-muted">role == 'group_user'</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_res_users_kanban" model="ir.ui.view">
+            <field name="name">res.users.kanban</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_res_users_kanban"/>
+            <field name="arch" type="xml">
+                <xpath expr="//aside/field" position="attributes">
+                    <attribute name="options">{'img_class': 'rounded-circle', 'size': [64, 64]}</attribute>
+                </xpath>
+                <xpath expr="//main" position="replace">
+                    <main class="w-100 ps-2 pt-1">
+                        <div>
+                            <div t-if="record.active.raw_value" class="text-success float-end mb4">
+                                <i class="fa fa-circle" role="img" aria-label="Ok" title="Ok"></i>
+                            </div>
+                            <div t-else="" class="text-danger float-end mb4">
+                                <i class="fa fa-circle" role="img" aria-label="Invalid" title="Invalid"></i>
+                            </div>
+                            <h3>
+                                <field class="fw-bold" name="name"/>
+                            </h3>
+                        </div>
+                        <div class="text-muted">
+                            <span class="mb4 text-truncate" title="Login">
+                                <i class="fa fa-fw fa-sign-in me-1" role="img" aria-label="Login"></i>
+                                <field name="login"/>
+                            </span>
+                            <field class="badge text-bg-dark rounded-pill float-end" name="lang"/>
+                        </div>
+                    </main>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</sigil>

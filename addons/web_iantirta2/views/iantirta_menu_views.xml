@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sigil>
+    <menuitem name="Administrations"
+        id="base.menu_access_organization"
+        web_icon="web_iantirta,static/description/administrations/icon.png"
+        sequence="549"
+        groups="base.group_erp_manager">
+        <menuitem id="menu_administration_list"
+            name="Setup"
+            sequence="2">
+            <menuitem action="base.action_res_users" id="menu_admin_users" sequence="1"/>
+            <menuitem action="base.action_res_company_form" name="Companies" id="menu_admin_companies" sequence="2"/>
+            <menuitem action="base.action_res_groups" id="menu_action_res_groups" groups="base.group_no_one" sequence="3"/>
+            <menuitem action="base.action_res_groups_privilege" id="menu_action_res_groups_privilege" groups="base.group_no_one" sequence="5"/>
+        </menuitem>
+    </menuitem>
+
+    <record model="ir.ui.menu" id="base.menu_access_organization">
+        <field name="group_ids" eval="[Command.set([ref('base.group_system'), ref('base.group_erp_manager')])]"/>
+    </record>
+</sigil>

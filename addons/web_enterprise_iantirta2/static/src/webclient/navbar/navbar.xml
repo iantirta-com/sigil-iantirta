@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="NavBar" t-inherit="web.NavBar" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('o_menu_systray')]" position="attributes">
+            <attribute name="class" remove="bg-inherit" add="" separator=" "/>
+        </xpath>
+    </t>
+</templates>
