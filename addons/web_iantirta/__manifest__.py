@@ -19,6 +19,13 @@ Long description of module's purpose
             ('after', 'web/static/src/scss/primary_variables.scss',
                 'web_iantirta/static/src/**/*.variables.scss'),
         ],
+        'web._assets_secondary_variables': [
+            ('prepend', 'web_iantirta/static/src/scss/secondary_variables.scss'),
+        ],
+        'web._assets_backend_helpers': [
+            ('prepend', 'web_iantirta/static/src/scss/bootstrap_overridden.scss'),
+        ],
+        
         'web.assets_backend': [
         #     'web_iantirta/static/src/webclient/**/*',
         #     'web_iantirta/static/src/search/**/*',
@@ -37,13 +44,6 @@ Long description of module's purpose
         'web.assets_frontend': [
             # 'web_iantirta/static/src/core/**/*',
             "web_iantirta/static/src/login.scss"
-        ],
-        'web._assets_backend_helpers': [
-            ('prepend', 'web_iantirta/static/src/scss/bootstrap_overridden.scss'),
-        ],
-        'web._assets_secondary_variables': [
-            ('prepend', 'web_iantirta/static/src/scss/bootstrap_overridden.scss'),
-            'web_iantirta/static/src/scss/secondary_variables.scss',
         ],
     },
     'data': [

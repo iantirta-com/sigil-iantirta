@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-inherit="web.Dialog" t-inherit-mode="extension">
+        <xpath expr="//footer" position="attributes">
+            <attribute name="class" add="justify-content-md-end" remove="justify-content-md-start" separator=" "/>
+        </xpath>
+    </t>
+</templates>

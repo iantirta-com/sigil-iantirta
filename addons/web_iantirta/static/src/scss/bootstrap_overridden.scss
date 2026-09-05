@@ -1,6 +1,33 @@
 //////////////////////
 // Config
 //////////////////////
+$min-contrast-ratio: 3 !default;
+
+// $color-contrast-dark:      $black !default;
+// $color-contrast-light:     $white !default;
+
+$enable-caret:                true !default;
+$enable-rounded:              true !default;
+$enable-shadows:              false !default;
+$enable-gradients:            false !default;
+$enable-transitions:          true !default;
+$enable-reduced-motion:       true !default;
+$enable-smooth-scroll:        false !default;
+$enable-grid-classes:         true !default;
+$enable-container-classes:    true !default;
+$enable-cssgrid:              true !default;
+$enable-button-pointers:      true !default;
+$enable-rfs:                  true !default;
+$enable-validation-icons:     true !default;
+$enable-negative-margins:     true !default;
+$enable-deprecation-messages: true !default;
+$enable-important-utilities:  true !default;
+
+$enable-dark-mode:            false !default;
+$color-mode-type:             data !default; // `data` or `media-query`
+
+$variable-prefix: '' !default;
+
 
 //////////////////////
 // Opacity Helper
@@ -16,18 +43,69 @@
 ///     - gray 900 == onsurface
 $white:                             $o-white !default;
 $black:                             $o-black !default;
+
 $primary:                           $o-brand-primary !default;
-$secondary:                         $m3-outline-var !default; // grey 300
-$dark:                              $m3-onsurface !default; // grey 900
+$secondary:                         $m3-secondary !default;
+$dark:                              $m3-onsurface !default;
 
 $success:                           $o-success !default;
 $info:                              $o-info !default;
 $warning:                           $o-warning !default;
 $danger:                            $o-danger !default;
 
+$gradient:                          linear-gradient(180deg, rgba($white, .15), rgba($white, 0)) !default;
+
+
+//////////////////////
+// Spacer
+//////////////////////
+$spacer:                            $o-spacer !default;
+
+
 //////////////////////
 // Fonts
 //////////////////////
+$font-family-sans-serif:            $o-font-family-sans-serif !default;
+$font-family-monospace:             SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
+
+$font-size-root:                    null !default;
+$font-size-base:                    $o-font-size-base !default;
+$font-size-sm:                      $o-font-size-base-small !default;
+$font-size-lg:                      $font-size-base * 1.25 !default;
+$small-font-size:                   $font-size-sm !default;
+
+$font-weight-lighter:             lighter !default;
+$font-weight-light:               300 !default;
+$font-weight-normal:              $o-font-weight-normal !default; // 400
+$font-weight-medium:              500 !default;
+$font-weight-semibold:            600 !default;
+$font-weight-bold:                $o-font-weight-medium !default; // 500
+$font-weight-bolder:              bolder !default;
+
+$font-weight-base:                $font-weight-normal !default;
+
+$line-height-base:                  $o-line-height-base !default;
+$line-height-sm:                    $o-line-height-sm !default;
+$line-height-lg:                    $o-line-height-lg !default;
+
+$h1-font-size:                      $font-size-base * 2.0 !default;
+$h2-font-size:                      $font-size-base * 1.5 !default;
+$h3-font-size:                      $font-size-base * 1.3 !default;
+$h4-font-size:                      $font-size-base * 1.2 !default;
+$h5-font-size:                      $font-size-base * 1.1 !default;
+$h6-font-size:                      $font-size-base !default;
+
+$headings-margin-bottom:            $spacer * .5 !default;
+$headings-font-family:              $o-headings-font-family !default;
+$headings-font-style:               null !default;
+$headings-font-weight:              $font-weight-bold !default;
+$headings-line-height:              1.2 !default;
+$headings-color:                    $o-main-headings-color !default;
+
+$paragraph-margin-bottom:   1rem !default;
+
+$text-muted:                        $o-main-color-muted !default;
+
 
 //////////////////////
 // Border
@@ -53,23 +131,74 @@ $border-radius-lg:                  $o-border-radius-lg !default;
 $border-radius-xl:                  1rem !default;
 $border-radius-xxl:                 2rem !default;
 $border-radius-pill:                50rem !default;
+$border-radius-2xl:                 $border-radius-xxl !default; // Deprecated in v5.3.0
+
 
 //////////////////////
 // Box Shadow
 //////////////////////
-$box-shadow:                        0 .5rem 1rem rgba($black, .15) !default;
-$box-shadow-sm:                     0 .125rem .25rem rgba($black, .075) !default;
-$box-shadow-lg:                     0 1rem 3rem rgba($black, .175) !default;
-$box-shadow-inset:                  inset 0 1px 2px rgba($black, .075) !default;
+$box-shadow:                        0 .5rem 1.5rem rgba($m3-shadow, .1) !default;
+$box-shadow-sm:                     0 .125rem .25rem rgba($m3-shadow, .075) !default;
+$box-shadow-lg:                     0.75rem 0 2rem rgba($m3-shadow, .12) !default;
+$box-shadow-inset:                  inset 0 1px 2px rgba($m3-shadow, .075) !default;
 
 
 //////////////////////
-// Spacer
+// Body
 //////////////////////
+$body-bg:                           $o-webclient-background-color !default; // surface container
+$body-color:                        $o-main-text-color !default; // onsurface
+
+
+//////////////////////
+// Links
+//////////////////////
+$link-color:                        $o-main-link-color !default;
+$link-decoration:                   none !default;
+$link-shade-percentage:             30% !default;
+$link-hover-color:                  shift-color($link-color, $link-shade-percentage) !default;
+$link-hover-decoration:             none !default;
+
+$stretched-link-pseudo-element:     after !default;
+$stretched-link-z-index:            1 !default;
+
+// icon link
+$icon-link-gap:                     .375rem !default;
+$icon-link-underline-offset:        .25em !default;
+$icon-link-icon-size:               1em !default;
+$icon-link-icon-transition:         .2s ease-in-out transform !default;
+$icon-link-icon-transform:          translate3d(.25em, 0, 0) !default;
+
+
+//////////////////////
+// Grid
+//////////////////////
+$grid-columns:                      12 !default;
+$grid-gutter-width:                 $o-horizontal-padding * 2 !default;
+$grid-row-columns:                  6 !default;
+
 
 //////////////////////
 // Component
 //////////////////////
+$component-active-color:            $o-component-active-color !default;
+$component-active-bg:               $o-component-active-bg !default;
+
+$focus-ring-width:                  .25rem !default;
+$focus-ring-opacity:                .25 !default;
+$focus-ring-color:                  rgba($primary, $focus-ring-opacity) !default;
+$focus-ring-blur:                   0 !default;
+$focus-ring-box-shadow:             0 0 $focus-ring-blur $focus-ring-width $focus-ring-color !default;
+
+$caret-width:                       4px !default;
+$caret-vertical-align:              $caret-width * .85 !default;
+$caret-spacing:                     $caret-width * .85 !default;
+
+$btn-font-weight:                   $font-weight-bold !default;
+$btn-disabled-opacity:              $o-opacity-disabled !default;
+$btn-border-radius-lg:              $border-radius !default;
+$btn-transition:                    color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out !default;
+
 
 //////////////////////
 // Modal
@@ -116,112 +245,204 @@ $modal-transition:                  transform .3s ease-out !default; // bootstra
 // $modal-scale-transform:             none !default;
 $modal-scale-transform:             scale(1.02) !default; // bootstrapt
 
+// ** close button ** //
+$btn-close-width:            1em !default;
+$btn-close-height:           $btn-close-width !default;
+$btn-close-padding-x:        .25em !default;
+$btn-close-padding-y:        $btn-close-padding-x !default;
+$btn-close-color:            $black !default;
+$btn-close-bg:               url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='#{$btn-close-color}'><path d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/></svg>") !default;
+$btn-close-focus-shadow:     $focus-ring-box-shadow !default;
+$btn-close-opacity:          .5 !default;
+$btn-close-hover-opacity:    .75 !default;
+$btn-close-focus-opacity:    1 !default;
+$btn-close-disabled-opacity: .25 !default;
+$btn-close-white-filter:     invert(1) grayscale(100%) brightness(200%) !default;
+
 
 //////////////////////
 // Table
 //////////////////////
+$table-cell-padding-y:              .75rem !default;
+$table-cell-padding-x:              .75rem !default;
+$table-cell-padding-y-sm:           $o-table-cell-padding-y-sm !default;
+$table-cell-padding-x-sm:           $o-table-cell-padding-x-sm !default;
 
-//////////////////////
-// Sheet
-//////////////////////
+$table-cell-vertical-align:         top !default;
+
+// $table-color:                    var(--#{$prefix}emphasis-color) !default;
+$table-bg:                          transparent !default;
+$table-accent-bg:                   transparent !default;
+
+$table-th-font-weight:              $headings-font-weight !default;
+
+$table-striped-color:               inherit !default;
+$table-striped-bg-factor:           0.01 !default;
+// $table-striped-bg:               rgba(var(--#{$prefix}emphasis-color-rgb), $table-striped-bg-factor) !default;
+
+$table-active-color:                $headings-color !default;
+$table-active-bg-factor:            .05 !default;
+// $table-active-bg:                rgba(var(--#{$prefix}emphasis-color-rgb), $table-active-bg-factor) !default;
+
+// $table-hover-color:              $table-color !default;
+$table-hover-bg-factor:             .055 !default;
+// $table-hover-bg:                 rgba(var(--#{$prefix}emphasis-color-rgb), $table-hover-bg-factor) !default;
+
+$table-border-factor:               .2 !default;
+// $table-border-width:             var(--#{$prefix}border-width) !default;
+$table-border-color:                $border-color !default;
+
+$table-striped-order:               even !default;
+$table-striped-columns-order:       even !default;
+
+$table-group-separator-color:       $m3-surface-var !default;
+
+// $table-caption-color:            var(--#{$prefix}secondary-color) !default;
+
+$table-bg-scale:                    -80% !default;
+
+// $table-variants: (
+//   "primary":    shift-color($primary, $table-bg-scale),
+//   "secondary":  shift-color($secondary, $table-bg-scale),
+//   "success":    shift-color($success, $table-bg-scale),
+//   "info":       shift-color($info, $table-bg-scale),
+//   "warning":    shift-color($warning, $table-bg-scale),
+//   "danger":     shift-color($danger, $table-bg-scale),
+//   "light":      $light,
+//   "dark":       $dark,
+// ) !default;
+
 
 //////////////////////
 // Form
 //////////////////////
+$input-btn-padding-y:                   o-to-rem(8) !default;
+$input-btn-padding-x:                   o-to-rem(24) !default;
+
+$input-btn-padding-y-sm:                o-to-rem(3) !default;
+$input-btn-padding-x-sm:                o-to-rem(8) !default;
+
+$input-btn-padding-y-lg:                o-to-rem(6) !default;
+$input-btn-padding-x-lg:                o-to-rem(12) !default;
+
+$input-bg:                              $o-input-bg !default;
+$input-focus-border-color:              $o-brand-primary !default;
+
+// $input-placeholder-color:               mix($gray-400, $gray-500) !default;
+
+$form-check-input-checked-color:        $o-brand-lightsecondary !default;
+$form-check-input-checked-border-color: $o-brand-primary !default;
+$form-check-input-checked-bg-color:     $o-brand-primary !default;
+
+$form-switch-checked-color:             $white !default;
+$form-switch-focus-color:               mix($o-success, $input-bg) !default;
+
+$form-range-thumb-bg:                   $primary !default;
+$form-range-thumb-focus-box-shadow:     0 0 0 1px $o-brand-primary !default;
+
 
 //////////////////////
 // List
 //////////////////////
+// $list-group-color:                  var(--#{$prefix}body-color) !default;
+$list-group-bg:                     $o-view-background-color !default;
+// $list-group-border-color:           var(--#{$prefix}border-color) !default;
+// $list-group-border-width:           var(--#{$prefix}border-width) !default;
+// $list-group-border-radius:          var(--#{$prefix}border-radius) !default;
+
+$list-group-item-padding-y:         $spacer * .5 !default;
+$list-group-item-padding-x:         $spacer !default;
+$list-group-item-bg-scale:          -80% !default; // Deprecated in v5.3.0
+$list-group-item-color-scale:       40% !default; // Deprecated in v5.3.0
+
+$list-group-hover-bg:               $m3-surface-container !default;
+$list-group-active-color:           $o-list-group-active-color !default;
+$list-group-active-bg:              $o-list-group-active-bg !default;
+$list-group-active-border-color:    $list-group-active-bg !default;
+
+// $list-group-disabled-color:         var(--#{$prefix}secondary-color) !default;
+$list-group-disabled-bg:            $list-group-bg !default;
+
+// $list-group-action-color:           var(--#{$prefix}secondary-color) !default;
+$list-group-action-hover-color:     $m3-onsurface !default;
+
+// $list-group-action-active-color:    var(--#{$prefix}body-color) !default;
+// $list-group-action-active-bg:       var(--#{$prefix}secondary-bg) !default;
+
 
 //////////////////////
 // Dropdown
 //////////////////////
+$dropdown-min-width:                180px !default;
+$dropdown-padding-x:                6px !default;
+$dropdown-padding-y:                6px !default;
+$dropdown-spacer:                   .125rem !default;
+$dropdown-font-size:                $font-size-base !default; // 14px
+// $dropdown-color:                    var(--#{$prefix}body-color) !default;
+$dropdown-bg:                       $o-blured-bg !default;
+$dropdown-border-color:             $border-color !default;
+// $dropdown-border-radius:            var(--#{$prefix}border-radius) !default; // 11px or 12px?
+// $dropdown-border-width:             var(--#{$prefix}border-width) !default;
+// $dropdown-inner-border-radius:      calc(#{$dropdown-border-radius} - #{$dropdown-border-width}) !default; // stylelint-disable-line function-disallowed-list
+$dropdown-divider-bg:               $dropdown-border-color !default;
+$dropdown-divider-margin-y:         $spacer * .25 !default;
+$dropdown-box-shadow:               $box-shadow !default;
+
+$dropdown-link-color:               $o-main-text-color !default;
+$dropdown-link-hover-color:         $dropdown-link-color !default;
+$dropdown-link-hover-bg:            $m3-surface-container !default;
+
+$dropdown-link-active-color:        $m3-onprimary-container !default;
+$dropdown-link-active-bg:           $m3-primary-container !default;
+
+$dropdown-link-disabled-color:      $o-main-color-muted !default;
+
+$dropdown-item-padding-y:           $o-dropdown-vpadding !default;
+$dropdown-item-padding-x:           $o-dropdown-hpadding !default;
+
+// $dropdown-header-color:             $gray-600 !default;
+$dropdown-header-padding-x:         $dropdown-item-padding-x !default;
+$dropdown-header-padding-y:         $dropdown-padding-y !default;
+$dropdown-header-padding:           $dropdown-header-padding-y $dropdown-header-padding-x !default; // Deprecated in v5.2.0
+
+
+//////////////////////
+// Breadcrumb
+/////////////////////
+$breadcrumb-font-size:              null !default;
+$breadcrumb-padding-y:              0 !default;
+$breadcrumb-padding-x:              0 !default;
+$breadcrumb-item-padding-x:         $o-breadcrumb-item-padding-x !default;
+$breadcrumb-margin-bottom:          0 !default;
+$breadcrumb-bg:                     $o-control-panel-background-color !default;
+// $breadcrumb-divider-color:          var(--#{$prefix}secondary-color) !default;
+// $breadcrumb-active-color:           var(--#{$prefix}secondary-color) !default;
+$breadcrumb-divider:                quote("/") !default;
+$breadcrumb-divider-flipped:        $breadcrumb-divider !default;
+$breadcrumb-border-radius:          null !default;
+
 
 //////////////////////
 // Tooltip
 //////////////////////
+$tooltip-font-size:                 $font-size-sm !default;
+$tooltip-max-width:                 400px !default;
+$tooltip-color:                     $m3-surface-var !default;
+$tooltip-bg:                        rgba($m3-onsurface, .8) !default;
+// $tooltip-border-radius:             var(--#{$prefix}border-radius) !default; // should this be 8px?
+$tooltip-opacity:                   1 !default;
+$tooltip-padding-y:                 $spacer * .25 !default; // should this be 14px ?
+$tooltip-padding-x:                 $spacer * .5 !default; // should this be 16px ?
+$tooltip-margin:                    null !default; // TODO: remove this in v6
+
+$tooltip-arrow-width:               .8rem !default;
+$tooltip-arrow-height:              .4rem !default;
+$tooltip-arrow-color:               null !default; // Deprecated in Bootstrap 5.2.0 for CSS variables
+
 
 //////////////////////
-// Breadcrumb
-//////////////////////
-
-//////////////////////
-// Badge
-//////////////////////
-
-//////////////////////
-// Card
-//////////////////////
-
-//////////////////////
-// Mobile
-//////////////////////
-
-//////////////////////
-// Easing
-//////////////////////
-
-//////////////////////
-// Button
-//////////////////////
-
-
-// Buttons + Forms
-//
-// Shared variables that are reassigned to `$input-` and `$btn-` specific variables.
-
-$input-btn-padding-y: o-to-rem(8) !default;
-$input-btn-padding-x: o-to-rem(24) !default;
-
-$input-btn-padding-y-sm: o-to-rem(3) !default;
-$input-btn-padding-x-sm: o-to-rem(8) !default;
-
-$input-btn-padding-y-lg: o-to-rem(6) !default;
-$input-btn-padding-x-lg: o-to-rem(12) !default;
-
-// Dropdowns
-//
-// Dropdown menu container and contents.
-
-$dropdown-bg: $m3-surface-container-lowest !default;
-$dropdown-color: $m3-onsurface !default;
-$dropdown-border-color: $m3-outline-var !default;
-
-$dropdown-link-color: $m3-onsurface !default;
-$dropdown-link-hover-color: $m3-onsurface !default;
-$dropdown-link-hover-bg: $m3-surface-container !default;
-
-$dropdown-link-active-color: $m3-onprimary-container !default;
-$dropdown-link-active-bg: $m3-primary-container !default;
-
-$dropdown-link-disabled-color: rgba($m3-onsurface, .38) !default;
-
-$dropdown-item-padding-y: 9px !default;
-$dropdown-item-padding-x: 10px !default;
-
-// $dropdown-link-color:               $o-gray-100 !default;
-// $dropdown-header-color:             $o-gray-400 !default;
-
-// ============================================================================
-// SIGIL — DROPDOWN TOKENS
-// ============================================================================
-
-$dropdown-border-width: 1px !default;
-$dropdown-border-radius: 12px !default;
-
-$dropdown-padding-y: 6px !default;
-$dropdown-padding-x: 6px !default;
-
-$dropdown-box-shadow:
-    0 8px 24px rgba($m3-shadow, .10),
-    0 2px 6px rgba($m3-shadow, .06) !default;
-
-$dropdown-font-size: 14px !default;
-
-
-
 // Navs
-
+//////////////////////
 $nav-tabs-border-color: $m3-outline-var !default;
 $nav-tabs-link-hover-border-color: transparent !default;
 $nav-tabs-link-active-color: $o-main-text-color !default;
@@ -230,6 +451,116 @@ $nav-tabs-link-active-border-color: transparent !default;
 
 $nav-link-padding-y: .625rem !default;
 $nav-link-padding-x: .875rem !default;
+
+$nav-tabs-link-active-bg: $white !default;
+
+$nav-pills-border-radius: 0 !default;
+$nav-pills-link-active-color: $white !default;
+$nav-pills-link-active-bg: $o-brand-primary !default;
+
+
+//////////////////////
+// Popover
+//////////////////////
+$popover-font-size:                 $font-size-sm !default;
+$popover-bg:                        $m3-surface-container-lowest !default;
+$popover-max-width:                 276px !default;
+// $popover-border-width:              var(--#{$prefix}border-width) !default;
+$popover-border-color:              $border-color !default;
+$popover-border-radius:             $border-radius !default;
+// $popover-inner-border-radius:       calc(#{$popover-border-radius} - #{$popover-border-width}) !default; // stylelint-disable-line function-disallowed-list
+// $popover-box-shadow:                var(--#{$prefix}box-shadow) !default;
+
+$popover-header-font-size:          $font-size-base !default;
+// $popover-header-bg:                 var(--#{$prefix}secondary-bg) !default;
+$popover-header-color:              $headings-color !default;
+$popover-header-padding-y:          .5rem !default;
+$popover-header-padding-x:          $spacer !default;
+
+// $popover-body-color:                var(--#{$prefix}body-color) !default;
+$popover-body-padding-y:            $spacer !default;
+$popover-body-padding-x:            $spacer !default;
+
+$popover-arrow-width:               1rem !default;
+$popover-arrow-height:              .5rem !default;
+
+$popover-arrow-color:               var(--popover-arrow-color, #{$popover-bg}) !default;
+$popover-arrow-outer-color:         $popover-border-color !default;
+
+
+//////////////////////
+// Toast
+//////////////////////
+$toast-max-width:                   320px !default;
+$toast-padding-x:                   1.5rem !default;
+$toast-padding-y:                   0.5rem !default;
+$toast-font-size:                   $font-size-base !default;
+$toast-color:                       null !default;
+$toast-background-color:            rgba($m3-surface-container-lowest, .7) !default;
+// $toast-border-width:                var(--#{$prefix}border-width) !default;
+// $toast-border-color:                var(--#{$prefix}border-color-translucent) !default;
+// $toast-border-radius:               var(--#{$prefix}border-radius) !default;
+// $toast-box-shadow:                  var(--#{$prefix}box-shadow) !default;
+// $toast-spacing:                     $container-padding-x !default;
+
+// $toast-header-color:                var(--#{$prefix}secondary-color) !default;
+$toast-header-background-color:     $toast-background-color !default;
+// $toast-header-border-color:         $toast-border-color !default;
+
+
+//////////////////////
+// Badge
+//////////////////////
+$badge-font-size:                   .75em !default;
+$badge-font-weight:                 $font-weight-bold !default;
+$badge-color:                       inherit !default;
+$badge-padding-y:                   0.25em !default;
+$badge-padding-x:                   0.82em !default;
+// $badge-border-radius:               var(--#{$prefix}border-radius) !default;
+
+
+//////////////////////
+// Code / Keyboard
+//////////////////////
+$code-font-size:                    $small-font-size !default;
+$code-color:                        $o-main-code-color !default;
+
+$kbd-padding-y:                     .1875rem !default; // should this be 2px?
+$kbd-padding-x:                     .375rem !default; // 6px
+$kbd-font-size:                     $code-font-size !default;
+$kbd-color:                         $m3-surface-container-low !default;
+$kbd-bg:                            $m3-onsurface-var !default;
+$nested-kbd-font-weight:            null !default; // Deprecated in v5.2.0, removing in v6
+
+$kbd-box-shadow:                    0px 1px 1px rgba($o-black, 0.2),
+                                    inset 0px -1px 1px 1px rgba($o-gray-200, 0.8),
+                                    inset 0px 2px 0px 0px rgba($o-white, 0.8) !default;
+
+$pre-color:                         null !default;
+
+
+//////////////////////
+// Card
+//////////////////////
+$card-bg:                           $o-view-background-color !default;
+$card-spacer-y:                     $spacer !default; // BS Default
+$card-cap-padding-y:                $card-spacer-y !default;
+
+
+//////////////////////
+// Easing
+//////////////////////
+$transition-base:             all .2s ease-in-out !default;
+$transition-fade:             opacity .15s linear !default;
+$transition-collapse:         height .35s ease !default;
+$transition-collapse-width:   width .35s ease !default;
+
+
+.user-select-none {
+    -webkit-user-select: none !important; // not included in BS by default
+}
+
+
 
 $o-notebook-active-color: $o-brand-primary !default;
 $o-notebook-hover-bg: $m3-surface-container-low !default;

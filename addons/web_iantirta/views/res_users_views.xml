@@ -89,25 +89,21 @@
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="oe_title flex-fill">
                         <group>
-                            <group>
-                                <label for="email" string="Email Address"/>
-                                <h5 name="h5_email" class="d-flex align-items-baseline gap-2 mb-0">
-                                    <i class="fa fa-fw fa-envelope text-primary" title="Email"/>
-                                    <field name="email" placeholder="Email"/>
-                                </h5>
-                            </group>
-                            <group>
-                                <label for="name" string="Full Name"/>
-                                <h1 class="d-flex align-items-center gap-2">
-                                    <i class="fa fa-fw fa-user-circle-o text-primary" title="Username"/>
-                                    <field name="name"/>
-                                </h1>
-                                <label for="phone" string="Phone Number"/>
-                                <h5 name="h5_phone" class="d-flex align-items-baseline gap-2 mb-0">
-                                    <i class="fa fa-fw fa-phone text-primary" title="Phone"/>
-                                    <field name="phone" placeholder="Phone"/>
-                                </h5>
-                            </group>
+                            <label for="name" string="Full Name"/>
+                            <h1 class="d-flex align-items-center gap-2">
+                                <i class="fa fa-fw fa-user-circle-o text-primary" title="Username"/>
+                                <field name="name"/>
+                            </h1>
+                            <label for="email" string="Email Address"/>
+                            <h5 name="h5_email" class="d-flex align-items-baseline gap-2 mb-0">
+                                <i class="fa fa-fw fa-envelope text-primary" title="Email"/>
+                                <field name="email" placeholder="Email"/>
+                            </h5>
+                            <label for="phone" string="Phone Number"/>
+                            <h5 name="h5_phone" class="d-flex align-items-baseline gap-2 mb-0">
+                                <i class="fa fa-fw fa-phone text-primary" title="Phone"/>
+                                <field name="phone" placeholder="Phone"/>
+                            </h5>
                         </group>
                     </div>
                     <div>
@@ -122,6 +118,12 @@
             <page name="page_security" position="attributes">
                 <attribute name="string">Security &amp; Access</attribute> 
             </page>
+            <footer position="replace">
+                <footer>
+                    <button name="preference_cancel" string="Discard" special="cancel" data-hotkey="x" class="btn-outline-danger"/>
+                    <button name="preference_save" type="object" string="Update Preferences" class="btn-primary" data-hotkey="q"/>
+                </footer>
+            </footer>
         </field>
     </record>
 </sigil>
