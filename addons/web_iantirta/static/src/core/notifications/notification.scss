@@ -1,0 +1,49 @@
+.o_notification_manager {
+    --Notification__background-color: #{$m3-inverse-surface};
+    color: $m3-inverse-onsurface;
+    
+    top: auto;
+    bottom: 12px;
+
+    @include media-breakpoint-up(sm) {
+        left: 24px;
+        right: auto;
+    }
+    .o_notification {
+        border-radius: 4px !important;
+        > .o_notification_bar {
+            display: none;
+        }
+        .o_notification_wrapper {
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            padding: 14px 0 14px 16px;
+            justify-content: space-between;
+            > .o_notification_body {
+                flex: fit-content;
+                > .o_notification_buttons {
+                    .btn.btn-link {
+                        --btn-font-weight: 400;
+                        --btn-color: #{$m3-inverse-primary};
+                        --btn-bg: transparent;
+                        --btn-border-color: transparent;
+                        --btn-hover-color: #{darken($m3-inverse-primary, 3%)};
+                        --btn-hover-border-color: transparent;
+                        --btn-active-color: #{darken($m3-inverse-primary, 3%)};
+                        --btn-active-border-color: transparent;
+                        --btn-disabled-color: #6c757d;
+                        --btn-disabled-border-color: transparent;
+                        --btn-box-shadow: 0 0 0 #000;
+                        --btn-focus-shadow-rgb: 91, 108, 147;
+                    }
+                }
+            }
+            > .o_notification_close {
+                padding-left: 12px;
+                padding-right: 12px;
+                width: 24px;
+            }
+        }
+    }
+}

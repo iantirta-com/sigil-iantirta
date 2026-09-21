@@ -1,0 +1,61 @@
+.o_kanban_renderer {
+    --KanbanGroup-background: #{$m3-surface};
+    --Kanban-gap: 8px;
+    @include print-variable(KanbanGroup-padding-h, $o-kanban-group-padding);
+
+    &.o_kanban_ungrouped {
+        @include media-breakpoint-up(md) {
+            --Kanban-padding: 24px;
+        }
+    }
+    &.o_kanban_grouped {
+        .o_kanban_group, .o_column_quick_create {
+            margin: var(--KanbanGroup-padding-h) 0;
+            padding: 0;
+            box-shadow: $box-shadow-sm;
+            border-radius: $border-radius;
+            &:first-child {
+                margin-left: var(--KanbanGroup-padding-h);
+            }
+            &:last-child {
+                margin-right: var(--KanbanGroup-padding-h);
+            }
+            > :first-child {
+               border-top-right-radius: $border-radius;
+               border-top-left-radius: $border-radius; 
+            }
+            > :last-child {
+                border-bottom-left-radius: $border-radius;
+                border-bottom-right-radius: $border-radius;
+            }
+        }
+        .o_kanban_record {
+            border-radius: 0;
+            box-shadow: none;
+        }
+        .o_kanban_group:not(.o_column_folded) .o_kanban_header, .o_quick_create_folded {
+            padding: var(--KanbanRecord-padding-v) var(--KanbanRecord-padding-h);
+            border-width: var(--KanbanRecord-border-width, #{$border-width});
+            border-style: solid;
+            border-color: $border-color;
+            background-color: $o-view-background-color;
+            margin: 0 0 -2px;
+        }
+    }
+    @include media-breakpoint-down(md) {
+        --KanbanGroup-padding-h: 16px;
+        &.o_kanban_ungrouped {
+            --Kanban-gap: 0;
+        }
+    }
+}
+// Record
+.o_kanban_record {
+    &:not(.o_kanban_ghost) {
+        @include media-breakpoint-up(md) {
+            border-radius: $border-radius;
+            box-shadow: $box-shadow-sm;
+        }
+        gap: 16px;
+    }
+}

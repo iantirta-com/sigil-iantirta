@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sigil>
+    <template id="web_iantirta.components_page" name="Components">
+        <t t-call="web.layout">
+            <t t-set="head_web">
+                <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+                <t t-call-assets="web_iantirta.assets_components_page"/>
+            </t>
+            <t t-set="head" t-value="head_web + (head or '')" media="screen"/>
+        </t>
+    </template>
+</sigil>

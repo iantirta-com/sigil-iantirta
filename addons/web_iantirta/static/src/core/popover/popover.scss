@@ -1,0 +1,13 @@
+.popover:has(.o-tooltip) {
+    background-color: transparent;
+    border-radius: $tooltip-border-radius;
+    backdrop-filter: none;
+    border: none;
+    .o-tooltip {
+        @include print-variable(dropdown-bg-filter, $o-dropdown-bg-filter);
+        @media (prefers-reduced-transparency: reduce) {
+            --dropdown-bg-filter: unset;
+        }
+        backdrop-filter: var(--dropdown-bg-filter);
+    }
+}

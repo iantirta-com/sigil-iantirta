@@ -7,4 +7,46 @@
             font-size: inherit;
         }
     }
+
+    .o_form_sheet {
+        @include media-breakpoint-up(md) {
+            --formView-sheet-border-radius: var(--formView-sheet-border-radius-md, #{$border-radius});
+            // --formView-sheet-padding-y: var(--formView-sheet-padding-y-md, #{map-get($spacers, 3)});
+            box-shadow: $box-shadow-sm;
+        }
+        .o_inner_group {
+            @include media-breakpoint-up(sm) {
+                --inner-group-row-gap: 0; // down-md
+                @include form-break-table();
+                
+                .o_cell.mb-sm-0 {
+                    margin-bottom: 24px !important;
+                }
+            }
+        }
+        .o_group {
+            .o_inner_group {
+                @include media-breakpoint-up(sm) {
+                    .g-col-sm-2 {
+                        grid-column: unset;
+                    }
+                }
+                @include media-breakpoint-down(lg) {
+                    margin-bottom: 0 !important;
+                    &:last-child {
+                        margin-bottom: map-get($spacers, 3) !important;
+                    }
+                }
+            }
+            .o_form_label {
+                @include media-breakpoint-up(sm) {
+                    font-weight: $font-weight-normal;
+                    color: $o-brand-secondary;
+                }
+                @include media-breakpoint-down(md) {
+                    font-size: $font-size-base;
+                }
+            }
+        }
+    }
 }
