@@ -1,0 +1,895 @@
+// ============================================================================
+// KaraokePlus Login
+// ============================================================================
+
+.o_kplus_login_body {
+    background: #0b0b0d;
+}
+
+.o_kplus_login {
+    --kplus-bg: #0b0b0d;
+    --kplus-surface: rgba(255, 255, 255, .075);
+    --kplus-surface-strong: rgba(255, 255, 255, .11);
+    --kplus-border: rgba(255, 255, 255, .10);
+    --kplus-text: #f5f5f7;
+    --kplus-muted: #9a9aa1;
+
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: minmax(360px, 440px) 1fr;
+    overflow: hidden;
+
+    color: var(--kplus-text);
+    background: var(--kplus-bg);
+
+    font-family:
+        Inter,
+        ui-sans-serif,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    -webkit-font-smoothing: antialiased;
+
+
+    // ------------------------------------------------------------------------
+    // Login side
+    // ------------------------------------------------------------------------
+
+    .o_kplus_login_side {
+        position: relative;
+        z-index: 2;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        min-height: 100vh;
+        padding: 42px;
+
+        background:
+            linear-gradient(
+                180deg,
+                rgba(255, 255, 255, .025),
+                rgba(255, 255, 255, .01)
+            );
+
+        border-right: 1px solid var(--kplus-border);
+    }
+
+
+    // ------------------------------------------------------------------------
+    // Brand
+    // ------------------------------------------------------------------------
+
+    .o_kplus_brand {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+
+        color: #fff;
+
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: -.04em;
+    }
+
+    .o_kplus_brand_mark {
+        width: 31px;
+        height: 31px;
+
+        display: grid;
+        place-items: center;
+
+        border-radius: 9px;
+
+        background: #fff;
+        color: #000;
+
+        font-size: 14px;
+        font-weight: 900;
+        letter-spacing: -.05em;
+    }
+
+
+    // ------------------------------------------------------------------------
+    // Login content
+    // ------------------------------------------------------------------------
+
+    .o_kplus_login_content {
+        width: 100%;
+        max-width: 350px;
+        margin: auto;
+    }
+
+    .o_kplus_login_eyebrow {
+        margin-bottom: 12px;
+
+        color: var(--kplus-muted);
+
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+
+    .o_kplus_login_content > h1 {
+        margin: 0;
+
+        color: var(--kplus-text);
+
+        font-size: 34px;
+        line-height: 1.08;
+        letter-spacing: -.045em;
+    }
+
+    .o_kplus_login_intro {
+        margin: 13px 0 30px;
+
+        color: var(--kplus-muted);
+
+        font-size: 14px;
+        line-height: 1.55;
+    }
+
+
+    // ------------------------------------------------------------------------
+    // Odoo/Sigil injected login form
+    //
+    // This styles the contents inserted through:
+    //
+    //     <t t-out="0"/>
+    //
+    // ------------------------------------------------------------------------
+
+    .o_kplus_login_form {
+
+        // Generic form spacing
+        form {
+            width: 100%;
+        }
+
+        // --------------------------------------------------------------------
+        // Labels
+        // --------------------------------------------------------------------
+
+        label {
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #c8c8cd;
+
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        // --------------------------------------------------------------------
+        // Fields
+        // --------------------------------------------------------------------
+
+        .form-group,
+        .mb-3 {
+            margin-bottom: 15px !important;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        select {
+            width: 100%;
+            height: 48px;
+
+            padding: 0 15px;
+
+            border: 1px solid var(--kplus-border);
+            border-radius: 13px;
+
+            outline: none;
+
+            background: rgba(255, 255, 255, .045);
+            color: var(--kplus-text);
+
+            font-size: 14px;
+
+            transition:
+                border-color .15s ease,
+                background .15s ease,
+                box-shadow .15s ease;
+
+            &::placeholder {
+                color: #66666d;
+            }
+
+            &:focus {
+                border-color: rgba(255, 255, 255, .35);
+
+                background: rgba(255, 255, 255, .065);
+
+                box-shadow:
+                    0 0 0 3px rgba(255, 255, 255, .055);
+            }
+        }
+
+        // --------------------------------------------------------------------
+        // Select / database selector
+        // --------------------------------------------------------------------
+
+        select {
+            appearance: none;
+
+            padding-right: 40px;
+
+            background-image:
+                linear-gradient(45deg, transparent 50%, #888 50%),
+                linear-gradient(135deg, #888 50%, transparent 50%);
+
+            background-position:
+                #{"calc(100% - 18px)"} 20px,
+                #{"calc(100% - 13px)"} 20px;
+
+            background-size:
+                5px 5px,
+                5px 5px;
+
+            background-repeat: no-repeat;
+        }
+
+        // --------------------------------------------------------------------
+        // Remember me / checkbox
+        // --------------------------------------------------------------------
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            margin: 4px 0 22px;
+            padding: 0;
+
+            color: var(--kplus-muted);
+
+            font-size: 12px;
+        }
+
+        .form-check-input {
+            width: 15px;
+            height: 15px;
+
+            margin: 0;
+
+            accent-color: #fff;
+        }
+
+        .form-check-label {
+            margin: 0;
+
+            color: var(--kplus-muted);
+
+            font-size: 12px;
+            font-weight: 400;
+        }
+
+        // --------------------------------------------------------------------
+        // Submit button
+        // --------------------------------------------------------------------
+
+        button[type="submit"],
+        .btn-primary {
+            width: 100%;
+            height: 48px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 0 18px;
+
+            border: 0;
+            border-radius: 13px;
+
+            background: #fff;
+            color: #0b0b0d;
+
+            font-size: 14px;
+            font-weight: 650;
+
+            cursor: pointer;
+
+            transition:
+                transform .15s ease,
+                opacity .15s ease,
+                background .15s ease;
+
+            &:hover {
+                opacity: .9;
+                background: #fff;
+            }
+
+            &:active {
+                transform: scale(.985);
+            }
+
+            &:focus {
+                box-shadow:
+                    0 0 0 3px rgba(255, 255, 255, .10);
+            }
+        }
+
+        // --------------------------------------------------------------------
+        // Links
+        // --------------------------------------------------------------------
+
+        a {
+            color: #d4d4d8;
+            text-decoration: none;
+
+            &:hover {
+                color: #fff;
+            }
+        }
+
+        // --------------------------------------------------------------------
+        // Error message
+        // --------------------------------------------------------------------
+
+        .alert {
+            margin-bottom: 18px;
+
+            border: 1px solid rgba(255, 255, 255, .10);
+            border-radius: 13px;
+
+            background: rgba(255, 255, 255, .055);
+            color: #d8d8dc;
+
+            font-size: 12px;
+        }
+
+        .alert-danger {
+            border-color: rgba(255, 100, 100, .20);
+            background: rgba(255, 80, 80, .07);
+            color: #f0b8b8;
+        }
+
+        // --------------------------------------------------------------------
+        // Database management / auxiliary actions
+        // --------------------------------------------------------------------
+
+        .oe_login_buttons {
+            margin-top: 0;
+        }
+
+        .justify-content-between {
+            align-items: center;
+        }
+    }
+
+
+    // ------------------------------------------------------------------------
+    // Login footer
+    // ------------------------------------------------------------------------
+
+    .o_kplus_login_footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+
+        color: #5e5e65;
+
+        font-size: 10px;
+
+        a {
+            color: inherit;
+            text-decoration: none;
+
+            &:hover {
+                color: #aaaab1;
+            }
+        }
+    }
+
+    .o_kplus_footer_separator {
+        margin: 0 4px;
+    }
+
+
+    // =========================================================================
+    // Product visual
+    // =========================================================================
+
+    .o_kplus_login_visual {
+        position: relative;
+
+        min-width: 0;
+        min-height: 100vh;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        overflow: hidden;
+
+        background:
+            radial-gradient(
+                circle at 50% 45%,
+                rgba(255, 255, 255, .10),
+                transparent 28%
+            ),
+            radial-gradient(
+                circle at 72% 25%,
+                rgba(145, 105, 255, .12),
+                transparent 28%
+            ),
+            #101014;
+
+        &::before {
+            content: "";
+
+            position: absolute;
+            inset: -20%;
+
+            background:
+                repeating-linear-gradient(
+                    90deg,
+                    transparent 0,
+                    transparent 78px,
+                    rgba(255, 255, 255, .025) 79px,
+                    transparent 80px
+                );
+
+            transform: rotate(-10deg);
+
+            opacity: .35;
+        }
+    }
+
+
+    // ------------------------------------------------------------------------
+    // Visual content
+    // ------------------------------------------------------------------------
+
+    .o_kplus_login_visual_content {
+        position: relative;
+
+        width: #{"min(780px, 82%)"};
+    }
+
+    .o_kplus_login_visual_copy {
+        position: relative;
+        z-index: 2;
+
+        max-width: 540px;
+
+        margin-bottom: 42px;
+    }
+
+    .o_kplus_login_visual_label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+
+        margin-bottom: 18px;
+
+        color: #aaaab1;
+
+        font-size: 11px;
+        font-weight: 650;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+    }
+
+    .o_kplus_live_dot {
+        width: 6px;
+        height: 6px;
+
+        flex: 0 0 auto;
+
+        border-radius: 50%;
+
+        background: #fff;
+
+        box-shadow:
+            0 0 15px rgba(255, 255, 255, .8);
+    }
+
+    .o_kplus_login_visual_copy h2 {
+        margin: 0;
+
+        color: #f5f5f7;
+
+        font-size: clamp(42px, 5vw, 72px);
+        line-height: .98;
+        letter-spacing: -.065em;
+
+        span {
+            color: #76767d;
+        }
+    }
+
+    .o_kplus_login_visual_copy p {
+        max-width: 430px;
+
+        margin: 20px 0 0;
+
+        color: #85858c;
+
+        font-size: 14px;
+        line-height: 1.65;
+    }
+
+
+    // =========================================================================
+    // Application preview
+    // =========================================================================
+
+    .o_kplus_app_preview {
+        position: relative;
+
+        height: 310px;
+
+        overflow: hidden;
+
+        border: 1px solid rgba(255, 255, 255, .11);
+        border-radius: 22px;
+
+        background: rgba(15, 15, 18, .72);
+
+        box-shadow:
+            0 35px 90px rgba(0, 0, 0, .5),
+            inset 0 1px rgba(255, 255, 255, .06);
+
+        backdrop-filter: blur(18px);
+
+        transform:
+            perspective(1200px)
+            rotateX(3deg)
+            rotateY(-3deg);
+    }
+
+
+    // ------------------------------------------------------------------------
+    // Window bar
+    // ------------------------------------------------------------------------
+
+    .o_kplus_window_bar {
+        position: relative;
+
+        height: 42px;
+
+        display: flex;
+        align-items: center;
+
+        padding: 0 15px;
+
+        border-bottom: 1px solid rgba(255, 255, 255, .07);
+    }
+
+    .o_kplus_window_dots {
+        display: flex;
+        gap: 6px;
+
+        i {
+            display: block;
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: rgba(255, 255, 255, .18);
+        }
+    }
+
+    .o_kplus_preview_title {
+        position: absolute;
+
+        left: 50%;
+
+        transform: translateX(-50%);
+
+        color: #77777e;
+
+        font-size: 10px;
+    }
+
+
+    // ------------------------------------------------------------------------
+    // Preview body
+    // ------------------------------------------------------------------------
+
+    .o_kplus_preview_body {
+        display: grid;
+
+        grid-template-columns: 150px 1fr;
+
+        height: #{"calc(100% - 42px)"};
+    }
+
+
+    // ------------------------------------------------------------------------
+    // Preview sidebar
+    // ------------------------------------------------------------------------
+
+    .o_kplus_preview_sidebar {
+        padding: 17px 12px;
+
+        border-right: 1px solid rgba(255, 255, 255, .06);
+    }
+
+    .o_kplus_sidebar_logo {
+        width: 80px;
+        height: 9px;
+
+        margin: 3px 0 25px 5px;
+
+        border-radius: 4px;
+
+        background: rgba(255, 255, 255, .18);
+    }
+
+    .o_kplus_side_item {
+        height: 29px;
+
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        padding: 0 8px;
+        margin-bottom: 4px;
+
+        border-radius: 7px;
+
+        color: #68686f;
+
+        font-size: 9px;
+
+        &.o_kplus_active {
+            background: rgba(255, 255, 255, .08);
+            color: #dddde1;
+        }
+    }
+
+    .o_kplus_side_icon {
+        width: 10px;
+        height: 10px;
+
+        flex: 0 0 auto;
+
+        border-radius: 3px;
+
+        background: currentColor;
+
+        opacity: .6;
+    }
+
+
+    // ------------------------------------------------------------------------
+    // Preview main
+    // ------------------------------------------------------------------------
+
+    .o_kplus_preview_main {
+        min-width: 0;
+
+        padding: 20px 22px;
+    }
+
+    .o_kplus_preview_heading {
+        width: 140px;
+        height: 13px;
+
+        margin-bottom: 6px;
+
+        border-radius: 5px;
+
+        background: rgba(255, 255, 255, .16);
+    }
+
+    .o_kplus_preview_subheading {
+        width: 190px;
+        height: 7px;
+
+        border-radius: 4px;
+
+        background: rgba(255, 255, 255, .06);
+    }
+
+
+    // ------------------------------------------------------------------------
+    // Waveform
+    // ------------------------------------------------------------------------
+
+    .o_kplus_waveform {
+        height: 105px;
+
+        display: flex;
+        align-items: center;
+        gap: 3px;
+
+        margin-top: 28px;
+
+        overflow: hidden;
+
+        span {
+            flex: 1;
+
+            min-width: 3px;
+
+            border-radius: 5px;
+
+            background: rgba(255, 255, 255, .18);
+
+            &:nth-child(3n) {
+                height: 65%;
+            }
+
+            &:nth-child(4n) {
+                height: 35%;
+            }
+
+            &:nth-child(5n) {
+                height: 85%;
+            }
+
+            &:nth-child(7n) {
+                height: 48%;
+            }
+        }
+    }
+
+
+    // ------------------------------------------------------------------------
+    // Timeline
+    // ------------------------------------------------------------------------
+
+    .o_kplus_timeline {
+        position: relative;
+
+        height: 7px;
+
+        margin-top: 14px;
+
+        border-radius: 4px;
+
+        background: rgba(255, 255, 255, .07);
+
+        &::before {
+            content: "";
+
+            position: absolute;
+
+            left: 26%;
+            top: -4px;
+
+            width: 2px;
+            height: 15px;
+
+            background: #fff;
+
+            box-shadow:
+                0 0 12px rgba(255, 255, 255, .6);
+        }
+
+        &::after {
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+            top: 0;
+
+            width: 26%;
+            height: 100%;
+
+            border-radius: 4px;
+
+            background: rgba(255, 255, 255, .38);
+        }
+    }
+
+
+    // ------------------------------------------------------------------------
+    // Lyrics
+    // ------------------------------------------------------------------------
+
+    .o_kplus_lyrics {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+
+        margin-top: 21px;
+
+        color: #66666e;
+
+        font-size: 10px;
+
+        strong {
+            color: #e6e6e9;
+            font-weight: 600;
+        }
+    }
+
+
+    // =========================================================================
+    // Decorative orbs
+    // =========================================================================
+
+    .o_kplus_login_orb {
+        position: absolute;
+
+        border-radius: 50%;
+
+        pointer-events: none;
+        filter: blur(1px);
+    }
+
+    .o_kplus_login_orb_1 {
+        width: 260px;
+        height: 260px;
+
+        right: -100px;
+        top: 8%;
+
+        background:
+            radial-gradient(
+                circle,
+                rgba(255, 255, 255, .09),
+                transparent 68%
+            );
+    }
+
+    .o_kplus_login_orb_2 {
+        width: 220px;
+        height: 220px;
+
+        left: -100px;
+        bottom: 5%;
+
+        background:
+            radial-gradient(
+                circle,
+                rgba(120, 90, 255, .08),
+                transparent 68%
+            );
+    }
+
+
+    // =========================================================================
+    // Responsive
+    // =========================================================================
+
+    @media (max-width: 850px) {
+
+        grid-template-columns: 1fr;
+
+        .o_kplus_login_visual {
+            display: none;
+        }
+
+        .o_kplus_login_side {
+            min-height: 100vh;
+
+            border-right: 0;
+        }
+
+        .o_kplus_login_content {
+            margin: auto;
+        }
+    }
+
+
+    @media (max-width: 480px) {
+
+        .o_kplus_login_side {
+            padding: 28px 22px;
+        }
+
+        .o_kplus_login_content > h1 {
+            font-size: 30px;
+        }
+
+        .o_kplus_login_footer {
+            font-size: 9px;
+        }
+    }
+}
