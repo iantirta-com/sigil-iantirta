@@ -11,7 +11,6 @@
                     <button string="Run" type="object" name="action_run" />
                 </header>
                 <sheet>
-                    <field name="thumbnail_url" widget="image_url"/>
                     <field name="status"/>
                     <group string="Source">
                         <group colspan="2">
@@ -21,6 +20,7 @@
                     </group>
                     <group string="Generated Data">
                         <group colspan="2">
+                            <field name="thumbnail_url" widget="image_url" options="{'size': 'small'}"/>
                             <group>
                                 <field name="title"/>
                             </group>
