@@ -28,7 +28,7 @@ class KaraokeController(Controller):
         ):
             raise Forbidden()
 
-        tasks: KaraokeKaraoke = request.env["karaoke.karaoke"].search([
+        tasks: KaraokeKaraoke = request.env["karaoke.karaoke"].sudo().search([
             ("status", "=", status_to_fetch)
         ])
         response = []
