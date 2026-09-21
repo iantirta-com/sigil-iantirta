@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sigil>
+    <template id="web.login_layout" name="Login Layout">
+        <t t-call="web.frontend_layout">
+            <t t-set="html_data" t-value="{'style': 'height: 100%;'}" />
+            <t t-set="body_classname" t-value="'o_sigil_login_body'" />
+            <t t-set="no_header" t-value="True" />
+            <t t-set="no_footer" t-value="True" />
+            <div class="o_kplus_login">
+                <!-- LOGIN SIDE -->
+                <section class="o_kplus_login_side">
+                    <div class="o_kplus_brand">
+                        <div class="o_kplus_brand_mark"> K+ </div>
+                        <span>KaraokePlus</span>
+                    </div>
+                    <div class="o_kplus_login_content">
+                        <div class="o_kplus_login_eyebrow"> KaraokePlus account </div>
+                        <h1> Welcome back. </h1>
+                        <p class="o_kplus_login_intro">
+                            Sign in to continue working on your karaoke projects, subtitles, and
+                            generated videos.
+                        </p>
+                        <div class="o_kplus_login_form">
+                            <t t-out="0" />
+                        </div>
+                    </div>
+                    <div class="o_kplus_login_footer">
+                        <span> © 2026 KaraokePlus </span>
+                        <span>
+                            <a href="#">Privacy</a>
+                            <span class="o_kplus_footer_separator">·</span>
+                            <a href="#">Terms</a>
+                        </span>
+                    </div>
+                </section>
+                <!-- PRODUCT VISUAL -->
+                <section class="o_kplus_login_visual">
+                    <div class="o_kplus_login_orb o_kplus_login_orb_1" />
+                    <div class="o_kplus_login_orb o_kplus_login_orb_2" />
+                    <div class="o_kplus_login_visual_content">
+                        <div class="o_kplus_login_visual_copy">
+                            <div class="o_kplus_login_visual_label">
+                                <i class="o_kplus_live_dot" /> KARAOKE CREATION WORKSPACE </div>
+                            <h2> Make music <br /> <span>sing back.</span>
+                            </h2>
+                            <p> Generate, synchronize, edit, and manage karaoke subtitles from one
+                                workspace. </p>
+                        </div>
+                        <!-- APPLICATION PREVIEW -->
+                        <div class="o_kplus_app_preview">
+                            <div class="o_kplus_window_bar">
+                                <div class="o_kplus_window_dots">
+                                    <i />
+                                    <i />
+                                    <i />
+                                </div>
+                                <div class="o_kplus_preview_title"> KaraokePlus </div>
+                            </div>
+                            <div class="o_kplus_preview_body">
+                                <!-- SIDEBAR -->
+                                <aside class="o_kplus_preview_sidebar">
+                                    <div class="o_kplus_sidebar_logo" />
+                                    <div class="o_kplus_side_item o_kplus_active">
+                                        <i class="o_kplus_side_icon" /> Projects </div>
+                                    <div class="o_kplus_side_item">
+                                        <i class="o_kplus_side_icon" /> Generate </div>
+                                    <div class="o_kplus_side_item">
+                                        <i class="o_kplus_side_icon" /> Library </div>
+                                    <div class="o_kplus_side_item">
+                                        <i class="o_kplus_side_icon" /> Settings </div>
+                                </aside> <!--
+                                MAIN -->
+                                <main class="o_kplus_preview_main">
+                                    <div class="o_kplus_preview_heading" />
+                                    <div class="o_kplus_preview_subheading" />
+                                    <div class="o_kplus_waveform">
+                                        <span style="height:30%" />
+                                        <span style="height:55%" />
+                                        <span style="height:80%" />
+                                        <span style="height:42%" />
+                                        <span style="height:68%" />
+                                        <span style="height:92%" />
+                                        <span style="height:48%" />
+                                        <span style="height:35%" />
+                                        <span style="height:72%" />
+                                        <span style="height:58%" />
+                                        <span style="height:90%" />
+                                        <span style="height:43%" />
+                                        <span style="height:66%" />
+                                        <span style="height:30%" />
+                                        <span style="height:82%" />
+                                        <span style="height:54%" />
+                                        <span style="height:72%" />
+                                        <span style="height:40%" />
+                                        <span style="height:91%" />
+                                        <span style="height:57%" />
+                                        <span style="height:32%" />
+                                        <span style="height:76%" />
+                                        <span style="height:47%" />
+                                        <span style="height:88%" />
+                                        <span style="height:55%" />
+                                        <span style="height:70%" />
+                                        <span style="height:37%" />
+                                        <span style="height:84%" />
+                                        <span style="height:51%" />
+                                        <span style="height:65%" />
+                                    </div>
+                                    <div class="o_kplus_timeline" />
+                                    <div class="o_kplus_lyrics">
+                                        <span>yang tak pernah bisa</span>
+                                        <strong>berhenti</strong>
+                                        <span>mencintaimu</span>
+                                    </div>
+                                </main>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+</sigil>

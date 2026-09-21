@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sigil>
+
+    <record id="gpu_worker_view_form" model="ir.ui.view">
+        <field name="name">gpu.worker.form</field>
+        <field name="model">gpu.worker</field>
+        <field name="arch" type="xml">
+            <form string="GPU Worker" duplicate="false">
+                <header>
+                    <button string="Refetch Quotas" type="object" name="action_get_quotas"/>
+                    <button string="Run" type="object" name="action_run" />
+                </header>
+                <sheet>
+                    <group string="Information">
+                        <group colspan="2">
+                            <field name="name" placeholder="Identity name for this worker"/>
+                        </group>
+                    </group>
+                    <group string="Configuration">
+                        <group colspan="2">
+                            <field name="provider"/>
+                            <field name="access_token"/>
+                        </group>
+                    </group>
+                    <group string="Quotas">
+                        <group>
+                            <field name="quota_json"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="gpu_worker_action" model="ir.actions.act_window">
+        <field name="name">GPU Worker</field>
+        <field name="res_model">gpu.worker</field>
+        <field name="path">gpu-worker</field>
+        <field name='view_mode'>list,kanban,form</field>
+    </record>
+
+    <menuitem
+        id="gpu_worker"
+        name="GPU Worker"
+        parent="karaoke_root"
+        action="gpu_worker_action"/>
+</sigil>

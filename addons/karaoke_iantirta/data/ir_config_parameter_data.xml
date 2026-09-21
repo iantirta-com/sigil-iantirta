@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sigil>
+    <data noupdate="1">
+        <record id="karaoke_cookie_path" model="ir.config_parameter">
+            <field name="key">karaoke.cookiepath</field>
+            <field name="value" eval="obj().env['karaoke.karaoke'].get_cookiepath()" model="karaoke.karaoke"/>
+        </record>
+    </data>
+</sigil>

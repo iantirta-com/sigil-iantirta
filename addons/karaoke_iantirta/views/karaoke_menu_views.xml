@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sigil>
+
+    <record id="karaoke_karaoke_view_form" model="ir.ui.view">
+        <field name="name">karaoke.karaoke.form</field>
+        <field name="model">karaoke.karaoke</field>
+        <field name="arch" type="xml">
+            <form string="Karaoke Task" duplicate="false">
+                <header>
+                    <button string="Refetch Info" type="object" name="action_refetch_info"/>
+                    <button string="Run" type="object" name="action_run" />
+                </header>
+                <sheet>
+                    <field name="thumbnail_url" widget="image_url"/>
+                    <field name="status"/>
+                    <group string="Source">
+                        <group colspan="2">
+                            <field name="source_url" placeholder="https://youtube.com/*"/>
+                            <field name="karaoke_type" placeholder="select one of the type"/>
+                        </group>
+                    </group>
+                    <group string="Generated Data">
+                        <group colspan="2">
+                            <group>
+                                <field name="title"/>
+                            </group>
+                            <group>
+                                <field name="artist"/>
+                            </group>
+                            <group>
+                                <field name="duration"/>
+                            </group>
+                            <field name="lyrics"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="karaoke_karaoke_view_tree" model="ir.ui.view">
+        <field name="name">karaoke.karaoke.list</field>
+        <field name="model">karaoke.karaoke</field>
+        <field name="arch" type="xml">
+            <list string="Karaoke Task" duplicate="false">
+                <field name="title"/>
+                <field name="artist"/>
+                <field name="karaoke_type"/>
+                <field name="status"/>
+                <field name="source_url"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="karaoke_task_action" model="ir.actions.act_window">
+        <field name="name">Karaoke Task</field>
+        <field name="res_model">karaoke.karaoke</field>
+        <field name="path">karaoke-task</field>
+        <field name='view_mode'>list,kanban,form</field>
+    </record>
+    
+    <menuitem
+        id="karaoke_root"
+        name="Karaoke"/>
+    <menuitem
+        id="karaoke_task"
+        name="Karaoke Task"
+        parent="karaoke_root"
+        action="karaoke_task_action"/>
+</sigil>
