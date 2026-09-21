@@ -89,7 +89,6 @@ $o-main-code-color:                         #d2317b !default;
 
 $o-view-background-color: $m3-surface-container-lowest !default;
 $o-shadow-color: $m3-shadow !default; // def: #303030
-$o-blured-bg: rgba($m3-surface-container-lowest, .55) !default;
 
 $o-text-colors-custom: (
     "action": $o-action,
@@ -110,20 +109,28 @@ $o-btn-custom: (
 //////////////////////
 // Fonts
 //////////////////////
-$o-root-font-size: 1rem !default;
+$o-root-font-size:                           1rem !default;
 
-$o-font-size-base: o-to-rem(14px) !default;
+$o-font-size-base:                           o-to-rem(14px) !default;
 $o-font-size-base-touch: o-to-rem(16px) !default;
-$o-font-size-base-small: o-to-rem(13px) !default;
-$o-font-size-base-smaller: o-to-rem(12px) !default;
+$o-font-size-base-small:                     o-to-rem(12px) !default;
+$o-font-size-base-smaller:                   o-to-rem(11px) !default;
+// body, 1, 0.875, 0.75 (l, m, sm)
+// head, 2, 1.75, 1.5
+// label (fw-medium), 0.875, 0.75, 0.6875
+// title, 1.375, 1, 0.875
 
-$o-font-weight-normal: 400 !default;
-$o-font-weight-medium: 500 !default;
-$o-font-weight-bold: 700 !default;
+$o-font-weight-normal:                       400 !default;
+$o-font-weight-medium:                       500 !default;
+$o-font-weight-bold:                         700 !default;
 
 $o-line-height-base: 1.5 !default; // This is BS default
 $o-line-height-sm : 1.25 !default;
 $o-line-height-lg : 2 !default;
+// body, 1.5, 1.25, 1 (l, m, sm)
+// head, 2.5, 2.25, 2
+// label, 1.25, 1, 1
+// title, 1.75(reg), 1.5, 1.25
 
 $o-system-fonts: (-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Ubuntu, "Noto Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji") !default;
 
@@ -132,14 +139,27 @@ $o-font-family-monospace: o-add-unicode-support-font((SFMono-Regular, Menlo, Mon
 
 $o-headings-font-family: o-add-unicode-support-font(("SF Pro Display", $o-system-fonts)) !default;
 
-
 //////////////////////
 // Border
 //////////////////////
-$o-border-radius:                           o-to-rem(11px) !default;
+$o-box-shadow-1:                            0px 1px 2px 0px rgba($m3-shadow, .3),
+                                            0px 1px 3px 1px rgba($m3-shadow, .15) !default;
+$o-box-shadow-2:                            0px 1px 2px 0px rgba($m3-shadow, .3),
+                                            0px 2px 6px 2px rgba($m3-shadow, .15) !default;
+$o-box-shadow-3:                            0px 1px 3px 0px rgba($m3-shadow, .3),
+                                            0px 4px 8px 3px rgba($m3-shadow, .15) !default;
+$o-box-shadow-4:                            0px 2px 3px 0px rgba($m3-shadow, .3),
+                                            0px 6px 10px 4px rgba($m3-shadow, .15) !default;
+$o-box-shadow-5:                            0px 4px 4px 0px rgba($m3-shadow, .3),
+                                            0px 6px 10px 4px rgba($m3-shadow, .15) !default;
+    
+//////////////////////
+// Border
+//////////////////////
+$o-border-radius:                           o-to-rem(12px) !default;
 $o-border-radius-sm:                        o-to-rem(9px) !default;
-$o-border-radius-lg:                        o-to-rem(15px) !default;
-
+$o-border-radius-lg:                        o-to-rem(16px) !default;
+$o-border-radius-xxl:                       o-to-rem(28px) !default;
 
 //////////////////////
 // Spacer
@@ -215,6 +235,9 @@ $o-dropdown-hpadding: 12px !default;
 $o-dropdown-vpadding: 8px !default;
 $o-dropdown-max-height: 70vh !default;
 
+$o-dropdown-bg-opacity: .55 !default;
+$o-dropdown-bg: $m3-surface-container-lowest !default;
+$o-dropdown-bg-filter: saturate(220%) blur(16px) !default;
 
 //////////////////////
 // Breadcrumb
@@ -256,17 +279,17 @@ $o-easing-exit: cubic-bezier(0.3, 0.0, 0.8, 0.15) !default;
 $o-btns-bs-override: () !default;
 $o-btns-bs-override: map-merge((
     "primary": (
-        background:         $m3-primary-container,
-        border:             $m3-primary-container,
-        color:              $m3-onprimary-container,
+        background:         $m3-primary,
+        border:             $m3-primary,
+        color:              $m3-onprimary,
 
-        hover-background:   darken($m3-primary-container, 3%),
-        hover-border:       darken($m3-primary-container, 3%),
-        hover-color:        $m3-onprimary-container,
+        hover-background:   darken($m3-primary, 3%),
+        hover-border:       darken($m3-primary, 3%),
+        hover-color:        $m3-onprimary,
 
-        active-background:  darken($m3-primary-container, 10%),
-        active-border:      darken($m3-primary-container, 10%),
-        active-color:       $m3-onprimary-container,
+        active-background:  darken($m3-primary, 10%),
+        active-border:      darken($m3-primary, 10%),
+        active-color:       $m3-onprimary,
     ),
     "secondary": (
         background: $m3-secondary-container,

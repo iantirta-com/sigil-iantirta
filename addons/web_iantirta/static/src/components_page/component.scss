@@ -1,0 +1,29 @@
+.Components-content {
+    min-width: 0;
+
+    padding: 40px 48px 80px;
+    .Components-title {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 28px;
+        h2 {
+            margin: 0;
+            font-size: 28px;
+        }
+        p {
+            max-width: 680px;
+            margin: 8px 0 0;
+            color: var(--components-muted);
+        }
+    }
+    .Components-breadcrumb {
+        margin-bottom: 8px;
+        font-size: 12px;
+        color: var(--components-muted);
+    }
+    .Components-edit-button {
+        
+    }
+    
+}

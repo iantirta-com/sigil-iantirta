@@ -1,4 +1,16 @@
+// Bootstrapt Override
+.dropdown-menu, .popover {
+    @include print-variable(dropdown-bg-opacity, $o-dropdown-bg-opacity);
+    @include print-variable(dropdown-bg-filter, $o-dropdown-bg-filter);
+    
+    @media (prefers-reduced-transparency: reduce) {
+        --dropdown-bg-opacity: 1;
+        --dropdown-bg-filter: unset;
+    }
+    backdrop-filter: var(--dropdown-bg-filter);
+}
 
+// 
 .o-dropdown {
     &.btn-secondary,
     &.btn-outline-secondary {
@@ -21,10 +33,13 @@
 }
 
 .o-dropdown--menu {
+    //box-shadow: $o-box-shadow-5;
     .dropdown-toggle,
     .dropdown-item {
         border-radius: $border-radius-sm;
         transition: background-color .12s ease, color .12s ease;
+        height: 48px;
+        align-content: center;
     }
 
     &.o-dropdown--menu-submenu {
@@ -66,14 +81,15 @@
 // ============================================================================
 
 .o_bottom_sheet .o_bottom_sheet_sheet {
-    background-color: $m3-surface-container-lowest;
+    background-color: $m3-surface-container-low;
 
     .o_bottom_sheet_body {
-        --dropdown-bg: $m3-surface-container-lowest;
-
+        @include print-variable(dropdown-bg, $m3-surface-container-low);
+        @include print-variable(dropdown-bg-filter, unset);
         &.dropdown-menu {
             border-radius: 0;
         }
     }
 
 }
+

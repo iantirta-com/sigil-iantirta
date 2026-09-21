@@ -4,23 +4,37 @@
 
 .o_dialog {
     .modal {
-
-        .modal-header {
-            .modal-title {
-                color: $o-main-text-color;
+        &.o_technical_modal {
+            @include media-breakpoint-down(sm) {
+                &.o_modal_full {
+                    .modal-dialog {
+                        .modal-content {
+                            --modal-border-radius: 0;
+                            --modal-box-shadow: none;
+                            .modal-header {
+                                height: 56px;
+                                .btn-close {
+                                    margin: 0;
+                                }
+                            }
+                            .modal-footer {
+                                --modal-inner-border-radius: 0;
+                            }
+                        }
+                    }
+                }
             }
-
+        }
+        .modal-header {
             .btn-close,
             .o_expand_button {
                 border-radius: 9px;
             }
-
             .btn-close {
                 &:hover {
                     background-color: $m3-surface-container-low;
                 }
             }
-
             .o_expand_button {
                 display: inline-flex;
                 align-items: center;
@@ -39,7 +53,18 @@
         }
 
         .modal-body {
-            color: $o-main-text-color;
+            .o_form_view .o_form_sheet_bg {
+                &:not(:has(.o_form_statusbar)) {
+                    padding-top: 0;
+                }
+                .o_form_sheet {
+                    background-color: transparent;
+                    box-shadow: none;
+                    .o_notebook .nav {
+                        background-color: transparent;
+                    }
+                }
+            }
         }
 
         .modal-footer {
