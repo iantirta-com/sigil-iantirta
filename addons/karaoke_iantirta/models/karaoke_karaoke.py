@@ -46,7 +46,8 @@ class KaraokeKaraoke(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         tasks = super().create(vals_list)
-        for task in tasks:
+        env = api.Environment(self.env.cr, self.env.uid, self.env.context)
+        for task in env["karaoke.karaoke"].browse(tasks.ids):
             task.extract_info()
         return tasks
 

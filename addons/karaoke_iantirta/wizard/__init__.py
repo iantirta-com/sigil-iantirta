@@ -1,0 +1,1 @@
+from . import karaoke_batch_input
