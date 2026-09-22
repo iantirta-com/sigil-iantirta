@@ -2,7 +2,7 @@ import logging
 import json
 import tempfile
 import shutil
-
+import base64
 from pathlib import Path
 
 from sigil import _, api, fields, models
@@ -23,13 +23,35 @@ class GpuWorker(models.Model):
     ], required=True)
 
     access_token = fields.Char(
-        string="Kaggle API Token", required=True,
-        help='https://www.kaggle.com/settings/api (click "Generate New Token" under "API")'
+        string="API Token", required=True,
     )
 
     notebook_id = fields.Many2one(comodel_name="worker.notebook", string="Notebook", required=True)
+    notebook_code = fields.Text(
+        related="notebook_id.code",
+        string="Notebook Code",
+        readonly=False,
+    )
 
     quota_json = fields.Json(compute="_compute_quotas", store=True)
+    gpu_time_used = fields.Datetime()
+    gpu_time_allowed = fields.Datetime()
+    tpu_time_used = fields.Datetime()
+    tpu_time_allowed = fields.Datetime()
+    refresh_time = fields.Datetime()
+
+    # Drive Config
+    gdrive_credentials = fields.Binary(
+        string="Google Drive Credentials as .json", store=False,
+    )
+    gdrive_client_config = fields.Char(
+        string="Google Drive Client Config",
+        compute="_compute_gdrive_client_config",
+        readonly=False,
+        store=True,
+    )
+    gdrive_access_token_json = fields.Char()
+    gdrive_root_folder_id = fields.Char(required=True)
 
     # Helper
     _worker = None
@@ -46,6 +68,44 @@ class GpuWorker(models.Model):
         if instance := self._get_worker_class():
             return instance(self.access_token)
         raise UserError(_("Unsupported provider configuration."))
+
+    # Drive
+    @api.onchange('gdrive_credentials')
+    def _compute_gdrive_client_config(self):
+        for worker in self:
+            creds = worker.with_context(bin_size=False).gdrive_credentials
+            worker.gdrive_client_config = base64.b64decode(creds) if creds else False
+        
+    def setup_user_token(self):
+        self.ensure_one()
+        try:
+            from google.auth.transport.requests import Request
+            from google.oauth2.credentials import Credentials
+            from google_auth_oauthlib.flow import InstalledAppFlow
+        except ImportError:
+            raise ImportError("Cannot Continue as google-auth is not installed")
+
+        SCOPES = ['https://www.googleapis.com/auth/drive']
+
+        creds = None
+        if self.gdrive_access_token_json:
+            user_info = json.loads(self.gdrive_access_token_json)
+            creds = Credentials.from_authorized_user_info(user_info)
+
+        if not creds or not creds.valid:
+            if creds and creds.expired and creds.refresh_token:
+                creds.refresh(Request())
+            else:
+                client_config = json.loads(self.gdrive_client_config)
+                flow = InstalledAppFlow.from_client_config(
+                    client_config,
+                    SCOPES,
+                    redirect_uri='urn:ietf:wg:oauth:2.0:oob'
+                )
+                creds = flow.run_local_server()
+                self.gdrive_access_token_json = creds.to_json()
+
+        return creds
     
     # Quotas
     def get_quotas(self) -> dict:
@@ -58,7 +118,12 @@ class GpuWorker(models.Model):
         for record in self:
             if record.access_token:
                 try:
-                    record.get_quotas()
+                    quotas = record.get_quotas()
+                    # record.gpu_time_used = quotas["types"][0]
+                    # record.gpu_time_allowed = 
+                    # record.tpu_time_used = 
+                    # record.tpu_time_allowed = 
+                    # record.refresh_time = 
                 except Exception as e:
                     _logger.error("Failed to fetch quotas for %s: %s", record.name, e)
                     record.quota_json = {
@@ -75,40 +140,22 @@ class GpuWorker(models.Model):
     def action_run(self):
         worker = self._get_worker_instance()
 
-        script_folder = Path(__file__).resolve().parent / "notebook"
-        script_path = script_folder / "worker.ipynb"
+        new_access_token = karaoke_utils.generate_access_token(
+            self.name, self.provider
+        )
 
-        with open(str(script_path), "r", encoding="utf-8") as f:
-            notebook = json.load(f)
-
-        # it should be the first cell
-        if (
-            len(notebook["cells"]) > 1 and
-            (env_cell := notebook["cells"][0])["cell_type"] == "code" and
-            "Do Not Modified" in env_cell["source"][0]
-        ):
-            new_access_token = karaoke_utils.generate_access_token(
-                self.name, self.provider
-            )
-
-            base_url = self.env["ir.config_parameter"].get_param("web.base.url")
-
-            # Prevent accidental localhost submissions to worker
-            if "localhost" in base_url or "127.0.0.1" in base_url:
-                raise UserError(_(
-                    "Cannot use localhost for Kaggle worker. "
-                    "Please set a public URL (like ngrok) "
-                    "using the TUNNEL_URL environment variable or "
-                    "update web.base.url."
-                ))
-            
-            env_cell["source"]
-            env_cell["source"] = [
+        notebook: dict = self.notebook_id.to_metadata_dict()
+        notebook_param: dict = {
+            "cell_type": "code",
+            "execution_count": None,
+            "metadata": {},
+            "outputs": [],
+            "source": [
                 "# Do Not Modified. Generated by iantirta.com\n",
                 "import os\n",
                 f"os.environ['IANTIRTA_API_KEY'] = '{new_access_token}'\n",
                 "\n",
-                f'iantirta_url = "{base_url}"\n',
+                f'iantirta_url = "{self.get_base_url()}"\n',
                 f'worker_name = "{self.name}"\n',
                 f'worker_provider = "{self.provider}"\n',
                 "\n",
@@ -117,10 +164,11 @@ class GpuWorker(models.Model):
                 'os.environ["HF_HUB_ENABLE_HF_TRANSFER"] = "1"\n',
                 'os.environ["HF_XET_HIGH_PERFORMANCE"] = "1"\n',
                 '\n',
-                "DryRun = False\n"
-            ]
-        else:
-            raise RuntimeError("Unknown template of worker.ipynb")
+                f'DRIVE_USER_TOKEN: dict = {self.setup_user_token()}\n',
+                f'SHARED_ROOT_FOLDER_ID = "{self.gdrive_root_folder_id}"\n',
+            ],
+        }
+        notebook["cells"].insert(0, notebook_param)
 
         with tempfile.TemporaryDirectory() as tmpdir:
             tmp_script_path = Path(tmpdir) / "worker.ipynb"
@@ -129,9 +177,25 @@ class GpuWorker(models.Model):
                 json.dump(notebook, f, indent=1)
 
             if self.provider == "kaggle":
-                metadata_path = script_folder / "kernel-metadata.json"
+                kernel_metadata: dict = {
+                    "id": "burninfist/kplus-gpu-worker", # Todo Change it to name?
+                    "title": "KPlus GPU Worker",
+                    "code_file": "worker.ipynb",
+                    "language": "python",
+                    "kernel_type": "notebook",
+                    "is_private": True,
+                    "enable_gpu": True,
+                    "enable_tpu": False,
+                    "enable_internet": True,
+                    "machine_shape": "NvidiaTeslaT4",
+                    "dataset_sources": [],
+                    "competition_sources": [],
+                    "kernel_sources": [],
+                    "model_sources": []
+                }
                 tmp_metadata_path = Path(tmpdir) / "kernel-metadata.json"
-                shutil.copy(metadata_path, tmp_metadata_path)
+                with open(str(tmp_metadata_path), "w", encoding="utf-8") as f:
+                    json.dump(kernel_metadata, f, indent=1)
 
             # if kaggle it is a folder
             # if colab it is a file

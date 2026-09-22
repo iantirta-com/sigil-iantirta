@@ -11,7 +11,11 @@ Long description of module's purpose
     "license": "Other OSI approved licence",
     'depends': ['web_iantirta'],
     "external_dependencies": {
-        "python": ["kplus",],
+        "python": ["kplus", "google-auth", "google-auth-oauthlib"],
+        "apt": {
+            "google-auth": "python3-google-auth",
+            "google-auth-oauthlib": "python3-google-auth-oauthlib",
+        },
     },
     'data': [
         'security/ir.model.access.csv',

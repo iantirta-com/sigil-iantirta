@@ -12,28 +12,33 @@
                 </header>
                 <sheet>
                     <group string="Information">
-                        <!-- <label for="name"/> -->
-                        <field name="name" placeholder="Identity name for this worker"/>
-                    </group>
-                    <group>
                         <group>
-                            <label for="provider"/>
-                            <field name="provider" nolabel="1"/>
-                            <label for="access_token"/>
-                            <field name="access_token" nolabel="1"/>
+                            <field name="name" placeholder="Identity name for this worker"/>
                         </group>
-                        
-                    </group>
-                    <group>
-
-                    </group>
-                    <group string="Configuration">
-                        <label for="notebook_id"/>
-                        <field name="notebook_id"/>
+                        <group>
+                            <field name="provider"/>
+                            <field name="access_token" />
+                            <field name="notebook_id"/>
+                        </group>
                     </group>
                     <notebook>
                         <page name="quotas" string="Quotas">
                             <field name="quota_json"/>
+                        </page>
+                        <page name="gdrive" string="Google Drive">
+                            <label for="gdrive_credentials" class="o_light_label mr8"/>
+                            <!-- hide the download button because it is a computed value without a stored attachment -->
+                            <field name="gdrive_credentials"
+                                widget="binary"
+                                class="o_field_binary_hide_download"
+                                options="{'accepted_file_extensions': '.json'}"/>
+                            <field name="gdrive_client_config" widget="text" class="w-100"/>
+                            <br/>
+                            <button name="setup_user_token" type="object" invisible="not gdrive_client_config">Setup User Token</button>
+                            <field name="gdrive_access_token_json" widget="text" class="w-100" invisible="not gdrive_client_config"/>
+                        </page>
+                        <page name="notebook" string="Notebook" invisible="not notebook_id">
+                            <field name="notebook_code" widget="code" options="{'mode': 'python'}"/>
                         </page>
                     </notebook>
                 </sheet>
