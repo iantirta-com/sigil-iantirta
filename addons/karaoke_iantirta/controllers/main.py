@@ -82,7 +82,7 @@ class KaraokeController(Controller):
             to be processing.
         """
         if not karaoke_utils.check_access_token(
-            worker_name, worker_provider
+            access_token, worker_name, worker_provider
         ):
             raise Forbidden()
 
