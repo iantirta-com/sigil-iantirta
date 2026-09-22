@@ -115,6 +115,7 @@ class GpuWorker(models.Model):
                 'os.environ["HF_HUB_ENABLE_HF_TRANSFER"] = "1"\n',
                 'os.environ["HF_XET_HIGH_PERFORMANCE"] = "1"\n',
                 '\n',
+                "DryRun = False\n"
             ]
         else:
             raise RuntimeError("Unknown template of worker.ipynb")

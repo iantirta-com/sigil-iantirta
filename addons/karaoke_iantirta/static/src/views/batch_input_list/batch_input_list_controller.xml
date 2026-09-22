@@ -1,0 +1,11 @@
+<templates>
+
+    <t t-name="karaoke.BatchInputListView.Buttons" t-inherit="web.ListView.Buttons" t-inherit-mode="primary">
+        <xpath expr="." position="inside">
+            <button class="btn btn-secondary" t-on-click.prevent="onClickBatchInput" data-hotkey="shift+i">
+                Batch Input
+            </button>
+        </xpath>
+    </t>
+
+</templates>

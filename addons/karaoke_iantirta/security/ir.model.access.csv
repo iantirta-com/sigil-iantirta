@@ -1,3 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_karaoke_karaoke_manager,karaoke.karaoke.manager,model_karaoke_karaoke,base.group_system,1,1,1,1
+access_karaoke_batch_input_wizard,karaoke_batch_input_wizard,model_karaoke_batch_input_wizard,base.group_system,1,1,1,0
+
 access_gpu_worker_manager,gpu_worker.manager,model_gpu_worker,base.group_system,1,1,1,1

@@ -1,7 +1,9 @@
 import os
+import threading
 
 from sigil import _, api, fields, models
 from sigil.tools import config
+from sigil.modules.registry import Registry
 
 from .kplus_tools import extract_info, extract_lyrics
 
@@ -29,10 +31,10 @@ class KaraokeKaraoke(models.Model):
     ], default="waiting", required=True, readonly=True)
 
     # Auto Generated
-    title = fields.Char(readonly=True)
-    artist = fields.Char(readonly=True)
-    duration = fields.Float(readonly=True)
-    thumbnail_url = fields.Char()
+    title = fields.Char(readonly=True,)
+    artist = fields.Char(readonly=True,)
+    duration = fields.Float(readonly=True,)
+    thumbnail_url = fields.Char(readonly=True,)
 
     lyrics = fields.Text()
 
@@ -46,8 +48,19 @@ class KaraokeKaraoke(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         tasks = super().create(vals_list)
-        for task in tasks:
-            task.extract_info()
+
+        def extract_info_with_new_cursor():
+            with Registry(self.env.cr.dbname).cursor() as cr:
+                env = api.Environment(cr, self.env.uid, self.env.context)
+                for task in env["karaoke.karaoke"].browse(tasks.ids):
+                    task.extract_info()
+
+        @self.env.cr.postcommit.add
+        def launch_thread():
+            thread = threading.Thread(target=extract_info_with_new_cursor)
+            thread.daemon = True  # Allows the server to shut down without getting stuck
+            thread.start()
+
         return tasks
 
     @api.model
@@ -56,6 +69,7 @@ class KaraokeKaraoke(models.Model):
         return os.path.join(config['data_dir'], "cookies.txt")
         
     def extract_info(self) -> None:
+        self.ensure_one()
         title, artist, duration, thumbnail_url = extract_info(
             self.source_url,
             cookiefile=self.get_cookiepath(),
@@ -73,6 +87,7 @@ class KaraokeKaraoke(models.Model):
             })
 
     def action_refetch_info(self) -> None:
+        self.ensure_one()
         return self.extract_info()
 
     # Task.run() will immediately run
