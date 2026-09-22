@@ -73,8 +73,9 @@ class KaraokeController(Controller):
     @route("/karaoke/worker/update", type="jsonrpc", auth="public")
     def karaoke_worker(
         self,
-        worker_name,
-        worker_provider,
+        worker_name: str,
+        worker_provider: str,
+        access_token: str,
         karaoke_ids,
     ) -> None:
         """ Endpoint for first time running

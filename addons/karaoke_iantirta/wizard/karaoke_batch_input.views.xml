@@ -11,18 +11,37 @@
         <field name="name">karaoke.batch.input.wizard.view.form</field>
         <field name="model">karaoke.batch.input.wizard</field>
         <field name="arch" type="xml">
-            <form>
+            <form string="Add Karaoke Tasks">
                 <sheet>
+                    <p class="text-muted">
+                        Create multiple karaoke tasks from YouTube links
+                    </p>
+                    <separator/>
                     <group>
-                        <group colspan="2">
-                            <field name="youtube_urls" placeholder="Multiple urls, splitted by (,)."/>
+                        <group>
+                            <field name="youtube_urls" class="mb-0" string="Sources" placeholder="Paste YouTube links here..."/>
+                            <div class="text-muted small">
+                                Separate multiple links with commas or semicolons.
+                            </div>
                         </group>
-                        <field name="karaoke_type" placeholder="Generation Type"/>
+                        <group>
+                            <field name="karaoke_type" string="Karaoke Type" widget="radio" options="{'horizontal': '1'}"/>
+                        </group>
                     </group>
                 </sheet>
                 <footer>
-                    <button name="action_on_click_create" string="Create" type="object" class="btn-primary" data-hotkey="q"/>
-                    <button string="Discard" class="btn-secondary" special="cancel" data-hotkey="x"/>
+                    <button
+                        name="action_on_click_create"
+                        string="Create Tasks"
+                        type="object"
+                        class="btn-primary"
+                        data-hotkey="q"
+                    />
+                    <button
+                        string="Cancel"
+                        special="cancel"
+                        class="btn-secondary"
+                    />
                 </footer>
             </form>
         </field>

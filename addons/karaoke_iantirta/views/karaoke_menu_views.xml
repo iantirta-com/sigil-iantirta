@@ -8,33 +8,113 @@
             <form string="Karaoke Task" duplicate="false">
                 <header>
                     <button string="Refetch Info" type="object" name="action_refetch_info"/>
-                    <button string="Run" type="object" name="action_run" />
+                    <button string="Reset Status" type="object" name="action_reset_status"/>
+                    <field
+                        name="status"
+                        widget="statusbar"
+                        statusbar_visible="waiting,processing,completed"
+                    />
                 </header>
+                <sheet string="Song" invisible="not title">
+                    <separator string="Song" class="mt-0"/>
+                    <div class="d-flex justify-content-between flex-column flex-sm-row gap-2">
+                        <div>
+                            <field
+                                name="thumbnail_url"
+                                widget="image_url"
+                                class="text-start"
+                                options="{'size': [0,90],}"
+                                invisible="not source_url"
+                            />
+                        </div>
+                        <div class="flex-fill w-100">
+                            <field class="h5" name="title"/>
+                            <field name="artist"/>
+                            <div class="d-flex">
+                                <field name="karaoke_type" widget="badge"/>
+                                <field name="duration" class="badge"/>
+                                <field name="status" class="badge"/>
+                            </div>
+                        </div>
+                    </div>
+                </sheet>
                 <sheet>
-                    <field name="status"/>
                     <group string="Source">
-                        <group colspan="2">
-                            <field name="source_url" placeholder="https://youtube.com/*"/>
-                            <field name="karaoke_type" placeholder="select one of the type"/>
-                        </group>
-                    </group>
-                    <group string="Generated Data">
-                        <group colspan="2">
-                            <field name="thumbnail_url" widget="image_url" options="{'size': 'small'}"/>
-                            <group>
-                                <field name="title"/>
-                            </group>
-                            <group>
-                                <field name="artist"/>
-                            </group>
-                            <group>
-                                <field name="duration"/>
-                            </group>
-                            <field name="lyrics"/>
+                        <group>
+                            <field name="source_url" widget="url"/>
+                            <field name="karaoke_type"/>
                         </group>
                     </group>
                 </sheet>
+                <sheet>
+                    <notebook>
+                        <page string="Output">
+                            Output here
+                        </page>
+                        <page string="Lyrics">
+                            <field
+                                name="lyrics"
+                                placeholder="Generated lyrics..."
+                            />
+                        </page>
+                        <page string="Debug">
+                            <group>
+                                <group>
+                                    <field name="error" string="Error Message"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
             </form>
+        </field>
+    </record>
+
+    <record id="view_karaoke_karaoke_search" model="ir.ui.view">
+        <field name="name">karaoke.karaoke.search</field>
+        <field name="model">karaoke.karaoke</field>
+        <field name="arch" type="xml">
+            <search string="Karaoke">
+                <field name="title" string="Song Title"/>
+                <field name="artist" string="Artist"/>
+                <field name="source_url"/>
+                <field name="karaoke_type" string="Karaoke Type"/>
+                <field name="status"/>
+                <separator/>
+                <filter
+                    name="filter_waiting"
+                    string="Waiting"
+                    domain="[('status', '=', 'waiting')]"
+                />
+                <filter
+                    name="filter_processing"
+                    string="Processing"
+                    domain="[('status', '=', 'processing')]"
+                />
+                <filter
+                    name="filter_completed"
+                    string="Completed"
+                    domain="[('status', '=', 'completed')]"
+                />
+                <group>
+                    <filter
+                        name="group_status"
+                        string="Status"
+                        context="{'group_by': 'status'}"
+                    />
+                    <filter
+                        name="group_type"
+                        string="Karaoke Type"
+                        context="{'group_by': 'karaoke_type'}"
+                    />
+                    <filter
+                        name="group_artist"
+                        string="Artist"
+                        context="{'group_by': 'artist'}"
+                    />
+                </group>
+                
+            </search>
         </field>
     </record>
 
@@ -45,10 +125,50 @@
             <list string="Karaoke Task" duplicate="false" js_class="batch_input_list">
                 <field name="title"/>
                 <field name="artist"/>
+                <field name="karaoke_type" widget="badge"/>
+                <field name="status" widget="badge"/>
+                <field name="duration" widget="float_time" options="{'display_seconds':'1'}"/>
+                <field name="source_url" widget="url"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_karaoke_karaoke_kanban" model="ir.ui.view">
+        <field name="name">karaoke.karaoke.kanban</field>
+        <field name="model">karaoke.karaoke</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="status">
+                <field name="title"/>
+                <field name="artist"/>
                 <field name="karaoke_type"/>
                 <field name="status"/>
+                <field name="duration"/>
                 <field name="source_url"/>
-            </list>
+                <templates>
+                    <t t-name="card">
+                        <aside>
+                            <field
+                                name="thumbnail_url"
+                                widget="image_url"
+                                class="text-start"
+                                invisible="not source_url"
+                            />
+                        </aside>
+                        <main>
+                            <field name="status" widget="badge"/>
+                            <div class="mt-2 d-flex flex-column">
+                                <field name="title" class="h5"/>
+                                <field name="artist" class="text-muted"/>
+                            </div>
+                            <div class="my-2 d-flex justify-content-between align-items-center">
+                                <field name="karaoke_type" widget="badge"/>
+                                <field name="duration" widget="float_time" options="{'display_seconds':'1'}"/>
+                            </div>
+                            <field class="small" name="source_url" widget="url"/>
+                        </main>
+                    </t>
+                </templates>
+            </kanban>
         </field>
     </record>
 
@@ -57,6 +177,12 @@
         <field name="res_model">karaoke.karaoke</field>
         <field name="path">karaoke-task</field>
         <field name='view_mode'>list,kanban,form</field>
+        <field name="search_view_id" ref="view_karaoke_karaoke_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first karaoke task
+            </p>
+        </field>
     </record>
     
     <menuitem
