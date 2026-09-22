@@ -3,3 +3,5 @@ access_karaoke_karaoke_manager,karaoke.karaoke.manager,model_karaoke_karaoke,bas
 access_karaoke_batch_input_wizard,karaoke_batch_input_wizard,model_karaoke_batch_input_wizard,base.group_system,1,1,1,0
 
 access_gpu_worker_manager,gpu_worker.manager,model_gpu_worker,base.group_system,1,1,1,1
+
+access_worker_notebook_manager,worker_notebook.manager,model_worker_notebook,base.group_system,1,1,1,1

@@ -11,6 +11,7 @@ from .kplus_tools import extract_info, extract_lyrics
 class KaraokeKaraoke(models.Model):
     _name = 'karaoke.karaoke'
     _description = 'Karaoke Karaoke'
+    _rec_name = 'source_url'
 
     source_url = fields.Char(required=True)
     karaoke_type = fields.Selection([
