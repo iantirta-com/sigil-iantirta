@@ -2,6 +2,7 @@ import logging
 import json
 import tempfile
 import shutil
+import uuid
 
 from pathlib import Path
 
@@ -29,12 +30,18 @@ class WorkerNotebook(models.Model):
                 {
                     "cell_type": "code",
                     "execution_count": None,
+                    "id": str(uuid.uuid4())[:8],
                     "metadata": {},
                     "outputs": [],
                     "source": [f"{line}\n" for line in (self.code or "").splitlines()],
                 }
             ],
             "metadata": {
+                "kernelspec": {
+                    "display_name": "Python 3",
+                    "language": "python",
+                    "name": "python3",
+                },
                 "language_info": {
                     "name": self.language or "python",
                 }

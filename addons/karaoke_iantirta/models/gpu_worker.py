@@ -3,6 +3,8 @@ import json
 import tempfile
 import shutil
 import base64
+import uuid
+
 from pathlib import Path
 
 from sigil.http import request
@@ -189,16 +191,28 @@ class GpuWorker(models.Model):
 
     # Running
     def action_run(self):
+        try:
+            from . import drive_tools
+        except ImportError:
+            raise ImportError("Cannot Continue as google-auth is not installed")
+
+        self.ensure_one()
+
         worker = self._get_worker_instance()
 
         new_access_token = karaoke_utils.generate_access_token(
             self.name, self.provider
         )
 
+        if not (drive_creds := drive_tools.get_creds(
+            self.gdrive_access_token_json
+        )):
+            raise UserError(_("Cannot continue as this notebook worker require drive token"))
         notebook: dict = self.notebook_id.to_metadata_dict()
         notebook_param: dict = {
             "cell_type": "code",
             "execution_count": None,
+            "id": str(uuid.uuid4())[:8],
             "metadata": {},
             "outputs": [],
             "source": [
@@ -215,7 +229,7 @@ class GpuWorker(models.Model):
                 'os.environ["HF_HUB_ENABLE_HF_TRANSFER"] = "1"\n',
                 'os.environ["HF_XET_HIGH_PERFORMANCE"] = "1"\n',
                 '\n',
-                f'DRIVE_USER_TOKEN: dict = {self.setup_user_token()}\n',
+                f'DRIVE_USER_TOKEN: dict = {drive_creds.to_json()}\n',
                 f'SHARED_ROOT_FOLDER_ID = "{self.gdrive_root_folder_id}"\n',
             ],
         }
