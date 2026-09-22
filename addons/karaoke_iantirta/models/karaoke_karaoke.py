@@ -35,7 +35,9 @@ class KaraokeKaraoke(models.Model):
     title = fields.Char(readonly=True,)
     artist = fields.Char(readonly=True,)
     duration = fields.Float(readonly=True,)
-    thumbnail_url = fields.Char(readonly=True,)
+    thumbnail_url = fields.Char(
+        default="https://via.placeholder.com/320x180/1C1B1F/FFFFFF?text=No+Thumbnail"
+    )
 
     lyrics = fields.Text()
 
@@ -71,25 +73,34 @@ class KaraokeKaraoke(models.Model):
         
     def extract_info(self) -> None:
         self.ensure_one()
-        title, artist, duration, thumbnail_url = extract_info(
-            self.source_url,
-            cookiefile=self.get_cookiepath(),
-            return_thumbnail=True,
-        )
-        self.write({
-            "title": title,
-            "artist": artist,
-            "duration": duration,
-            "thumbnail_url": thumbnail_url,
-        })
-        if self.karaoke_type == "plus":
+        try:
+            title, artist, duration, thumbnail_url = extract_info(
+                self.source_url,
+                cookiefile=self.get_cookiepath(),
+                return_thumbnail=True,
+            )
             self.write({
-                "lyrics": extract_lyrics(self.title, self.artist, self.duration)
+                "title": title,
+                "artist": artist,
+                "duration": duration,
+                "thumbnail_url": thumbnail_url,
+            })
+            if self.karaoke_type == "plus":
+                self.write({
+                    "lyrics": extract_lyrics(self.title, self.artist, self.duration)
+                })
+        except Exception as err:
+            self.write({
+                "error": f"Extract Info: {str(err)}",
             })
 
     def action_refetch_info(self) -> None:
         self.ensure_one()
         return self.extract_info()
+
+    def action_reset_status(self) -> None:
+        for rec in self:
+            rec.status = "waiting"
 
     # Task.run() will immediately run
     def action_run(self) -> None:

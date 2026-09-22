@@ -1,3 +1,5 @@
+import re
+
 from sigil import _, api, models, fields, Command
 from sigil.exceptions import ValidationError
 from sigil.tools.float_utils import float_is_zero, float_round
@@ -7,7 +9,7 @@ class KaraokeBatchInputWizard(models.TransientModel):
     _name = 'karaoke.batch.input.wizard'
     _description = 'Karaoke Batch Input'
 
-    youtube_urls = fields.Char("URL'S", required=True, help="split by `,`")
+    youtube_urls = fields.Text("URL'S", required=True, help="split by `,`")
     karaoke_type = fields.Selection([
         ("basic", "Basic"),
         ("plus", "Plus (Lyrics Subtitle)"),
@@ -15,9 +17,10 @@ class KaraokeBatchInputWizard(models.TransientModel):
 
     def action_on_click_create(self):
         self.ensure_one()
+        
         to_create: list[dict] = [
-            {"source_url": url, "karaoke_type": self.karaoke_type}
-            for url in self.youtube_urls.split(",")
+            {"source_url": url.strip(), "karaoke_type": self.karaoke_type}
+            for url in re.split(r'[,;]', self.youtube_urls)
             if url.strip()
         ]
         karaokes = self.env["karaoke.karaoke"].create(to_create)
