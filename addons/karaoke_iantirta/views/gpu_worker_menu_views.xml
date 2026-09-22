@@ -26,16 +26,21 @@
                             <field name="quota_json"/>
                         </page>
                         <page name="gdrive" string="Google Drive">
-                            <label for="gdrive_credentials" class="o_light_label mr8"/>
+                            <group>
+                                <field name="gdrive_root_folder_id"/>
+                            </group>
+                            
+                            <label string="Credentials" for="gdrive_credentials" class="o_light_label mr8"/>
                             <!-- hide the download button because it is a computed value without a stored attachment -->
                             <field name="gdrive_credentials"
                                 widget="binary"
                                 class="o_field_binary_hide_download"
                                 options="{'accepted_file_extensions': '.json'}"/>
                             <field name="gdrive_client_config" widget="text" class="w-100"/>
-                            <br/>
-                            <button name="setup_user_token" type="object" invisible="not gdrive_client_config">Setup User Token</button>
-                            <field name="gdrive_access_token_json" widget="text" class="w-100" invisible="not gdrive_client_config"/>
+                            <group>
+                                <field string="User Token" name="gdrive_access_token_json" widget="text" class="w-100" invisible="not gdrive_client_config"/>
+                                <button name="action_setup_user_token" type="object" invisible="not gdrive_client_config">Setup User Token</button>
+                            </group>
                         </page>
                         <page name="notebook" string="Notebook" invisible="not notebook_id">
                             <field name="notebook_code" widget="code" options="{'mode': 'python'}"/>

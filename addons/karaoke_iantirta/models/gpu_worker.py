@@ -5,6 +5,7 @@ import shutil
 import base64
 from pathlib import Path
 
+from sigil.http import request
 from sigil import _, api, fields, models
 from sigil.exceptions import UserError
 from sigil.addons.karaoke_iantirta import utils as karaoke_utils
@@ -101,9 +102,21 @@ class GpuWorker(models.Model):
                     client_config,
                     SCOPES,
                     redirect_uri=f"{self.get_base_url().rstrip('/')}/google_drive/callback"
+                    #redirect_uri="urn:ietf:wg:oauth:2.0:oob",
                 )
+                from kplus.tools import rich
                 # creds = flow.run_local_server()
-                auth_url, _ = flow.authorization_url(state=str(self.id))
+                auth_url, _ = flow.authorization_url(
+                    access_type="offline",
+                    include_granted_scopes='true',
+                    login_hint='tirtamoto@gmail.com',
+                    state=str(self.id)
+                )
+                print(">> Request redirecting")
+                request.redirect(auth_url)
+                rich.inspect(self.env)
+                rich.inspect(request)
+                print(">> After Redieect")
                 return {
                     'type': 'ir.actions.act_url',
                     'url': auth_url,
@@ -113,6 +126,37 @@ class GpuWorker(models.Model):
                 # self.gdrive_access_token_json = creds.to_json()
 
         return creds
+
+    def action_setup_user_token(self):
+        self.ensure_one()
+        try:
+            from . import drive_tools
+        except ImportError:
+            raise ImportError("Cannot Continue as google-auth is not installed")
+        if creds := drive_tools.get_creds(
+            self.gdrive_access_token_json
+        ):
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': 'Success',
+                    'message': 'Google Drive token refreshed successfully.',
+                    'type': 'success',
+                    'sticky': False,
+                }
+            }
+        else:
+            auth_uri = drive_tools.setup_create_creds(
+                self.gdrive_client_config,
+                redirect_uri=f"{self.get_base_url().rstrip('/')}/google_drive/callback",
+                state=str(self.id)
+            )
+            return {
+                'type': 'ir.actions.act_url',
+                'url': auth_uri,
+                'target': 'self',
+            }
     
     # Quotas
     def get_quotas(self) -> dict:
