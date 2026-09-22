@@ -100,10 +100,17 @@ class GpuWorker(models.Model):
                 flow = InstalledAppFlow.from_client_config(
                     client_config,
                     SCOPES,
-                    redirect_uri='urn:ietf:wg:oauth:2.0:oob'
+                    redirect_uri=f"{self.get_base_url().rstrip('/')}/google_drive/callback"
                 )
-                creds = flow.run_local_server()
-                self.gdrive_access_token_json = creds.to_json()
+                # creds = flow.run_local_server()
+                auth_url, _ = flow.authorization_url(state=str(self.id))
+                return {
+                    'type': 'ir.actions.act_url',
+                    'url': auth_url,
+                    'target': 'new',
+                }
+                # creds = flow.fetch_token()
+                # self.gdrive_access_token_json = creds.to_json()
 
         return creds
     
