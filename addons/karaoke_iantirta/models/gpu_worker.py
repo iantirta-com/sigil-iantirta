@@ -27,6 +27,8 @@ class GpuWorker(models.Model):
         help='https://www.kaggle.com/settings/api (click "Generate New Token" under "API")'
     )
 
+    notebook_id = fields.Many2one(comodel_name="worker.notebook", string="Notebook", required=True)
+
     quota_json = fields.Json(compute="_compute_quotas", store=True)
 
     # Helper

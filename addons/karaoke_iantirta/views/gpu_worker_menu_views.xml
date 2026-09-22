@@ -12,20 +12,47 @@
                 </header>
                 <sheet>
                     <group string="Information">
-                        <group colspan="2">
-                            <field name="name" placeholder="Identity name for this worker"/>
+                        <!-- <label for="name"/> -->
+                        <field name="name" placeholder="Identity name for this worker"/>
+                    </group>
+                    <group>
+                        <group>
+                            <label for="provider"/>
+                            <field name="provider" nolabel="1"/>
+                            <label for="access_token"/>
+                            <field name="access_token" nolabel="1"/>
                         </group>
+                        
+                    </group>
+                    <group>
+
                     </group>
                     <group string="Configuration">
-                        <group colspan="2">
-                            <field name="provider"/>
-                            <field name="access_token"/>
-                        </group>
+                        <label for="notebook_id"/>
+                        <field name="notebook_id"/>
                     </group>
-                    <group string="Quotas">
-                        <group>
+                    <notebook>
+                        <page name="quotas" string="Quotas">
                             <field name="quota_json"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="worker_notebook_view_form" model="ir.ui.view">
+        <field name="name">worker.notebook.form</field>
+        <field name="model">worker.notebook</field>
+        <field name="arch" type="xml">
+            <form string="Jupyter Notebook" duplicate="false">
+                <sheet>
+                    <group>
+                        <group colspan="2">
+                            <field name="name"/>
+                            <field name="language"/>
                         </group>
+                        <field name="code" widget="code" options="{'mode': 'python'}"/>
                     </group>
                 </sheet>
             </form>
@@ -39,9 +66,20 @@
         <field name='view_mode'>list,kanban,form</field>
     </record>
 
+    <record id="worker_notebook_action" model="ir.actions.act_window">
+        <field name="name">Jupyter Notebook</field>
+        <field name="res_model">worker.notebook</field>
+        <field name="path">gpu-worker-notebook</field>
+        <field name='view_mode'>list,form</field>
+    </record>
+
     <menuitem
         id="gpu_worker"
         name="GPU Worker"
-        parent="karaoke_root"
-        action="gpu_worker_action"/>
+        parent="karaoke_root">
+
+        <menuitem id="gpu_worker_worker" name="Worker" action="gpu_worker_action"/>
+        <menuitem id="worker_notebook" name="Notebook" action="worker_notebook_action"/>
+    
+    </menuitem>
 </sigil>
