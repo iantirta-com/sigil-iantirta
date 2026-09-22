@@ -5,4 +5,15 @@
             <attribute name="class" add="justify-content-md-end" remove="justify-content-md-start" separator=" "/>
         </xpath>
     </t>
+    <t t-inherit="web.Dialog.header" t-inherit-mode="extension">
+        <xpath expr="//t[@t-if='fullscreen']" position="after">
+            <t t-if="!fullscreen and env.isSmall">
+                <button type="button" class="btn-close" aria-label="Close" tabindex="-1" t-on-click="dismiss"></button>
+            </t>
+        </xpath>
+        
+        <xpath expr="//t[@t-if='!fullscreen']" position="attributes">
+            <attribute name="t-if">!fullscreen and !env.isSmall</attribute>
+        </xpath>
+    </t>
 </templates>

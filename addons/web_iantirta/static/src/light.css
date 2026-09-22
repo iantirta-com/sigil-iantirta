@@ -36,9 +36,9 @@
   --md-sys-color-shadow: ;
   --md-sys-color-scrim: ;
 
-  --md-sys-color-inverse-surface: #2f3036;
-  --md-sys-color-inverse-on-surface: rgb(241 240 247);
-  --md-sys-color-inverse-primary: rgb(176 198 255);
+  --md-sys-color-inverse-surface: ;
+  --md-sys-color-inverse-on-surface: ;
+  --md-sys-color-inverse-primary: ;
 
   --md-sys-color-primary-fixed: rgb(217 226 255);
   --md-sys-color-on-primary-fixed: rgb(0 25 69);
@@ -61,6 +61,6 @@
   --md-sys-color-surface-container-lowest: rgb(255 255 255);
   --md-sys-color-surface-container-low: ;
   --md-sys-color-surface-container: rgb(238 237 244);
-  --md-sys-color-surface-container-high: rgb(232 231 239);
-  --md-sys-color-surface-container-highest: rgb(226 226 233);
+  --md-sys-color-surface-container-high: ;
+  --md-sys-color-surface-container-highest: ;
 }

@@ -31,7 +31,7 @@
                     <div class="oe_title d-flex flex-column flex-grow-1">
                         <group>
                             <group>
-                                <h5 name="h5_email" class="mb-n3 mb-sm-0">
+                                <h5 name="h5_email" class="mb-n3">
                                     <group class="mb-0" style="margin-bottom:0 !important;">
                                         <label for="login" string="Username (login ID)"/>
                                         <div class="d-flex align-items-baseline gap-2">
@@ -86,8 +86,8 @@
         <field name="inherit_id" ref="base.view_users_form_simple_modif"/>
         <field name="arch" type="xml">
             <xpath expr="//sheet/div[hasclass('d-flex', 'align-items-center')]" position="replace">
-                <div class="d-flex align-items-center justify-content-between">
-                    <div class="oe_title flex-fill">
+                <div class="d-flex align-items-center justify-content-between flex-column-reverse flex-sm-row gap-2">
+                    <div class="oe_title flex-fill w-100">
                         <group>
                             <label for="name" string="Full Name"/>
                             <h1 class="d-flex align-items-center gap-2">
@@ -107,7 +107,7 @@
                         </group>
                     </div>
                     <div>
-                        <field name="image_1920" widget="contact_image" options="{'preview_image': 'avatar_128'}"/>
+                        <field name="image_1920" widget="contact_image" options="{'preview_image': 'avatar_128', 'img_class': 'rounded-4'}"/>
                         <field name="avatar_128" invisible="1"/> <!-- Needed in contact_image widget -->
                     </div>
                 </div>
@@ -124,6 +124,25 @@
                     <button name="preference_save" type="object" string="Update Preferences" class="btn-primary" data-hotkey="q"/>
                 </footer>
             </footer>
+        </field>
+    </record>
+
+
+    <!-- Kanban -->
+    <record id="view_res_users_kanban" model="ir.ui.view">
+        <field name="name">res.users.kanban</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_res_users_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//aside" position="attributes">
+                <attribute name="class" remove="p-1" separator=" "/>
+            </xpath>
+            <xpath expr="//main" position="attributes">
+                <attribute name="class" remove="ps-2 pt-1" separator=" "/>
+            </xpath>
+            <xpath expr="//field[@name='avatar_128']" position="attributes">
+                <attribute name="options">{'img_class': 'rounded-circle'}</attribute>
+            </xpath>
         </field>
     </record>
 </sigil>

@@ -1,0 +1,106 @@
+%searchbar-icon {
+    width: 24px;
+    height: 24px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+.o_cp_searchview {
+    @include print-variable(SearchBar-bg, $o-searchbar-bg);
+    @include print-variable(SearchBar-bg-hover, $o-searchbar-bg-hover);
+    @include print-variable(SearchBar-bg-focus, $o-searchbar-bg-focus);
+
+    min-height: 56px;
+    background-color: var(--SearchBar-bg, #{$o-searchbar-bg});
+    border-radius: $border-radius-pill;
+    transition: background-color .12s ease;
+    &:hover {
+        background-color: var(--SearchBar-bg-hover, #{$o-searchbar-bg-hover});
+    }
+    &:focus-within {
+        background-color: var(--SearchBar-bg-focus, #{$o-searchbar-bg-focus});
+        outline-color: $m3-secondary;
+        outline-width: 3px;
+        outline-style: solid;
+        outline-offset: 2px;
+    }
+
+    .o_searchview.form-control {
+        --SearchBar-background-color: transparent;
+        --o-input-background-color: transparent;
+
+        border-radius: $border-radius-pill;
+        padding: 0 4px 0 0px !important;
+        gap: 4px;
+        button.btn {
+            width: 48px;
+            padding: 12px !important;
+            box-shadow: none;
+            .oi {
+                margin-right: 0 !important;
+                @extend %searchbar-icon;
+            }
+        }
+    }
+    button.o_searchview_dropdown_toggler {
+        box-shadow: none;
+        border-radius: $border-radius-pill;
+        padding: 0;
+        padding-right: 12px;
+        width: 48px;
+        &::after {
+            @extend %searchbar-icon;
+        }
+    }
+}
+
+.o_searchview_input_container {
+    align-items: center;
+}
+
+.o_searchview_facet {
+    height: 32px;
+    border: 1px solid $m3-outline-var;
+    color: $m3-onsurface-var;
+    background-color: $m3-surface-container-low !important;
+
+    .o_searchview_facet_label {
+        width: 36px;
+        padding: 0 !important;
+        padding-left: 4px !important;
+        padding-right: 8px !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-top-left-radius: 8px !important;
+        border-bottom-left-radius: 8px !important;
+        background-color: transparent !important;
+        border: 0;
+        color: $m3-onsurface-var !important;
+        .opacity-100-hover {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+    .o_facet_values {
+        padding: 0 !important;
+        border-top-right-radius: 8px !important;
+        border-bottom-right-radius: 8px !important;
+        button.btn.o_facet_remove {
+            width: 34px;
+            padding: 0 8px !important;
+        }
+    }
+
+    .opacity-100-hover {
+        box-shadow: none !important;
+        background-color: rgba($m3-secondary-container, 0.08) !important;
+    }
+
+    &:hover {
+        .o_searchview_facet_label {
+            > i.fa.fa-fw { display: none; }
+        }
+    }
+}

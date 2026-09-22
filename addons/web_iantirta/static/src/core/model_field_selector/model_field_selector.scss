@@ -1,0 +1,14 @@
+.o_model_field_selector {
+    &.o_input {
+        height: unset;
+        min-height: 42px;
+    }
+    > .o_model_field_selector_value {
+        align-self: center;
+        
+        > .o_model_field_selector_chain_part {
+            border: none;
+            background: transparent;
+        }
+    }
+}

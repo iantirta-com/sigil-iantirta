@@ -26,4 +26,16 @@
             color: $m3-onsurface;
         }
     }
+    &.o_field_html {
+        background-color: $input-bg;
+        border-radius: $input-border-radius;
+
+        .note-editable {
+            border-radius: $input-border-radius;
+        }
+    }
+}
+
+select {
+    background-position-x: right 8px;
 }

@@ -1,0 +1,22 @@
+.o_bottom_sheet {
+    .o_bottom_sheet_sheet {
+        --BottomSheet-Entry-paddingX: #{$list-group-item-padding-x};
+        --BottomSheet-Entry-paddingY: #{$list-group-item-padding-y};
+
+        max-width: $o_BottomSheet_Sheet_maxWidth;
+        border-radius: $border-radius-xxl $border-radius-xxl 0 0;
+        .o_bottom_sheet_handle {
+            padding: 22px 0 !important;
+            .o_bottom_sheet_handle_bar {
+                padding: 0 calc(32px * 0.5) !important; // width
+                padding-top: 4px !important; // height
+                background-color: $m3-onsurface-var !important;
+            }
+        }
+
+        .dropdown-item, .dropdown-header {
+            --dropdown-item-padding-y: var(--BottomSheet-Entry-paddingY);
+            --dropdown-item-padding-x: var(--BottomSheet-Entry-paddingX);
+        }
+    }
+}

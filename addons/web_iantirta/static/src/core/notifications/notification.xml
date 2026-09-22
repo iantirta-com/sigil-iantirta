@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="NotificationWowl" t-inherit="web.NotificationWowl" t-inherit-mode="extension">
+        <xpath expr="//button[hasclass('o_notification_close')]" position="replace"/>
+        <xpath expr="//div[hasclass('o_notification_body')]" position="after">
+            <button type="button" class="o_notification_close btn-close btn-close-white" aria-label="Close" t-on-click="close"/>
+        </xpath>
+        <xpath expr="//div[contains(@t-attf-class, 'o_notification')]/div[hasclass('w-100', 'rounded-end')]" position="attributes">
+            <attribute name="class" remove="py-2 ps-3 pe-5 border border-start-0 rounded-end" add="o_notification_wrapper" separator=" "/>
+        </xpath>
+    </t>
+</templates>
