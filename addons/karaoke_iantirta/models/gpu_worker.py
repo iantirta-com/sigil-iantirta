@@ -25,6 +25,11 @@ class GpuWorker(models.Model):
         ("kaggle", "Kaggle")
     ], required=True)
 
+    status = fields.Selection([
+        ("ready", "Ready"), ("running", "Running"),
+        ("error", "Error"),
+    ], default="ready", readonly=True)
+
     access_token = fields.Char(
         string="API Token", required=True,
     )

@@ -18,13 +18,11 @@
                     </p>
                     <separator/>
                     <group>
-                        <group>
+                        <group colspan="2">
                             <field name="youtube_urls" class="mb-0" string="Sources" placeholder="Paste YouTube links here..."/>
                             <div class="text-muted small">
                                 Separate multiple links with commas or semicolons.
                             </div>
-                        </group>
-                        <group>
                             <field name="karaoke_type" string="Karaoke Type" widget="radio" options="{'horizontal': '1'}"/>
                         </group>
                     </group>

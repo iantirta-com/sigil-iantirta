@@ -7,8 +7,8 @@
         <field name="arch" type="xml">
             <form string="Karaoke Task" duplicate="false">
                 <header>
-                    <button string="Refetch Info" type="object" name="action_refetch_info"/>
-                    <button string="Reset Status" type="object" name="action_reset_status"/>
+                    <button string="Refresh Song Info" type="object" name="action_refetch_info"/>
+                    <button string="Reset Task" type="object" name="action_reset_status"/>
                     <field
                         name="status"
                         widget="statusbar"
@@ -16,7 +16,7 @@
                     />
                 </header>
                 <sheet string="Song" invisible="not title">
-                    <separator string="Song" class="mt-0"/>
+                    <separator string="Song" style="margin-top: 0 !important;"/>
                     <div class="d-flex justify-content-between flex-column flex-sm-row gap-2">
                         <div>
                             <field
@@ -39,9 +39,10 @@
                     </div>
                 </sheet>
                 <sheet>
-                    <group string="Source">
-                        <group>
-                            <field name="source_url" widget="url"/>
+                    <group>
+                        <separator string="Source" style="margin-top: 0 !important;"/>
+                        <group colspan="2">
+                            <field name="source_url" widget="url" readonly="id != False"/>
                             <field name="karaoke_type"/>
                         </group>
                     </group>
@@ -49,7 +50,12 @@
                 <sheet>
                     <notebook>
                         <page string="Output">
-                            Output here
+                            <group>
+                                <group>
+                                    <field name="download_url" widget="url"/>
+                                    <!-- Link Go to Folder Drive and File Drive -->
+                                </group>
+                            </group>
                         </page>
                         <page string="Lyrics">
                             <field
@@ -124,8 +130,8 @@
         <field name="arch" type="xml">
             <list string="Karaoke Task" duplicate="false" js_class="batch_input_list">
                 <header>
-                    <button string="Refetch Info" type="object" name="action_refetch_info"/>
-                    <button string="Reset Status" type="object" name="action_reset_status"/>
+                    <button string="Refresh Song Info" type="object" name="action_refetch_info"/>
+                    <button string="Reset Task" type="object" name="action_reset_status"/>
                 </header>
                 <field name="title"/>
                 <field name="artist"/>
@@ -191,10 +197,14 @@
     
     <menuitem
         id="karaoke_root"
-        name="Karaoke"/>
+        name="Karaoke"
+    />
+
     <menuitem
         id="karaoke_task"
         name="Karaoke Task"
         parent="karaoke_root"
-        action="karaoke_task_action"/>
+        action="karaoke_task_action"
+    />
+
 </sigil>
