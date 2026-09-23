@@ -123,6 +123,10 @@
         <field name="model">karaoke.karaoke</field>
         <field name="arch" type="xml">
             <list string="Karaoke Task" duplicate="false" js_class="batch_input_list">
+                <header>
+                    <button string="Refetch Info" type="object" name="action_refetch_info"/>
+                    <button string="Reset Status" type="object" name="action_reset_status"/>
+                </header>
                 <field name="title"/>
                 <field name="artist"/>
                 <field name="karaoke_type" widget="badge"/>

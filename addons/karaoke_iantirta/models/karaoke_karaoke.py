@@ -94,13 +94,41 @@ class KaraokeKaraoke(models.Model):
                 "error": f"Extract Info: {str(err)}",
             })
 
-    def action_refetch_info(self) -> None:
-        self.ensure_one()
-        return self.extract_info()
-
-    def action_reset_status(self) -> None:
+    def action_refetch_info(self):
         for rec in self:
-            rec.status = "waiting"
+            rec.extract_info()
+        
+        message = _(
+            "The Tasks that you selected have been successfully refetched its information."
+        )
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'target': 'new',
+            'params': {
+                'message': message,
+                'type': 'success',
+                'sticky': False,
+                'next': {'type': 'ir.actions.act_window_close'},
+            }
+        } 
+
+    def action_reset_status(self):
+        self.write({"status": "waiting"})
+        message = _(
+            "The Tass that you selected have been successfully resetted to 'waiting'."
+        )
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'target': 'new',
+            'params': {
+                'message': message,
+                'type': 'success',
+                'sticky': False,
+                'next': {'type': 'ir.actions.act_window_close'},
+            }
+        }
 
     # Task.run() will immediately run
     def action_run(self) -> None:
