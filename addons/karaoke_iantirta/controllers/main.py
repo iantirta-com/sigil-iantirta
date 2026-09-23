@@ -1,14 +1,17 @@
+import logging
 import typing as t
 
+from sigil.addons.karaoke_iantirta import utils as karaoke_utils
 from werkzeug.exceptions import BadRequest, Forbidden
 
+from sigil import _
+from sigil.exceptions import AccessError, MissingError, ValidationError
 from sigil.http import Controller, request, route
-
-from sigil.addons.karaoke_iantirta import utils as karaoke_utils
 
 if t.TYPE_CHECKING:
     from ..models.karaoke_karaoke import KaraokeKaraoke
 
+_logger = logging.getLogger(__name__)
 
 class KaraokeController(Controller):
     @route("/karaoke/task", type="jsonrpc", auth="public")
@@ -58,8 +61,10 @@ class KaraokeController(Controller):
         ):
             raise Forbidden()
 
+        karaoke_sudo = request.env["karaoke.karaoke"].sudo()
+
         for data in datas:
-            if karaoke := request.env["karaoke.karaoke"].browse(data.pop("id")):
+            if karaoke := karaoke_sudo.browse(data.get("id")):
                 karaoke.write({
                     "status": data["status"],
                     "download_url": data["download_url"],
@@ -68,6 +73,8 @@ class KaraokeController(Controller):
                     "error": data["error"],
                     "log": data["log"],
                 })
+            else:
+                _logger.warning(f"Karaoke of ID: {data.get('id')} doesn't exists in the database, skiping...")
         return True
 
     @route("/karaoke/worker/update", type="jsonrpc", auth="public")
@@ -77,17 +84,28 @@ class KaraokeController(Controller):
         worker_provider: str,
         access_token: str,
         karaoke_ids,
-    ) -> None:
+    ) -> bool:
         """ Endpoint for first time running
             it would update status of each the karaoke_ids,
             to be processing.
         """
+        worker_sudo = request.env["gpu.worker"].sudo().search([
+            ("name", "=", worker_name), ("provider", "=", worker_provider)
+        ]).exists()
+
+        if not worker_sudo:
+            raise ValidationError(_("The provided parameters are invalid."))
+        
         if not karaoke_utils.check_access_token(
-            access_token, worker_name, worker_provider
+            access_token, worker_sudo.name, worker_sudo.provider
         ):
             raise Forbidden()
 
-        karaokes = request.env["karaoke.karaoke"].browse(karaoke_ids)
-        karaokes.write({"status": "processing"})
+        karaokes = request.env["karaoke.karaoke"].browse(karaoke_ids).exists()
+        if karaokes:
+            karaokes.sudo().write({"status": "processing"})
+            return True
+        else:
+            return False
 
     # Cookiefile
