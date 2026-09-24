@@ -1,15 +1,15 @@
 #@title Karaoke Plus
 from __future__ import annotations
 
-import time
-import traceback
 import argparse
 import concurrent.futures
 import logging
 import subprocess
+import time
+import traceback
 import typing as t
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from dataclasses import dataclass, field, asdict
+from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
 import kplus
@@ -37,6 +37,7 @@ logger = logging.getLogger(__name__)
 if t.TYPE_CHECKING:
     from kplus.pipelines import DownloadResult
     from kplus.pipelines.asr.hf.mixin import ASRMixin
+    from kplus.pipelines.separate import SeparationResult
     from kplus.pipelines.utils import ASRResult, AudioSegment
 
 
@@ -800,9 +801,11 @@ class Pipeline:
 
             render_executor.shutdown()
 
-            self.cleanup(tasks)
-            
             return tasks
+
+        finally:
+            self.cleanup(tasks)
+
 
     def cleanup(self, tasks) -> list[Task]:
         for task in tasks:
@@ -847,7 +850,7 @@ class Worker:
             root_folder_id=root_folder_id,
         )
         self.pipeline = Pipeline(
-            cookiefile=cookiefile
+            cookiefile=cookiefile,
             log=self.log,
             storage=self.storage,
             download_workers=5,
@@ -914,22 +917,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    karaoke_worker = KaraokeWorker(
-        cookiefile="cookies.txt",
-        api_url=IANTIRTA_URL,
-        worker_name=WORKER_NAME,
-        worker_provider=WORKER_PROVIDER,
-        user_info=DRIVE_USER_TOKEN,
-        root_folder_id=SHARED_ROOT_FOLDER_ID,
-    )
-    tasks: list[Task] = karaoke_worker.get_tasks()
-    try:
-        logger.debug(f"Processing {len(tasks)}...")
-        karaoke_worker.post_worker(tasks)
-        tasks = karaoke_worker.run_tasks(tasks)
-    except:
-        raise
-    finally:
-        logger.info("Complete: All tasks processed through pipeline.")
-        logger.info("complete")
-        karaoke_worker.post_tasks(tasks)
+    main()
