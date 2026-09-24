@@ -1,5 +1,7 @@
+import ast
 import logging
 import typing as t
+from itertools import groupby
 
 from sigil.addons.karaoke_iantirta import utils as karaoke_utils
 from werkzeug.exceptions import BadRequest, Forbidden
@@ -16,7 +18,6 @@ _logger = logging.getLogger(__name__)
 class KaraokeController(Controller):
     def _check_access(self, access_token: str, worker_id: int, **kwargs):
         worker_sudo = request.env["gpu.worker"].sudo().browse(worker_id).exists()
-
         if not worker_sudo:
             raise ValidationError(_("The provided parameters are invalid."))
 
@@ -33,14 +34,14 @@ class KaraokeController(Controller):
         action: t.Literal["get", "update", "events"],
         **kwargs
     ) -> list | bool:
-        self._check_access(**kwargs)
+        worker_sudo = self._check_access(**kwargs)
 
         karaoke_sudo: KaraokeKaraoke = request.env["karaoke.karaoke"].sudo()
 
         if action == "get":
             domain = kwargs.pop("domain", [])
             limit = kwargs.pop("limit", None)
-            tasks = karaoke_sudo.search(domain)
+            tasks = karaoke_sudo.search(domain, limit=limit)
             return [
                 {
                     "id": task.id,
@@ -58,8 +59,8 @@ class KaraokeController(Controller):
             tasks_list: list[dict] = kwargs.pop("tasks", [])
             for task in tasks_list:
                 task_id = task.pop("id")
-                if karaoke := karaoke_sudo.browse(task_id):
-                    karaoke.write(**task)
+                if karaoke := karaoke_sudo.browse(task_id).exists():
+                    karaoke.write(task)
                 else:
                     _logger.warning(
                         f"Karaoke of ID: {task_id} "
@@ -68,7 +69,19 @@ class KaraokeController(Controller):
             return True
         elif action == "events":
             # Separate Worker event and karaoke event
-            pass
+            events = kwargs.pop("events", [])
+            grouped_events = {}
+            for event in events:
+                grouped_events.setdefault(event.get("task_id"), []).append(event)
+            for task_id, log in grouped_events.items():
+                if task_id is not None and (karaoke := karaoke_sudo.browse(task_id).exists()):
+                    current_log = ast.literal_eval(karaoke.log) if karaoke.log and karaoke.log.strip() else []
+                    karaoke.write({"log": current_log + log})
+                elif task_id is None:
+                    current_log = ast.literal_eval(worker_sudo.log) if worker_sudo.log and worker_sudo.log.strip() else []
+                    worker_sudo.write({"log": current_log + log})
+                else:
+                    _logger.warning(f"Karaoke with {task_id} not found.")
             return True
         else:
             raise ValidationError(_("Action isn't supported"))

@@ -54,6 +54,7 @@
                                 <group>
                                     <field name="download_url" widget="url"/>
                                     <!-- Link Go to Folder Drive and File Drive -->
+                                    <field name="log"/>
                                 </group>
                             </group>
                         </page>

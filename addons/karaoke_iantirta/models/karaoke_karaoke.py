@@ -114,7 +114,10 @@ class KaraokeKaraoke(models.Model):
         } 
 
     def action_reset_status(self):
-        self.write({"status": "waiting"})
+        self.write({
+            "status": "waiting",
+            "log": False,
+        })
         message = _(
             "The Tass that you selected have been successfully resetted to 'waiting'."
         )

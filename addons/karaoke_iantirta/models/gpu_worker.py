@@ -48,6 +48,8 @@ class GpuWorker(models.Model):
     tpu_time_allowed = fields.Datetime()
     refresh_time = fields.Datetime()
 
+    log = fields.Text(readonly=True)
+
     # Drive Config
     gdrive_credentials = fields.Binary(
         string="Google Drive Credentials as .json", store=False,

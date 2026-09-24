@@ -75,8 +75,8 @@
                                 </div>
                             </div>
                         </page>
-                        <page string="Notebook">
-                            
+                        <page string="Log">
+                            <field name="log"/>
                         </page>
                     </notebook>
                 </sheet>
