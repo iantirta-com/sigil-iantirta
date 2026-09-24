@@ -523,7 +523,7 @@ class Pipeline:
         ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
         # Run separation
-        result: SeparationResult = separator.separate(mixpath)
+        result: SeparationResult = separator.separate(str(mixpath))
         
         task.instpath = result.inst_path
         if task.karaoke_type == "plus":
@@ -654,7 +654,7 @@ class Pipeline:
         """
         task.status = "error"
         task.error = {
-            "type": type(exc),
+            "type": str(type(exc)),
             "message": str(exc),
             "traceback": "".join(traceback.format_exception(exc)),
         }

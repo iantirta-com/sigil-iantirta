@@ -51,10 +51,10 @@
                     <notebook>
                         <page string="Output">
                             <group>
-                                <group>
+                                <group colspan="2">
                                     <field name="download_url" widget="url"/>
                                     <!-- Link Go to Folder Drive and File Drive -->
-                                    <field name="log"/>
+                                    <field name="log" widget="logger"/>
                                 </group>
                             </group>
                         </page>

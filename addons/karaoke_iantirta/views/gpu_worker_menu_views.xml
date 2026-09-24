@@ -76,7 +76,7 @@
                             </div>
                         </page>
                         <page string="Log">
-                            <field name="log"/>
+                            <field name="log" widget="logger"/>
                         </page>
                     </notebook>
                 </sheet>

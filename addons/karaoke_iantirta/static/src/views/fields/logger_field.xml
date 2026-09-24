@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="karaoke_iantirta.LoggerField">
+        <pre class="m-0 p-0 mt-2">
+            <div t-if="logs.length > 0">
+                <div class="d-flex" t-foreach="logs" t-as="log" t-key="log_index">
+                    <div class="col-4 d-flex gap-2">
+                        <div t-esc="formatTime(log.timestamp)"/>
+                        <div t-esc="log.level" t-attf-class="text-{{log.level}}"/>
+                    </div>
+                    <div class="col-8" t-esc="log.message"/>
+                </div>
+            </div>
+            <div t-else="" class="text-muted fst-italic">
+                Waiting for output...
+            </div>
+        </pre>
+    </t>
+</templates>

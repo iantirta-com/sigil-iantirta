@@ -1,4 +1,5 @@
 import ast
+import json
 import logging
 import typing as t
 from itertools import groupby
@@ -60,6 +61,12 @@ class KaraokeController(Controller):
             for task in tasks_list:
                 task_id = task.pop("id")
                 if karaoke := karaoke_sudo.browse(task_id).exists():
+                    error = task.pop("error", {})
+                    if not error:
+                        task["status"] = "completed"
+                    else:
+                        task["status"] = "failed"
+                    task["error"] = json.dumps(error)
                     karaoke.write(task)
                 else:
                     _logger.warning(
@@ -75,11 +82,13 @@ class KaraokeController(Controller):
                 grouped_events.setdefault(event.get("task_id"), []).append(event)
             for task_id, log in grouped_events.items():
                 if task_id is not None and (karaoke := karaoke_sudo.browse(task_id).exists()):
-                    current_log = ast.literal_eval(karaoke.log) if karaoke.log and karaoke.log.strip() else []
-                    karaoke.write({"log": current_log + log})
+                    current_log = json.loads(karaoke.log) if karaoke.log and karaoke.log.strip() else []
+                    full_log = current_log + log
+                    karaoke.write({"log": json.dumps(full_log)})
                 elif task_id is None:
-                    current_log = ast.literal_eval(worker_sudo.log) if worker_sudo.log and worker_sudo.log.strip() else []
-                    worker_sudo.write({"log": current_log + log})
+                    current_log = json.loads(worker_sudo.log) if worker_sudo.log and worker_sudo.log.strip() else []
+                    full_log = current_log + log
+                    worker_sudo.write({"log": json.dumps(full_log)})
                 else:
                     _logger.warning(f"Karaoke with {task_id} not found.")
             return True
