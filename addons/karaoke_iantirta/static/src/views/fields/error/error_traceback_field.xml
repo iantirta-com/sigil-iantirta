@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="karaoke_iantirta.ErrorTracebackField">
+        <div role="alert">
+            <div class="" t-if="error">
+                <p class="m-0"><b t-esc="title or this.constructor.title"></b></p>
+                <code t-if="error.type" t-esc="error.type"></code>
+                <p class="m-0" t-if="error.message">
+                    Message: <t t-esc="error.message"/>
+                </p>
+                <pre class="" t-esc="error.traceback"/>
+            </div>
+        </div>
+    </t>
+</templates>
