@@ -62,13 +62,11 @@ class KaraokeController(Controller):
                 task_id = task.pop("id")
                 if karaoke := karaoke_sudo.browse(task_id).exists():
                     error = task.pop("error", {})
-                    print(error)
                     if not error:
                         task["status"] = "completed"
                     else:
                         task["status"] = "failed"
                     task["error"] = json.dumps(error)
-                    print(task["status"])
                     karaoke.write(task)
                 else:
                     _logger.warning(
