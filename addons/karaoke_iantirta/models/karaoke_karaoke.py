@@ -1,9 +1,11 @@
+import json
 import os
 import threading
+import traceback
 
 from sigil import _, api, fields, models
-from sigil.tools import config
 from sigil.modules.registry import Registry
+from sigil.tools import config
 
 from .kplus_tools import extract_info, extract_lyrics
 
@@ -48,80 +50,135 @@ class KaraokeKaraoke(models.Model):
     error = fields.Text(readonly=True)
     log = fields.Text(readonly=True)
 
+
     @api.model_create_multi
     def create(self, vals_list):
-        tasks = super().create(vals_list)
+        """ On Karaoke creation, well use a new threading env.
+            To extract necessary information such as title,
+            artist, duration, lyrics
+        """
+        karaokes: KaraokeKaraoke = super().create(vals_list)
 
         def extract_info_with_new_cursor():
             with Registry(self.env.cr.dbname).cursor() as cr:
                 env = api.Environment(cr, self.env.uid, self.env.context)
-                for task in env["karaoke.karaoke"].browse(tasks.ids):
-                    task.extract_info()
+
+                karaoke: KaraokeKaraoke
+                for karaoke in env["karaoke.karaoke"].browse(karaokes.ids):
+                    karaoke.extract_info()
 
         @self.env.cr.postcommit.add
-        def launch_thread():
+        def launch_thread() -> None:
             thread = threading.Thread(target=extract_info_with_new_cursor)
             thread.daemon = True  # Allows the server to shut down without getting stuck
             thread.start()
 
-        return tasks
+        return karaokes
 
     @api.model
     def get_cookiepath(self):
         #TODO: Rotate cookiefile and populate cookiefile
         return os.path.join(config['data_dir'], "cookies.txt")
-        
-    def extract_info(self) -> None:
+
+
+    # Extraction Method
+    def _extract_lyrics(self):
+        """ Extract One Lyric
+        """
         self.ensure_one()
-        try:
-            title, artist, duration, thumbnail_url = extract_info(
-                self.source_url,
-                cookiefile=self.get_cookiepath(),
-                return_thumbnail=True,
-            )
-            self.write({
-                "title": title,
-                "artist": artist,
-                "duration": duration,
-                "thumbnail_url": thumbnail_url,
-            })
-            if self.karaoke_type == "plus":
-                self.write({
-                    "lyrics": extract_lyrics(self.title, self.artist, self.duration)
-                })
-        except Exception as err:
-            self.write({
-                "error": f"Extract Info: {str(err)}",
-            })
+        lyrics = extract_lyrics(self.title, self.artist, self.duration)
+        self.write({"lyrics": lyrics})
+        return self
 
-    def action_refetch_info(self):
-        for rec in self:
-            rec.extract_info()
-        
-        message = _(
-            "The Tasks that you selected have been successfully refetched its information."
+    def _extract_info(self):
+        """ Extract One
+        """
+        self.ensure_one()
+        title, artist, duration, thumbnail_url = extract_info(
+            self.source_url,
+            cookiefile=self.get_cookiepath(),
+            return_thumbnail=True,
         )
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'display_notification',
-            'target': 'new',
-            'params': {
-                'message': message,
-                'type': 'success',
-                'sticky': False,
-                'next': {'type': 'ir.actions.act_window_close'},
-            }
-        } 
-
-    def action_reset_status(self):
         self.write({
-            "status": "waiting",
-            "log": False,
-            "error": False,
+            "title": title,
+            "artist": artist,
+            "duration": duration,
+            "thumbnail_url": thumbnail_url,
         })
-        message = _(
-            "The Tass that you selected have been successfully resetted to 'waiting'."
-        )
+        return self
+
+    def extract_info(self):
+        """ Full Extraction multiple records
+        """
+        for record in self:
+            try:
+                record._extract_info()
+            except Exception as exc:
+                error = {
+                    "type": str(type(exc)),
+                    "message": str(exc),
+                    "traceback": "".join(traceback.format_exception(exc)),
+                }
+                record.error = error
+            if record.karaoke_type == "plus":
+                try:
+                    record._extract_lyrics()
+                except Exception as exc:
+                    error = {
+                        "type": str(type(exc)),
+                        "message": str(exc),
+                        "traceback": "".join(traceback.format_exception(exc)),
+                    }
+                    record.error = error
+
+    # Api Data Processing
+    def _prepare_data_api(self, domain: list, *, limit: int | None = None) -> list[dict]:
+        """ Prepare data for api usage
+        """
+        karaokes = self.sudo().search(domain, limit=limit)
+        return [{
+            "id": karaoke.id,
+            "title": karaoke.title,
+            "artist": karaoke.artist,
+            "duration": karaoke.duration,
+            "lyrics": karaoke.lyrics,
+            "status": karaoke.status,
+            "url": karaoke.source_url,
+            "karaoke_type": karaoke.karaoke_type,
+        } for karaoke in karaokes]
+
+
+    def _update_from_list(self, datas: list[dict]) -> None:
+        valid_values = [
+            "download_url",
+            "drive_folder_id",
+            "drive_file_id",
+            "error",
+        ]
+        for data in datas:
+            if not (karaoke_id := data.pop("id", None)):
+                continue
+
+            if karaoke := self.sudo().browse(karaoke_id).exists():
+                valid_data = {k: v for k, v in data.items() if k in valid_values}
+                error = valid_data.pop("error", {})
+
+                # Determine status: Completed if there is no error OR if a download_url was generated
+                if not error or valid_data.get("download_url"):
+                    valid_data["status"] = "completed"
+                else:
+                    valid_data["status"] = "failed"
+                
+                # We need to json.dumps() for frontend JSON.parse
+                valid_data["error"] = json.dumps(error)
+
+                karaoke.write(valid_data)
+
+
+    # Action
+    def action_refetch_info(self):
+        self.extract_info()
+        message = _("Successfully refetch info %s task(s).") % len(self)
         return {
             'type': 'ir.actions.client',
             'tag': 'display_notification',
@@ -134,14 +191,21 @@ class KaraokeKaraoke(models.Model):
             }
         }
 
-    # Task.run() will immediately run
-    def action_run(self) -> None:
-        """ Run the karaoke task immediately.
-
-            This is intentionally the entry point from the UI.
-            The actual processing lives in `_run()`,
-            which can later be executed by a GPU worker.
-        """
-        pass
-    # processjobs will be run on scheduled
-    
+    def action_reset_status(self):
+        self.write({
+            "status": "waiting",
+            "log": False,
+            "error": False,
+        })
+        message = _("Successfully reset %s task(s).") % len(self)
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'target': 'new',
+            'params': {
+                'message': message,
+                'type': 'success',
+                'sticky': False,
+                'next': {'type': 'ir.actions.act_window_close'},
+            }
+        }

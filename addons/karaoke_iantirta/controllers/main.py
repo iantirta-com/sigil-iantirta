@@ -42,55 +42,41 @@ class KaraokeController(Controller):
         if action == "get":
             domain = kwargs.pop("domain", [])
             limit = kwargs.pop("limit", None)
-            tasks = karaoke_sudo.search(domain, limit=limit)
-            return [
-                {
-                    "id": task.id,
-                    "title": task.title,
-                    "artist": task.artist,
-                    "duration": task.duration,
-                    "lyrics": task.lyrics,
-                    "status": task.status,
-                    "url": task.source_url,
-                    "karaoke_type": task.karaoke_type,
-                }
-                for task in tasks
-            ]
+            return karaoke_sudo._prepare_data_api(domain, limit=limit)
         elif action == "update":
             tasks_list: list[dict] = kwargs.pop("tasks", [])
-            for task in tasks_list:
-                task_id = task.pop("id")
-                if karaoke := karaoke_sudo.browse(task_id).exists():
-                    error = task.pop("error", {})
-                    if not error:
-                        task["status"] = "completed"
-                    else:
-                        task["status"] = "failed"
-                    task["error"] = json.dumps(error)
-                    karaoke.write(task)
-                else:
-                    _logger.warning(
-                        f"Karaoke of ID: {task_id} "
-                        "doesn't exists in the database, skiping..."
-                    )
+            karaoke_sudo._update_from_list(tasks_list)
             return True
         elif action == "events":
             # Separate Worker event and karaoke event
             events = kwargs.pop("events", [])
-            grouped_events = {}
+
+            grouped = {}
             for event in events:
-                grouped_events.setdefault(event.get("task_id"), []).append(event)
-            for task_id, log in grouped_events.items():
-                if task_id is not None and (karaoke := karaoke_sudo.browse(task_id).exists()):
-                    current_log = json.loads(karaoke.log) if karaoke.log and karaoke.log.strip() else []
-                    full_log = current_log + log
-                    karaoke.write({"log": json.dumps(full_log)})
-                elif task_id is None:
-                    current_log = json.loads(worker_sudo.log) if worker_sudo.log and worker_sudo.log.strip() else []
-                    full_log = current_log + log
-                    worker_sudo.write({"log": json.dumps(full_log)})
+                grouped.setdefault(event.get("task_id"), []).append(event)
+
+            def combine_log(current_str: str, extra) -> str:
+                if not current_str or not isinstance(current_str, str) or not current_str.strip():
+                    parsed_current = []
                 else:
-                    _logger.warning(f"Karaoke with {task_id} not found.")
+                    try:
+                        parsed_current = json.loads(current_str)
+                    except json.JSONDecodeError:
+                        try:
+                            parsed_current = ast.literal_eval(current_str)
+                            if not isinstance(parsed_current, list):
+                                parsed_current = []
+                        except (ValueError, SyntaxError):
+                            parsed_current = []
+                return json.dumps(parsed_current + extra)
+
+            for task_id, event in grouped.items():
+                if task_id is None:
+                    # This event belong to worker
+                    worker_sudo.log = combine_log(worker_sudo.log, event)
+                elif karaoke := karaoke_sudo.browse(task_id).exists():
+                    karaoke.log = combine_log(karaoke.log, event)
+
             return True
         else:
             raise ValidationError(_("Action isn't supported"))

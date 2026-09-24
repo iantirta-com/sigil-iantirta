@@ -55,6 +55,7 @@
                                     <field name="download_url" widget="url"/>
                                     <!-- Link Go to Folder Drive and File Drive -->
                                     <field name="log" widget="logger"/>
+                                    <field name="error" widget="error_traceback" string="Error Message"/>
                                 </group>
                             </group>
                         </page>
@@ -67,7 +68,7 @@
                         <page string="Debug">
                             <group>
                                 <group>
-                                    <field name="error" string="Error Message"/>
+                                    <field name="error" widget="error_traceback" string="Error Message"/>
                                 </group>
                             </group>
                         </page>
