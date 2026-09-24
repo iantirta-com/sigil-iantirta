@@ -14,357 +14,69 @@
                     <field name="status" widget="statusbar" statusbar_visible="ready,running,error" />
                 </header>
                 <sheet>
-                    <div class="o_gpu_worker_header">
-                        <div class="o_gpu_worker_identity">
-                            <div class="o_gpu_worker_icon"> GPU </div>
-                            <div>
-                                <div class="o_gpu_worker_eyebrow"> GPU WORKER </div>
-                                <h1>
-                                    <field name="name" placeholder="KPlus GPU Worker" />
-                                </h1>
-                                <div class="o_gpu_worker_id">
-                                    <field name="id" readonly="1" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="o_gpu_worker_status_strip">
-                        <div class="o_gpu_worker_status_cell">
-                            <span class="o_gpu_worker_status_label"> Worker Status </span>
-                            <div class="o_gpu_worker_status_value">
-                                <span class="o_gpu_worker_status_dot" invisible="status != 'ready'" />
-                                <span class="o_gpu_worker_status_dot is-running"
-                                    invisible="status != 'running'" />
-                                <span class="o_gpu_worker_status_dot is-error"
-                                    invisible="status != 'error'" />
-                                <field name="status" readonly="1" />
-                            </div>
-                        </div>
-                        <div class="o_gpu_worker_status_cell">
-                            <span class="o_gpu_worker_status_label"> Provider </span>
-                            <div class="o_gpu_worker_status_value">
-                                <field name="provider" readonly="1" />
-                            </div>
-                        </div>
-                        <div class="o_gpu_worker_status_cell">
-                            <span class="o_gpu_worker_status_label"> Machine </span>
-                            <div class="o_gpu_worker_status_value">
-                                <field name="machine_shape" readonly="1" />
-                            </div>
-                        </div>
-                        <div class="o_gpu_worker_status_cell">
-                            <span class="o_gpu_worker_status_label"> Last Run </span>
-                            <div class="o_gpu_worker_status_value">
-                                <field name="last_run" readonly="1" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="o_gpu_worker_grid"> <!--
-                        ============================================= LEFT COLUMN
-                        ============================================= -->
-                        <div class="o_gpu_worker_main"> <!-- WORKER -->
-                            <div class="o_gpu_worker_card">
-                                <div class="o_gpu_worker_card_header">
-                                    <div>
-                                        <div class="o_gpu_worker_card_title"> Worker </div>
-                                        <div class="o_gpu_worker_card_description"> Remote compute
-                                            configuration </div>
-                                    </div>
-                                    <span class="o_gpu_worker_badge is-green"> Connected </span>
-                                </div>
-                                <div class="o_gpu_worker_card_body">
-                                    <div class="o_gpu_worker_fields">
-                                        <div class="o_gpu_worker_field">
-                                            <label>Name</label>
-                                            <field name="name" />
-                                        </div>
-                                        <div class="o_gpu_worker_field">
-                                            <label>Provider</label>
-                                            <field name="provider" />
-                                        </div>
-                                        <div class="o_gpu_worker_field">
-                                            <label>Notebook</label>
-                                            <field name="notebook_id" />
-                                        </div>
-                                        <div class="o_gpu_worker_field">
-                                            <label>Machine</label>
-                                            <field name="machine_shape" />
-                                        </div>
-                                        <div class="o_gpu_worker_field">
-                                            <label>API Token</label>
-                                            <field name="api_token" password="True" />
-                                        </div>
-                                        <div class="o_gpu_worker_field">
-                                            <label>Internet</label>
-                                            <field name="enable_internet" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> <!--
-                            GPU QUOTA -->
-                            <div class="o_gpu_worker_card">
-                                <div class="o_gpu_worker_card_header">
-                                    <div>
-                                        <div class="o_gpu_worker_card_title"> GPU Quota </div>
-                                        <div class="o_gpu_worker_card_description"> Provider usage
-                                            and remaining compute time </div>
-                                    </div>
-                                    <span class="o_gpu_worker_badge is-blue"> Provider quota </span>
-                                </div>
-                                <div class="o_gpu_worker_card_body">
-                                    <div class="o_gpu_worker_quota_grid"> <!-- GPU -->
-                                        <div class="o_gpu_worker_quota">
-                                            <div class="o_gpu_worker_quota_top">
-                                                <strong>GPU</strong>
-                                                <span>
-                                                    <field name="gpu_time_used" readonly="1" /> / <field
-                                                        name="gpu_time_allowed" readonly="1" />
-                                                </span>
-                                            </div>
-                                            <div class="o_gpu_worker_progress">
-                                                <div class="o_gpu_worker_progress_value"
-                                                    t-att-style="'width: %s%%' % gpu_quota_percent" />
-                                            </div>
-                                            <div class="o_gpu_worker_quota_footer">
-                                                <span>Used</span>
-                                                <span>
-                                                    <field name="gpu_time_remaining" readonly="1" />
-                                                    remaining </span>
-                                            </div>
-                                        </div> <!--
-                                        TPU -->
-                                        <div class="o_gpu_worker_quota">
-                                            <div class="o_gpu_worker_quota_top">
-                                                <strong>TPU</strong>
-                                                <span>
-                                                    <field name="tpu_time_used" readonly="1" /> / <field
-                                                        name="tpu_time_allowed" readonly="1" />
-                                                </span>
-                                            </div>
-                                            <div class="o_gpu_worker_progress is-orange">
-                                                <div class="o_gpu_worker_progress_value"
-                                                    t-att-style="'width: %s%%' % tpu_quota_percent" />
-                                            </div>
-                                            <div class="o_gpu_worker_quota_footer">
-                                                <span>Used</span>
-                                                <span>
-                                                    <field name="tpu_time_remaining" readonly="1" />
-                                                    remaining </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> <!--
-                            WORKER NOTEBOOK -->
-                            <div class="o_gpu_worker_card">
-                                <div class="o_gpu_worker_card_header">
-                                    <div>
-                                        <div class="o_gpu_worker_card_title"> Worker Notebook </div>
-                                        <div class="o_gpu_worker_card_description"> Executable
-                                            notebook assigned to this worker </div>
-                                    </div>
-                                    <div class="o_gpu_worker_card_actions">
-                                        <button name="action_open_notebook" type="object"
-                                            string="Open" class="btn-secondary" />
-                                        <button name="action_edit_notebook" type="object"
-                                            string="Edit" class="btn-secondary" />
-                                    </div>
-                                </div>
-                                <div class="o_gpu_worker_card_body">
-                                    <div class="o_gpu_worker_notebook">
-                                        <div class="o_gpu_worker_notebook_icon"> .ipynb </div>
-                                        <div class="o_gpu_worker_notebook_info">
-                                            <field name="notebook_id"
-                                                class="o_gpu_worker_notebook_name" />
-                                            <div class="o_gpu_worker_notebook_meta">
-                                                <field name="notebook_filename" /> · <field
-                                                    name="notebook_language" /> · <field
-                                                    name="provider" />
-                                            </div>
-                                        </div>
-                                        <span class="o_gpu_worker_badge is-green"> Active </span>
-                                    </div>
-                                </div>
-                            </div> <!--
-                            RECENT ACTIVITY -->
-                            <div class="o_gpu_worker_card">
-                                <div class="o_gpu_worker_card_header">
-                                    <div>
-                                        <div class="o_gpu_worker_card_title"> Recent Activity </div>
-                                        <div class="o_gpu_worker_card_description"> Worker lifecycle
-                                            events </div>
-                                    </div>
-                                </div>
-                                <div class="o_gpu_worker_card_body">
-                                    <field name="activity_ids" nolabel="1" readonly="1">
-                                        <list create="0" edit="0" delete="0"
-                                            class="o_gpu_worker_activity_list">
-                                            <field name="event" />
-                                            <field name="description" />
-                                            <field name="create_date" />
-                                        </list>
-                                    </field>
-                                </div>
-                            </div>
-                        </div> <!--
-                        ============================================= RIGHT COLUMN
-                        ============================================= -->
-                        <div class="o_gpu_worker_sidebar"> <!-- STORAGE -->
-                            <div class="o_gpu_worker_card">
-                                <div class="o_gpu_worker_card_header">
-                                    <div>
-                                        <div class="o_gpu_worker_card_title"> Storage </div>
-                                        <div class="o_gpu_worker_card_description"> Worker output
-                                            destination </div>
-                                    </div>
-                                </div>
-                                <div class="o_gpu_worker_card_body">
-                                    <div class="o_gpu_worker_connection">
-                                        <div class="o_gpu_worker_connection_icon"> GD </div>
-                                        <div>
-                                            <div class="o_gpu_worker_connection_name"> Google Drive </div>
-                                            <div class="o_gpu_worker_connection_state"> ● Connected </div>
-                                        </div>
-                                    </div>
-                                    <div class="o_gpu_worker_storage_path">
-                                        <field name="drive_folder_id" />
-                                    </div>
-                                </div>
-                            </div> <!--
-                            EXECUTION -->
-                            <div class="o_gpu_worker_card">
-                                <div class="o_gpu_worker_card_header">
-                                    <div>
-                                        <div class="o_gpu_worker_card_title"> Execution </div>
-                                        <div class="o_gpu_worker_card_description"> Runtime
-                                            configuration </div>
-                                    </div>
-                                </div>
-                                <div class="o_gpu_worker_card_body">
-                                    <div class="o_gpu_worker_info_list">
-                                        <div class="o_gpu_worker_info_row">
-                                            <span>GPU</span>
-                                            <strong>
-                                                <field name="machine_shape" />
-                                            </strong>
-                                        </div>
-                                        <div class="o_gpu_worker_info_row">
-                                            <span>Internet</span>
-                                            <strong>
-                                                <field name="enable_internet" />
-                                            </strong>
-                                        </div>
-                                        <div class="o_gpu_worker_info_row">
-                                            <span>Worker Mode</span>
-                                            <strong> Polling </strong>
-                                        </div>
-                                        <div class="o_gpu_worker_info_row">
-                                            <span>Poll Interval</span>
-                                            <strong>
-                                                <field name="poll_interval" /> sec </strong>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> <!--
-                            NOTEBOOK DETAILS -->
-                            <div class="o_gpu_worker_card">
-                                <div class="o_gpu_worker_card_header">
-                                    <div>
-                                        <div class="o_gpu_worker_card_title"> Notebook </div>
-                                        <div class="o_gpu_worker_card_description"> Published worker
-                                            source </div>
-                                    </div>
-                                </div>
-                                <div class="o_gpu_worker_card_body">
-                                    <div class="o_gpu_worker_info_list">
-                                        <div class="o_gpu_worker_info_row">
-                                            <span>File</span>
-                                            <strong>
-                                                <field name="notebook_filename" />
-                                            </strong>
-                                        </div>
-                                        <div class="o_gpu_worker_info_row">
-                                            <span>Language</span>
-                                            <strong>
-                                                <field name="notebook_language" />
-                                            </strong>
-                                        </div>
-                                        <div class="o_gpu_worker_info_row">
-                                            <span>Provider</span>
-                                            <strong>
-                                                <field name="provider" />
-                                            </strong>
-                                        </div>
-                                        <div class="o_gpu_worker_info_row">
-                                            <span>Version</span>
-                                            <strong>
-                                                <field name="notebook_version" />
-                                            </strong>
-                                        </div>
-                                        <div class="o_gpu_worker_info_row">
-                                            <span>Updated</span>
-                                            <strong>
-                                                <field name="notebook_updated" />
-                                            </strong>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> <!--
-                            CONTROL -->
-                            <div class="o_gpu_worker_card">
-                                <div class="o_gpu_worker_card_header">
-                                    <div>
-                                        <div class="o_gpu_worker_card_title"> Worker Control </div>
-                                        <div class="o_gpu_worker_card_description"> Lifecycle
-                                            operations </div>
-                                    </div>
-                                </div>
-                                <div class="o_gpu_worker_card_body">
-                                    <button name="action_stop_worker" type="object"
-                                        string="Stop Worker"
-                                        class="btn-secondary o_gpu_worker_stop_button"
-                                        invisible="status != 'running'" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <group string="Information">
+                    <separator string="Worker" style="margin-top: 0 !important; margin-bottom: 0 !important;"/>
+                    <div class="small mb-3 text-muted">Remote compute Configuration</div>
+                    <group>
                         <group>
-                            <field name="name" placeholder="Identity name for this worker" />
+                            <field name="name"/>
+                            <field name="notebook_id"/>
+                            <field name="access_token" password="true"/>
                         </group>
                         <group>
-                            <field name="provider" />
-                            <field name="access_token" />
-                            <field name="notebook_id" />
+                            <field name="provider"/>
                         </group>
                     </group>
+                </sheet>
+                <sheet>
                     <notebook>
-                        <page name="quotas" string="Quotas">
+                        <page string="Quotas">
                             <field name="quota_json" />
                         </page>
-                        <page name="gdrive" string="Google Drive">
-                            <group>
-                                <field name="gdrive_root_folder_id" />
-                            </group>
-
-                            <label string="Credentials" for="gdrive_credentials"
-                                class="o_light_label mr8" />
-                            <!-- hide the download button because it is a computed value without a
-                            stored attachment -->
-                            <field name="gdrive_credentials"
-                                widget="binary"
-                                class="o_field_binary_hide_download"
-                                options="{'accepted_file_extensions': '.json'}" />
-                            <field name="gdrive_client_config" widget="text" class="w-100" />
-                            <group>
-                                <field string="User Token" name="gdrive_access_token_json"
-                                    widget="text" class="w-100" invisible="not gdrive_client_config" />
-                                <button name="action_setup_user_token" type="object"
-                                    invisible="not gdrive_client_config">Setup User Token</button>
-                            </group>
+                        <page string="Storage">
+                            <div class="d-flex">
+                                <div class="col-7 col-sm-6 col-lg-3 d-flex flex-column">
+                                    <span class="o_form_label">
+                                        Drive Root Folder ID
+                                    </span>
+                                    <span class="text-muted small">
+                                        Root folder destination.
+                                    </span>
+                                </div>
+                                <field name="gdrive_root_folder_id" class="w-100 h-100 my-auto"/>
+                            </div>
+                            <div class="d-md-flex mt-3">
+                                <div class="w-md-50 w-lg-25 d-flex flex-column">
+                                    <label for="gdrive_credentials" string="Credentials" class="o_form_label"/>
+                                    <span class="text-muted small">
+                                        Service Account Credentials
+                                    </span>
+                                    <field name="gdrive_credentials"
+                                        widget="binary"
+                                        class="o_field_binary_hide_download"
+                                        options="{'accepted_file_extensions': '.json'}" />
+                                </div>
+                                <div class="w-md-50 w-lg-75 d-flex flex-column my-auto">
+                                    <field name="gdrive_client_config" widget="text" class="w-100" />
+                                </div>
+                            </div>
+                            <div invisible="not gdrive_client_config" class="d-md-flex mt-3">
+                                <div class="w-md-50 w-lg-25  d-flex flex-column">
+                                    <label for="gdrive_access_token_json" string="User Token" class="o_form_label"/>
+                                    <span class="text-muted">
+                                        User specific token.
+                                    </span>
+                                </div>
+                                <div class="w-md-50 w-lg-75 d-flex flex-column my-auto">
+                                    <field name="gdrive_access_token_json" widget="text" class="w-100"/>
+                                    <div>
+                                        <button invisible="not gdrive_access_token_json" name="action_setup_user_token" type="object" string="Refresh Token" class="btn btn-secondary h-100"/>
+                                        <button invisible="gdrive_access_token_json" name="action_setup_user_token" type="object" string="Setup User Token" class="btn btn-secondary h-100"/>
+                                    </div>
+                                </div>
+                            </div>
                         </page>
-                        <page name="notebook" string="Notebook" invisible="not notebook_id">
-                            <field name="notebook_code" widget="code" options="{'mode': 'python'}" />
+                        <page string="Notebook">
+                            
                         </page>
                     </notebook>
                 </sheet>
