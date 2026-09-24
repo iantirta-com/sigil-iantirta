@@ -44,7 +44,7 @@ class KaraokeKaraoke(models.Model):
     # Karaoke Attributes
     download_url = fields.Char(readonly=True)
     drive_folder_id = fields.Char(readonly=True)
-    drive_file_id = fields.Char(readonly=True)
+    drive_file_id = fields.Char(readonly=True) # Can be used for preview video
     error = fields.Json(readonly=True)
     log = fields.Text(readonly=True)
 
@@ -114,7 +114,10 @@ class KaraokeKaraoke(models.Model):
         } 
 
     def action_reset_status(self):
-        self.write({"status": "waiting"})
+        self.write({
+            "status": "waiting",
+            "log": False,
+        })
         message = _(
             "The Tass that you selected have been successfully resetted to 'waiting'."
         )

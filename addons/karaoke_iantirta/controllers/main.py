@@ -1,5 +1,7 @@
+import ast
 import logging
 import typing as t
+from itertools import groupby
 
 from sigil.addons.karaoke_iantirta import utils as karaoke_utils
 from werkzeug.exceptions import BadRequest, Forbidden
@@ -14,98 +16,94 @@ if t.TYPE_CHECKING:
 _logger = logging.getLogger(__name__)
 
 class KaraokeController(Controller):
-    @route("/karaoke/task", type="jsonrpc", auth="public")
-    def karaoke_task(
-        self,
-        worker_name: str,
-        worker_provider: str,
-        access_token: str,
-        status_to_fetch: str,
-        **kwargs
-    ) -> list:
-        """ Get a list of task according to the status needed.
-            and generate access token in case needed.
-        """
-        if not karaoke_utils.check_access_token(
-            access_token, worker_name, worker_provider
-        ):
-            raise Forbidden()
-
-        tasks: KaraokeKaraoke = request.env["karaoke.karaoke"].sudo().search([
-            ("status", "=", status_to_fetch)
-        ])
-        response = []
-        for task in tasks:
-            response.append({
-                "id": task.id,
-                "title": task.title,
-                "artist": task.artist,
-                "duration": task.duration,
-                "lyrics": task.lyrics,
-                "status": task.status,
-                "url": task.source_url,
-                "karaoke_type": task.karaoke_type,
-            })
-        return response
-
-    @route("/karaoke/task/update", type="jsonrpc", auth="public")
-    def karaoke_task_update(
-        self,
-        worker_name: str,
-        worker_provider: str,
-        access_token: str,
-        datas: list[dict],
-    ) -> bool:
-        if not karaoke_utils.check_access_token(
-            access_token, worker_name, worker_provider
-        ):
-            raise Forbidden()
-
-        karaoke_sudo = request.env["karaoke.karaoke"].sudo()
-
-        for data in datas:
-            if karaoke := karaoke_sudo.browse(data.get("id")):
-                karaoke.write({
-                    "status": data["status"],
-                    "download_url": data["download_url"],
-                    "drive_folder_id": data["drive_folder_id"],
-                    "drive_file_id": data["drive_file_id"],
-                    "error": data["error"],
-                    "log": data["log"],
-                })
-            else:
-                _logger.warning(f"Karaoke of ID: {data.get('id')} doesn't exists in the database, skiping...")
-        return True
-
-    @route("/karaoke/worker/update", type="jsonrpc", auth="public")
-    def karaoke_worker(
-        self,
-        worker_name: str,
-        worker_provider: str,
-        access_token: str,
-        karaoke_ids,
-    ) -> bool:
-        """ Endpoint for first time running
-            it would update status of each the karaoke_ids,
-            to be processing.
-        """
-        worker_sudo = request.env["gpu.worker"].sudo().search([
-            ("name", "=", worker_name), ("provider", "=", worker_provider)
-        ]).exists()
-
+    def _check_access(self, access_token: str, worker_id: int, **kwargs):
+        worker_sudo = request.env["gpu.worker"].sudo().browse(worker_id).exists()
         if not worker_sudo:
             raise ValidationError(_("The provided parameters are invalid."))
-        
+
         if not karaoke_utils.check_access_token(
             access_token, worker_sudo.name, worker_sudo.provider
         ):
             raise Forbidden()
 
-        karaokes = request.env["karaoke.karaoke"].browse(karaoke_ids).exists()
-        if karaokes:
-            karaokes.sudo().write({"status": "processing"})
+        return worker_sudo
+
+    @route("/karaoke/tasks", type="jsonrpc", auth="public")
+    def karaoke_tasks(
+        self,
+        action: t.Literal["get", "update", "events"],
+        **kwargs
+    ) -> list | bool:
+        worker_sudo = self._check_access(**kwargs)
+
+        karaoke_sudo: KaraokeKaraoke = request.env["karaoke.karaoke"].sudo()
+
+        if action == "get":
+            domain = kwargs.pop("domain", [])
+            limit = kwargs.pop("limit", None)
+            tasks = karaoke_sudo.search(domain, limit=limit)
+            return [
+                {
+                    "id": task.id,
+                    "title": task.title,
+                    "artist": task.artist,
+                    "duration": task.duration,
+                    "lyrics": task.lyrics,
+                    "status": task.status,
+                    "url": task.source_url,
+                    "karaoke_type": task.karaoke_type,
+                }
+                for task in tasks
+            ]
+        elif action == "update":
+            tasks_list: list[dict] = kwargs.pop("tasks", [])
+            for task in tasks_list:
+                task_id = task.pop("id")
+                if karaoke := karaoke_sudo.browse(task_id).exists():
+                    karaoke.write(task)
+                else:
+                    _logger.warning(
+                        f"Karaoke of ID: {task_id} "
+                        "doesn't exists in the database, skiping..."
+                    )
+            return True
+        elif action == "events":
+            # Separate Worker event and karaoke event
+            events = kwargs.pop("events", [])
+            grouped_events = {}
+            for event in events:
+                grouped_events.setdefault(event.get("task_id"), []).append(event)
+            for task_id, log in grouped_events.items():
+                if task_id is not None and (karaoke := karaoke_sudo.browse(task_id).exists()):
+                    current_log = ast.literal_eval(karaoke.log) if karaoke.log and karaoke.log.strip() else []
+                    karaoke.write({"log": current_log + log})
+                elif task_id is None:
+                    current_log = ast.literal_eval(worker_sudo.log) if worker_sudo.log and worker_sudo.log.strip() else []
+                    worker_sudo.write({"log": current_log + log})
+                else:
+                    _logger.warning(f"Karaoke with {task_id} not found.")
             return True
         else:
-            return False
+            raise ValidationError(_("Action isn't supported"))
+        
+    @route("/karaoke/worker", type="jsonrpc", auth="public")
+    def karaoke_worker(
+        self,
+        action: t.Literal["start", "stop",],
+        **kwargs
+    ) -> list | bool:
+        worker_sudo = self._check_access(**kwargs)
+
+        if action == "start":
+            task_ids = kwargs.pop("task_ids", [])
+            if karaokes := request.env["karaoke.karaoke"].sudo().browse(task_ids).exists():
+                karaokes.write({"status": "processing"})
+            worker_sudo.write({"status": "running"})
+            return True
+        elif action == "stop":
+            worker_sudo.write({"status": "ready"})
+            return True
+        else:
+            raise ValidationError(_("Action isn't supported"))
 
     # Cookiefile

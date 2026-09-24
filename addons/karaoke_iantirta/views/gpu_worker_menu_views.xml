@@ -7,43 +7,76 @@
         <field name="arch" type="xml">
             <form string="GPU Worker" duplicate="false">
                 <header>
-                    <button string="Refetch Quotas" type="object" name="action_get_quotas"/>
-                    <button string="Run" type="object" name="action_run" />
+                    <button string="Refresh Quota" type="object" class="btn-secondary"
+                        name="action_get_quotas" />
+                    <button string="Start Worker" type="object" class="btn-primary"
+                        invisible="status == 'running'" name="action_run" />
+                    <field name="status" widget="statusbar" statusbar_visible="ready,running,error" />
                 </header>
                 <sheet>
-                    <group string="Information">
+                    <separator string="Worker" style="margin-top: 0 !important; margin-bottom: 0 !important;"/>
+                    <div class="small mb-3 text-muted">Remote compute Configuration</div>
+                    <group>
                         <group>
-                            <field name="name" placeholder="Identity name for this worker"/>
+                            <field name="name"/>
+                            <field name="notebook_id"/>
+                            <field name="access_token" password="true"/>
                         </group>
                         <group>
                             <field name="provider"/>
-                            <field name="access_token" />
-                            <field name="notebook_id"/>
                         </group>
                     </group>
+                </sheet>
+                <sheet>
                     <notebook>
-                        <page name="quotas" string="Quotas">
-                            <field name="quota_json"/>
+                        <page string="Quotas">
+                            <field name="quota_json" />
                         </page>
-                        <page name="gdrive" string="Google Drive">
-                            <group>
-                                <field name="gdrive_root_folder_id"/>
-                            </group>
-                            
-                            <label string="Credentials" for="gdrive_credentials" class="o_light_label mr8"/>
-                            <!-- hide the download button because it is a computed value without a stored attachment -->
-                            <field name="gdrive_credentials"
-                                widget="binary"
-                                class="o_field_binary_hide_download"
-                                options="{'accepted_file_extensions': '.json'}"/>
-                            <field name="gdrive_client_config" widget="text" class="w-100"/>
-                            <group>
-                                <field string="User Token" name="gdrive_access_token_json" widget="text" class="w-100" invisible="not gdrive_client_config"/>
-                                <button name="action_setup_user_token" type="object" invisible="not gdrive_client_config">Setup User Token</button>
-                            </group>
+                        <page string="Storage">
+                            <div class="d-flex">
+                                <div class="col-7 col-sm-6 col-lg-3 d-flex flex-column">
+                                    <span class="o_form_label">
+                                        Drive Root Folder ID
+                                    </span>
+                                    <span class="text-muted small">
+                                        Root folder destination.
+                                    </span>
+                                </div>
+                                <field name="gdrive_root_folder_id" class="w-100 h-100 my-auto"/>
+                            </div>
+                            <div class="d-md-flex mt-3">
+                                <div class="w-md-50 w-lg-25 d-flex flex-column">
+                                    <label for="gdrive_credentials" string="Credentials" class="o_form_label"/>
+                                    <span class="text-muted small">
+                                        Service Account Credentials
+                                    </span>
+                                    <field name="gdrive_credentials"
+                                        widget="binary"
+                                        class="o_field_binary_hide_download"
+                                        options="{'accepted_file_extensions': '.json'}" />
+                                </div>
+                                <div class="w-md-50 w-lg-75 d-flex flex-column my-auto">
+                                    <field name="gdrive_client_config" widget="text" class="w-100" />
+                                </div>
+                            </div>
+                            <div invisible="not gdrive_client_config" class="d-md-flex mt-3">
+                                <div class="w-md-50 w-lg-25  d-flex flex-column">
+                                    <label for="gdrive_access_token_json" string="User Token" class="o_form_label"/>
+                                    <span class="text-muted">
+                                        User specific token.
+                                    </span>
+                                </div>
+                                <div class="w-md-50 w-lg-75 d-flex flex-column my-auto">
+                                    <field name="gdrive_access_token_json" widget="text" class="w-100"/>
+                                    <div>
+                                        <button invisible="not gdrive_access_token_json" name="action_setup_user_token" type="object" string="Refresh Token" class="btn btn-secondary h-100"/>
+                                        <button invisible="gdrive_access_token_json" name="action_setup_user_token" type="object" string="Setup User Token" class="btn btn-secondary h-100"/>
+                                    </div>
+                                </div>
+                            </div>
                         </page>
-                        <page name="notebook" string="Notebook" invisible="not notebook_id">
-                            <field name="notebook_code" widget="code" options="{'mode': 'python'}"/>
+                        <page string="Log">
+                            <field name="log"/>
                         </page>
                     </notebook>
                 </sheet>
@@ -59,10 +92,10 @@
                 <sheet>
                     <group>
                         <group colspan="2">
-                            <field name="name"/>
-                            <field name="language"/>
+                            <field name="name" />
+                            <field name="language" />
                         </group>
-                        <field name="code" widget="code" options="{'mode': 'python'}"/>
+                        <field name="code" widget="code" options="{'mode': 'python'}" />
                     </group>
                 </sheet>
             </form>
@@ -88,8 +121,8 @@
         name="GPU Worker"
         parent="karaoke_root">
 
-        <menuitem id="gpu_worker_worker" name="Worker" action="gpu_worker_action"/>
-        <menuitem id="worker_notebook" name="Notebook" action="worker_notebook_action"/>
-    
+        <menuitem id="gpu_worker_worker" name="Worker" action="gpu_worker_action" />
+        <menuitem id="worker_notebook" name="Notebook" action="worker_notebook_action" />
+
     </menuitem>
 </sigil>
