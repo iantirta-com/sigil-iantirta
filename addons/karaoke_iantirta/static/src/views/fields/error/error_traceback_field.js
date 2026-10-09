@@ -13,7 +13,11 @@ class ErrorTracebackField extends Component {
     }
 
     get error() {
-        return JSON.parse(this.props.record.data[this.props.name]);
+        try {
+            return JSON.parse(this.props.record.data[this.props.name]);
+        } catch {
+            return [];
+        }
     }
 }
 
