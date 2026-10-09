@@ -57,7 +57,18 @@ class KaraokeKaraoke(models.Model):
             To extract necessary information such as title,
             artist, duration, lyrics
         """
-        karaokes: KaraokeKaraoke = super().create(vals_list)
+        all_karaokes = set(
+            self.sudo().search([]).mapped("source_url")
+        )
+
+        duplicated, missing = set(), set()
+
+        for val in vals_list:
+            if val.get("source_url") in all_karaokes:
+                duplicated.add(val)
+            else:
+                missing.add(val)
+        karaokes: KaraokeKaraoke = super().create(missing)
 
         def extract_info_with_new_cursor():
             with Registry(self.env.cr.dbname).cursor() as cr:
