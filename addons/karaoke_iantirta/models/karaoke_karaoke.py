@@ -61,13 +61,14 @@ class KaraokeKaraoke(models.Model):
             self.sudo().search([]).mapped("source_url")
         )
 
-        duplicated, missing = set(), set()
+        duplicated, missing = set(), []
 
         for val in vals_list:
-            if val.get("source_url") in all_karaokes:
-                duplicated.add(val)
-            else:
-                missing.add(val)
+            
+            if (url := val.get("source_url", None)) is not None and url in all_karaokes:
+                duplicated.add(url)
+            elif url:
+                missing.append(val)
         karaokes: KaraokeKaraoke = super().create(missing)
 
         def extract_info_with_new_cursor():
