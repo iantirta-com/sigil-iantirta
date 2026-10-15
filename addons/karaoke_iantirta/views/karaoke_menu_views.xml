@@ -59,9 +59,9 @@
                                 </group>
                             </group>
                         </page>
-                        <page string="Lyrics">
+                        <page string="Lyric">
                             <field
-                                name="lyrics"
+                                name="lyric"
                                 placeholder="Generated lyrics..."
                             />
                         </page>

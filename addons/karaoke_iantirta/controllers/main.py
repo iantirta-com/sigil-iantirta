@@ -4,6 +4,8 @@ import logging
 import typing as t
 from itertools import groupby
 
+from typing import Literal, Any
+
 from sigil.addons.karaoke_iantirta import utils as karaoke_utils
 from werkzeug.exceptions import BadRequest, Forbidden
 
@@ -14,10 +16,17 @@ from sigil.http import Controller, request, route
 if t.TYPE_CHECKING:
     from ..models.karaoke_karaoke import KaraokeKaraoke
 
+
 _logger = logging.getLogger(__name__)
 
+
 class KaraokeController(Controller):
-    def _check_access(self, access_token: str, worker_id: int, **kwargs):
+    def _check_access(
+        self,
+        access_token: str,
+        worker_id: int,
+        **kwargs
+    ):
         worker_sudo = request.env["gpu.worker"].sudo().browse(worker_id).exists()
         if not worker_sudo:
             raise ValidationError(_("The provided parameters are invalid."))
@@ -29,10 +38,61 @@ class KaraokeController(Controller):
 
         return worker_sudo
 
+    @route('/karaoke/tasks/get', type='jsonrpc', auth='public')
+    def karaoke_tasks_get(
+        self,
+        domain: list[tuple],
+        limit: int | None = None,
+        **kwargs
+    ) -> list[dict[str, Any]]:
+        worker_sudo = self._check_access(**kwargs)
+
+        return request.env["karaoke.karaoke"].sudo()._prepare_data_api(domain, limit=limit)
+
+    @route('/karaoke/worker/claim_task', type='jsonrpc', auth='public')
+    def karaoke_worker_claim_task(
+        self,
+        task_ids: list[int],
+        **kwargs,
+    ) -> list[dict[str, Any]]:
+        worker_sudo = self._check_access(**kwargs)
+
+        if karaokes := request.env["karaoke.karaoke"].sudo().browse(task_ids).exists():
+            karaokes.write({
+                "status": "processing",
+                #'worker_id': worker_sudo.id
+            })
+
+        return True
+
+    @route('/karaoke/worker/start', type='jsonrpc', auth='public')
+    def karaoke_worker_start(
+        self,
+        **kwargs,
+    ) -> bool:
+        worker_sudo = self._check_access(**kwargs)
+
+        worker_sudo.write({"status": "running"})
+        return True
+
+    @route('/karaoke/worker/stop', type='jsonrpc', auth='public')
+    def karaoke_worker_stop(
+        self,
+        log_entries: list[str],
+        **kwargs,
+    ) -> bool:
+        worker_sudo = self._check_access(**kwargs)
+
+        worker_sudo.write({
+            "status": "ready",
+            'log_entries': json.loads(worker_sudo.log_entries) + log_entries
+        })
+        return True
+
     @route("/karaoke/tasks", type="jsonrpc", auth="public")
     def karaoke_tasks(
         self,
-        action: t.Literal["get", "update", "events"],
+        action: Literal["get", "update", "events"],
         **kwargs
     ) -> list | bool:
         worker_sudo = self._check_access(**kwargs)
