@@ -4,10 +4,11 @@ import threading
 import traceback
 
 from sigil import _, api, fields, models
+from sigil.exceptions import UserError
 from sigil.modules.registry import Registry
 from sigil.tools import config
 
-from .kplus_tools import extract_info, extract_lyrics
+from ..utils import LyricMetadata, VideoMetadata, extract_video_info, get_lyric, merge_log
 
 
 class KaraokeKaraoke(models.Model):
@@ -33,6 +34,8 @@ class KaraokeKaraoke(models.Model):
         ("failed", "Failed"),
     ], default="waiting", required=True, readonly=True)
 
+    #worker_id = fields.Many2one()
+
     # Auto Generated
     title = fields.Char(readonly=True,)
     artist = fields.Char(readonly=True,)
@@ -41,7 +44,7 @@ class KaraokeKaraoke(models.Model):
         default="https://via.placeholder.com/320x180/1C1B1F/FFFFFF?text=No+Thumbnail"
     )
 
-    lyrics = fields.Text()
+    lyric = fields.Text()
 
     # Karaoke Attributes
     download_url = fields.Char(readonly=True)
@@ -50,6 +53,9 @@ class KaraokeKaraoke(models.Model):
     error = fields.Text(readonly=True)
     log = fields.Text(readonly=True)
 
+    error_entries = fields.Json(readonly=True)
+    log_entries = fields.Json(readonly=True)
+
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -57,19 +63,7 @@ class KaraokeKaraoke(models.Model):
             To extract necessary information such as title,
             artist, duration, lyrics
         """
-        all_karaokes = set(
-            self.sudo().search([]).mapped("source_url")
-        )
-
-        duplicated, missing = set(), []
-
-        for val in vals_list:
-            
-            if (url := val.get("source_url", None)) is not None and url in all_karaokes:
-                duplicated.add(url)
-            elif url:
-                missing.append(val)
-        karaokes: KaraokeKaraoke = super().create(missing)
+        karaokes: KaraokeKaraoke = super().create(vals_list)
 
         def extract_info_with_new_cursor():
             with Registry(self.env.cr.dbname).cursor() as cr:
@@ -92,31 +86,40 @@ class KaraokeKaraoke(models.Model):
         #TODO: Rotate cookiefile and populate cookiefile
         return os.path.join(config['data_dir'], "cookies.txt")
 
-
     # Extraction Method
     def _extract_lyrics(self):
         """ Extract One Lyric
         """
         self.ensure_one()
-        lyrics = extract_lyrics(self.title, self.artist, self.duration)
-        self.write({"lyrics": lyrics})
+
+        metadata: LyricMetadata = get_lyric(
+            self.title,
+            self.artist,
+            self.duration
+        )
+        self.write({
+            'title': metadata.trackName,
+            'artist': metadata.artistName,
+            "lyric": metadata.plainLyrics
+        })
+        del metadata
+
         return self
 
     def _extract_info(self):
-        """ Extract One
+        """ Extract One Indo
         """
         self.ensure_one()
-        title, artist, duration, thumbnail_url = extract_info(
-            self.source_url,
-            cookiefile=self.get_cookiepath(),
-            return_thumbnail=True,
-        )
+
+        metadata: VideoMetadata = extract_video_info(self.source_url)
         self.write({
-            "title": title,
-            "artist": artist,
-            "duration": duration,
-            "thumbnail_url": thumbnail_url,
+            "title": metadata.title,
+            "artist": metadata.resolved_artist,
+            "duration": metadata.duration,
+            "thumbnail_url": metadata.thumbnail,
         })
+        del metadata
+
         return self
 
     def extract_info(self):
@@ -144,7 +147,7 @@ class KaraokeKaraoke(models.Model):
                     record.error = error
 
     # Api Data Processing
-    def _prepare_data_api(self, domain: list, *, limit: int | None = None) -> list[dict]:
+    def _prepare_data_api(self, domain: list[tuple], *, limit: int | None = None) -> list[dict]:
         """ Prepare data for api usage
         """
         karaokes = self.sudo().search(domain, limit=limit)
@@ -153,39 +156,44 @@ class KaraokeKaraoke(models.Model):
             "title": karaoke.title,
             "artist": karaoke.artist,
             "duration": karaoke.duration,
-            "lyrics": karaoke.lyrics,
+            "lyric": karaoke.lyric,
             "status": karaoke.status,
-            "url": karaoke.source_url,
+            "source": karaoke.source_url,
             "karaoke_type": karaoke.karaoke_type,
         } for karaoke in karaokes]
 
 
-    def _update_from_list(self, datas: list[dict]) -> None:
+    def _update_from_dict(self, **data) -> None:
         valid_values = [
+            'title',
+            'artist',
             "download_url",
             "drive_folder_id",
             "drive_file_id",
-            "error",
+            'log_entries',
+            "error_entries",
         ]
-        for data in datas:
-            if not (karaoke_id := data.pop("id", None)):
-                continue
+        if not (karaoke_id := data.pop("id", None)):
+            raise UserError(_('Method update_from_dict require karaoke id to be passed'))
 
-            if karaoke := self.sudo().browse(karaoke_id).exists():
-                valid_data = {k: v for k, v in data.items() if k in valid_values}
-                error = valid_data.pop("error", {})
+        if karaoke := self.sudo().browse(karaoke_id).exists():
+            valid_data = {k: v for k, v in data.items() if k in valid_values}
+            error_entries = valid_data.pop("error_entries", [])
 
-                # Determine status: Completed if there is no error OR if a download_url was generated
-                if not error or valid_data.get("download_url"):
-                    valid_data["status"] = "completed"
-                else:
-                    valid_data["status"] = "failed"
-                
-                # We need to json.dumps() for frontend JSON.parse
-                valid_data["error"] = json.dumps(error)
+            if len(error_entries) > 0:
+                valid_data['status'] = 'failed'
+                valid_data['error_entries'] = merge_log(karaoke.error_entries, error_entries)
+            elif valid_data.get('download_url'):
+                valid_data['status'] = 'completed'
+            else:
+                valid_data['status'] = 'failed'
 
-                karaoke.write(valid_data)
+            valid_data['log_entries'] = merge_log(karaoke.log_entries, valid_data['log_entries'])
 
+            karaoke.write(valid_data)
+
+        else:
+            raise UserError(_("karaoke id not found in the database"))
 
     # Action
     def action_refetch_info(self):
@@ -208,6 +216,8 @@ class KaraokeKaraoke(models.Model):
             "status": "waiting",
             "log": False,
             "error": False,
+            "log_entries": False,
+            "error_entries": False,
         })
         message = _("Successfully reset %s task(s).") % len(self)
         return {
