@@ -65,19 +65,7 @@ class KaraokeKaraoke(models.Model):
         """
         karaokes: KaraokeKaraoke = super().create(vals_list)
 
-        def extract_info_with_new_cursor():
-            with Registry(self.env.cr.dbname).cursor() as cr:
-                env = api.Environment(cr, self.env.uid, self.env.context)
-
-                karaoke: KaraokeKaraoke
-                for karaoke in env["karaoke.karaoke"].browse(karaokes.ids):
-                    karaoke.extract_info()
-
-        @self.env.cr.postcommit.add
-        def launch_thread() -> None:
-            thread = threading.Thread(target=extract_info_with_new_cursor)
-            thread.daemon = True  # Allows the server to shut down without getting stuck
-            thread.start()
+        karaokes.extract_info()
 
         return karaokes
 
@@ -125,26 +113,40 @@ class KaraokeKaraoke(models.Model):
     def extract_info(self):
         """ Full Extraction multiple records
         """
-        for record in self:
-            try:
-                record._extract_info()
-            except Exception as exc:
-                error = {
-                    "type": str(type(exc)),
-                    "message": str(exc),
-                    "traceback": "".join(traceback.format_exception(exc)),
-                }
-                record.error = error
-            if record.karaoke_type == "plus":
-                try:
-                    record._extract_lyrics()
-                except Exception as exc:
-                    error = {
-                        "type": str(type(exc)),
-                        "message": str(exc),
-                        "traceback": "".join(traceback.format_exception(exc)),
-                    }
-                    record.error = error
+        def extract_info_with_new_cursor():
+            with Registry(self.env.cr.dbname).cursor() as cr:
+                env = api.Environment(cr, self.env.uid, self.env.context)
+
+                karaoke: KaraokeKaraoke
+                for karaoke in env["karaoke.karaoke"].browse(self.ids):
+                    try:
+                        karaoke._extract_info()
+                    except Exception as exc:
+                        error = {
+                            "type": str(type(exc)),
+                            "message": str(exc),
+                            "traceback": "".join(traceback.format_exception(exc)),
+                        }
+                        karaoke.error = error
+                    else:
+                        if karaoke.karaoke_type == "plus":
+                            try:
+                                karaoke._extract_lyrics()
+                            except Exception as exc:
+                                error = {
+                                    "type": str(type(exc)),
+                                    "message": str(exc),
+                                    "traceback": "".join(traceback.format_exception(exc)),
+                                }
+                                karaoke.error = error
+
+        @self.env.cr.postcommit.add
+        def launch_thread() -> None:
+            thread = threading.Thread(target=extract_info_with_new_cursor)
+            thread.daemon = True  # Allows the server to shut down without getting stuck
+            thread.start()
+
+        return self
 
     # Api Data Processing
     def _prepare_data_api(self, domain: list[tuple], *, limit: int | None = None) -> list[dict]:
