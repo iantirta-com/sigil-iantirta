@@ -4,10 +4,12 @@ import threading
 import traceback
 
 from sigil import _, api, fields, models
+from sigil.exceptions import UserError
 from sigil.modules.registry import Registry
 from sigil.tools import config
 
-from ..utils import extract_video_info, VideoMetadata, get_lyric, LyricMetadata
+from ..utils import LyricMetadata, VideoMetadata, extract_video_info, get_lyric, merge_log
+
 
 class KaraokeKaraoke(models.Model):
     _name = 'karaoke.karaoke'
@@ -51,8 +53,8 @@ class KaraokeKaraoke(models.Model):
     error = fields.Text(readonly=True)
     log = fields.Text(readonly=True)
 
-    error_entries = fields.Text(readonly=True)
-    log_entries = fields.Text(readonly=True)
+    error_entries = fields.Json(readonly=True)
+    log_entries = fields.Json(readonly=True)
 
 
     @api.model_create_multi
@@ -161,32 +163,37 @@ class KaraokeKaraoke(models.Model):
         } for karaoke in karaokes]
 
 
-    def _update_from_list(self, datas: list[dict]) -> None:
+    def _update_from_dict(self, **data) -> None:
         valid_values = [
+            'title',
+            'artist',
             "download_url",
             "drive_folder_id",
             "drive_file_id",
-            "error",
+            'log_entries',
+            "error_entries",
         ]
-        for data in datas:
-            if not (karaoke_id := data.pop("id", None)):
-                continue
+        if not (karaoke_id := data.pop("id", None)):
+            raise UserError(_('Method update_from_dict require karaoke id to be passed'))
 
-            if karaoke := self.sudo().browse(karaoke_id).exists():
-                valid_data = {k: v for k, v in data.items() if k in valid_values}
-                error = valid_data.pop("error", {})
+        if karaoke := self.sudo().browse(karaoke_id).exists():
+            valid_data = {k: v for k, v in data.items() if k in valid_values}
+            error_entries = valid_data.pop("error_entries", [])
 
-                # Determine status: Completed if there is no error OR if a download_url was generated
-                if not error or valid_data.get("download_url"):
-                    valid_data["status"] = "completed"
-                else:
-                    valid_data["status"] = "failed"
-                
-                # We need to json.dumps() for frontend JSON.parse
-                valid_data["error"] = json.dumps(error)
+            if len(error_entries) > 0:
+                valid_data['status'] = 'failed'
+                valid_data['error_entries'] = merge_log(karaoke.error_entries, error_entries)
+            elif valid_data.get('download_url'):
+                valid_data['status'] = 'completed'
+            else:
+                valid_data['status'] = 'failed'
 
-                karaoke.write(valid_data)
+            valid_data['log_entries'] = merge_log(karaoke.log_entries, valid_data['log_entries'])
 
+            karaoke.write(valid_data)
+
+        else:
+            raise UserError(_("karaoke id not found in the database"))
 
     # Action
     def action_refetch_info(self):
@@ -209,6 +216,8 @@ class KaraokeKaraoke(models.Model):
             "status": "waiting",
             "log": False,
             "error": False,
+            "log_entries": False,
+            "error_entries": False,
         })
         message = _("Successfully reset %s task(s).") % len(self)
         return {

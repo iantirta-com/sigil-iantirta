@@ -1,9 +1,11 @@
 
+import ast
+import json
+
 from sigil import api, fields
 from sigil.http import request
 from sigil.tools import consteq, float_round
 from sigil.tools.misc import hmac as hmac_tool
-
 
 # Access token management
 
@@ -40,3 +42,20 @@ def check_access_token(access_token, *values) -> bool:
     """
     authentic_token = generate_access_token(*values)
     return access_token and consteq(access_token, authentic_token)
+
+
+# Log merging
+
+def merge_log(
+    current_log: str | bool,
+    new_log: list,
+) -> list:
+    if not current_log:
+        parsed_current = []
+    else:
+        try:
+            parsed_current = json.loads(current_log)
+        except json.decoder.JSONDecodeError:
+            parsed_current = ast.literal_eval(current_log)
+
+    return parsed_current + new_log

@@ -1,16 +1,16 @@
-import logging
-import json
-import tempfile
-import shutil
 import base64
+import json
+import logging
+import shutil
+import tempfile
 import uuid
-
 from pathlib import Path
 
-from sigil.http import request
+from sigil.addons.karaoke_iantirta import utils as karaoke_utils
+
 from sigil import _, api, fields, models
 from sigil.exceptions import UserError
-from sigil.addons.karaoke_iantirta import utils as karaoke_utils
+from sigil.http import request
 
 _logger = logging.getLogger(__name__)
 
@@ -49,6 +49,7 @@ class GpuWorker(models.Model):
     refresh_time = fields.Datetime()
 
     log = fields.Text(readonly=True)
+    log_entries = fields.Json(readonly=True)
 
     # Drive Config
     gdrive_credentials = fields.Binary(

@@ -1,2 +1,2 @@
 
-from iantirta.media import extract_video_info, VideoMetadata, get_lyric, LyricMetadata
+from iantirta.media import LyricMetadata, VideoMetadata, extract_video_info, get_lyric

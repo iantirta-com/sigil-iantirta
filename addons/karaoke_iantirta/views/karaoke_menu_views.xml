@@ -37,6 +37,11 @@
                             </div>
                         </div>
                     </div>
+                    <group string="Log and Debug">
+                        <group colspan='2'>
+                            <field name="log_entries" widget='log_entries'/>
+                        </group>
+                    </group>
                 </sheet>
                 <sheet>
                     <group>

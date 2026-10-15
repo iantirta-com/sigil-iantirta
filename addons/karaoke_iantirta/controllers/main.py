@@ -3,15 +3,15 @@ import json
 import logging
 import typing as t
 from itertools import groupby
+from typing import Any, Literal
 
-from typing import Literal, Any
-
-from sigil.addons.karaoke_iantirta import utils as karaoke_utils
-from werkzeug.exceptions import BadRequest, Forbidden
+from werkzeug.exceptions import BadRequest, Forbidden, NotFound
 
 from sigil import _
-from sigil.exceptions import AccessError, MissingError, ValidationError
+from sigil.exceptions import ValidationError
 from sigil.http import Controller, request, route
+
+from .. import utils as karaoke_utils
 
 if t.TYPE_CHECKING:
     from ..models.karaoke_karaoke import KaraokeKaraoke
@@ -49,6 +49,21 @@ class KaraokeController(Controller):
 
         return request.env["karaoke.karaoke"].sudo()._prepare_data_api(domain, limit=limit)
 
+    @route('/karaoke/task/update', type='jsonrpc', auth='public')
+    def karaoke_task_update(
+        self,
+        task: dict,
+        **kwargs
+    ) -> bool:
+        worker_sudo = self._check_access(**kwargs)
+        
+        karaoke: KaraokeKaraoke
+        if karaoke := request.env["karaoke.karaoke"].sudo().browse(task['id']).exists():
+            karaoke._update_from_dict(**task)
+            return True
+        
+        raise NotFound("Karaoke id not found in the database")
+
     @route('/karaoke/worker/claim_task', type='jsonrpc', auth='public')
     def karaoke_worker_claim_task(
         self,
@@ -85,7 +100,7 @@ class KaraokeController(Controller):
 
         worker_sudo.write({
             "status": "ready",
-            'log_entries': json.loads(worker_sudo.log_entries) + log_entries
+            'log_entries': karaoke_utils.merge_log(worker_sudo.log_entries, log_entries)
         })
         return True
 
