@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sigil>
+    <record id="ir_cron_extract_info_karaoke" model="ir.cron">
+        <field name="name">Karaoke: Extract Information</field>
+        <field name="model_id" ref="model_karaoke_karaoke"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_extract_info_karaoke(batch_size=50)</field>
+        <field name="interval_number">120</field>
+        <field name="interval_type">months</field>
+        <field name='priority'>2</field>
+    </record>
+</sigil>

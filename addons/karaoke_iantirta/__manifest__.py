@@ -21,6 +21,7 @@ Long description of module's purpose
         'security/ir.model.access.csv',
         
         'data/ir_config_parameter_data.xml',
+        'data/ir_cron_data.xml',
         
         'views/webclient_templates.xml',
         "views/karaoke_menu_views.xml",

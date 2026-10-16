@@ -47,14 +47,17 @@ def check_access_token(access_token, *values) -> bool:
 # Log merging
 
 def merge_log(
-    current_log: str | bool,
+    current_log: str | bool | list,
     new_log: list,
 ) -> list:
     if not current_log:
         parsed_current = []
     else:
         try:
-            parsed_current = json.loads(current_log)
+            if isinstance(current_log, list):
+                parsed_current = current_log
+            else:
+                parsed_current = json.loads(current_log)
         except json.decoder.JSONDecodeError:
             parsed_current = ast.literal_eval(current_log)
 
