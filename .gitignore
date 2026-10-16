@@ -2,6 +2,7 @@
 _build/
 
 .vscode/
+cookies.txt
 
 # dotfiles
 .*

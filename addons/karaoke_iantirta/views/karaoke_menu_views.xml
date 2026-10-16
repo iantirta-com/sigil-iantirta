@@ -15,7 +15,7 @@
                         statusbar_visible="waiting,processing,completed"
                     />
                 </header>
-                <sheet string="Song" invisible="not title">
+                <sheet string="Song">
                     <separator string="Song" style="margin-top: 0 !important;"/>
                     <div class="d-flex justify-content-between flex-column flex-sm-row gap-2" style="margin-bottom: 20px;">
                         <div>
@@ -24,16 +24,19 @@
                                 widget="image_url"
                                 class="text-start"
                                 options="{'size': [0,90],}"
-                                invisible="not source_url"
                             />
                         </div>
                         <div class="flex-fill w-100">
-                            <field class="h5" name="title"/>
+                            <field class="h5" name="title" placeholder="track name.."/>
                             <field name="artist"/>
                             <div class="d-flex">
                                 <field name="karaoke_type" widget="badge"/>
                                 <field name="duration" class="badge"/>
-                                <field name="status" class="badge"/>
+                                <field name="status" widget="badge"
+                                    decoration-success="status == 'completed'"
+                                    decoration-info="status == 'waiting'"
+                                    decoration-warning="status in ('need_extraction', 'processing',)"
+                                    decoration-danger="status == 'failed'"/>
                             </div>
                         </div>
                     </div>
@@ -46,6 +49,14 @@
                     </group>
                     
                     <notebook>
+                        <page string="Video Information">
+                            <group>
+                                <group colspan="2">
+                                    <field name="title" placeholder="track name.." readonly="false"/>
+                                    <field name="artist" placeholder="artist name.." readonly="false"/>
+                                </group>
+                            </group>
+                        </page>
                         <page string="Lyric">
                             <field name="lyric" placeholder="Generated lyrics..."/>
                         </page>
@@ -54,6 +65,13 @@
                                 <group colspan='2'>
                                     <field name="log_entries" widget='log_entries'/>
                                     <field name="error_entries" widget='error_entries'/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Note" name="internal_notes">
+                            <group>
+                                <group colspan="2">
+                                    <field name="note" nolabel="1" placeholder="Internal notes..."/>
                                 </group>
                             </group>
                         </page>
@@ -88,6 +106,11 @@
                     name="filter_completed"
                     string="Completed"
                     domain="[('status', '=', 'completed')]"
+                />
+                <filter
+                    name="filter_failed"
+                    string="Failed"
+                    domain="[('status', '=', 'failed')]"
                 />
                 <group>
                     <filter
@@ -126,6 +149,7 @@
                 <field name="status" widget="badge"/>
                 <field name="duration" widget="float_time" options="{'display_seconds':'1'}"/>
                 <field name="source_url" widget="url"/>
+                <field name="write_date"/>
             </list>
         </field>
     </record>
@@ -148,7 +172,6 @@
                                 name="thumbnail_url"
                                 widget="image_url"
                                 class="text-start"
-                                invisible="not source_url"
                             />
                         </aside>
                         <main>
