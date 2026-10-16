@@ -84,16 +84,21 @@ class KaraokeKaraoke(models.Model):
                 continue
 
             try:
-                karaoke._extract_info()
+                karaoke._extract_video_info()
                 karaoke.status = 'waiting'
                 _logger.debug(
                     'Karaoke id(%s) information fetched.', karaoke.id
                 )
+                if karaoke.karaoke_type == "plus":
+                    karaoke._extract_lyrics()
+                    _logger.debug(
+                        'Karaoke id(%s) lyrics fetched.', karaoke.id
+                    )
                 commit_progress(1)
             except Exception as e:
                 self.env.cr.rollback()
                 _logger.error(
-                    'Karaoke (%s) information cannot be fetched. Error: %s',
+                    'Karaoke id(%s) information cannot be fetched. Error: %s',
                     karaoke.id, e
                 )
                 karaoke.status = "failed"
@@ -140,7 +145,7 @@ class KaraokeKaraoke(models.Model):
 
         return self
 
-    def _extract_info(self):
+    def _extract_video_info(self):
         """ Extract One Indo
         """
         self.ensure_one()
