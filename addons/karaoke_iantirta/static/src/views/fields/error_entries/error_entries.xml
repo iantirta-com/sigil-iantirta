@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="karaoke_iantirta.ErrorEntriesField">
+        <pre class="d-flex flex-column p-2 m-0 gap-2">
+            <t t-if="errors.length > 0">
+                <div class="card card-body" t-foreach="errors" t-as="error" t-key="error_index">
+                    <h5 class="">
+                        <b t-esc="error.name"/>
+                    </h5>
+                    <div class='mb-2'>
+                        <code t-esc="error.error_type"/>
+                        <div class="text-wrap" t-out='error.error_desc'/>
+                    </div>
+                    <t t-if="error.traceback">
+                        <details>
+                            <summary class="text-danger fw-bold cursor-pointer user-select-none" style="cursor: pointer;">
+                                <i class="fa fa-bug me-1"/> View Traceback
+                            </summary>
+                            <pre class="m-0 p-0 mt-2" style="text-wrap: nowrap;">
+                                <t t-out="stripLogAnsi(error.traceback)"/>
+                            </pre>
+                        </details>
+                    </t>
+                </div>
+            </t>
+            <div t-else="" class="text-muted fst-italic">
+                Waiting for output...
+            </div>
+        </pre>
+    </t>
+</templates>
