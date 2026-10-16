@@ -26,8 +26,6 @@
                             <field name="provider"/>
                         </group>
                     </group>
-                </sheet>
-                <sheet>
                     <notebook>
                         <page string="Quotas">
                             <field name="quota_json" />
@@ -75,8 +73,12 @@
                                 </div>
                             </div>
                         </page>
-                        <page string="Log">
-                            <field name="log" widget="logger"/>
+                        <page string="Log and Debug">
+                            <group>
+                                <group colspan="2">
+                                    <field name="log_entries" widget="log_entries"/>
+                                </group>
+                            </group>
                         </page>
                     </notebook>
                 </sheet>
