@@ -1,15 +1,19 @@
-import json
-import os
-import threading
-import traceback
 import logging
+import os
+import traceback
 
 from sigil import _, api, fields, models
 from sigil.exceptions import UserError
-from sigil.modules.registry import Registry
 from sigil.tools import config
 
-from ..utils import LyricMetadata, VideoMetadata, extract_video_info, get_lyric, merge_log
+from ..utils import (
+    LyricMetadata,
+    VideoMetadata,
+    extract_video_info,
+    get_lyric,
+    merge_log,
+    netsvc,
+)
 
 _logger = logging.getLogger(__name__)
 
@@ -17,7 +21,7 @@ class KaraokeKaraoke(models.Model):
     _name = 'karaoke.karaoke'
     _description = 'Karaoke Karaoke'
     _rec_name = 'title'
-    _order = 'write_date'
+    _order = 'write_date desc'
 
     source_url = fields.Char(required=True)
     karaoke_type = fields.Selection([
@@ -60,6 +64,8 @@ class KaraokeKaraoke(models.Model):
     error_entries = fields.Json(readonly=True)
     log_entries = fields.Json(readonly=True)
 
+    note = fields.Text('Notes')
+
     @api.model
     def _cron_extract_info_karaoke(self, batch_size=50):
         """Extract info from source url.
@@ -101,6 +107,7 @@ class KaraokeKaraoke(models.Model):
                     'Karaoke id(%s) information cannot be fetched. Error: %s',
                     karaoke.id, e
                 )
+                karaoke.error_entries = merge_log([('cron_extract_info_karaoke', str(type(e)), str(e), traceback.format_exc())], karaoke.error_entries)
                 karaoke.status = "failed"
                 # commit and progress even when failed
                 if commit_progress(1):
@@ -125,17 +132,56 @@ class KaraokeKaraoke(models.Model):
         #TODO: Rotate cookiefile and populate cookiefile
         return os.path.join(config['data_dir'], "cookies.txt")
 
+    def _flush_logger_hook(self, logger):
+        if hasattr(logger, 'task_log_buffer') and logger.task_log_buffer:
+            self.log_entries = merge_log(self.log_entries, logger.task_log_buffer)
+            logger.task_log_buffer = []
+            # We're commiting instead of rollback from when using cron.
+            # Log output should be commited.
+            self.env.cr.commit()
+            netsvc.reset_logger()
+    
+    def _make_logger(self):
+        """ Will make the current karaoke task logger with implementation of
+        logger hook from iantirta.media.
+        """
+        self.ensure_one()
+        logger = logging.getLogger(f"iantirta.karaoke.Task({self.id!s})")
+        logger.setLevel(logging.DEBUG)
+
+        if not hasattr(logger, 'add_hook'):
+            netsvc.setup_logger('iantirta')
+
+        # Custom logger buffer
+        if not hasattr(logger, 'task_log_buffer'):
+            print("Log doesnt have task_logger buffer")
+            logger.task_log_buffer = []
+
+            def _store_log_entries(record):
+                msg = netsvc.formatLogMessage(record)
+                logger.task_log_buffer.append(msg)
+
+            logger.add_hook(_store_log_entries)
+
+        return logger
+
     # Extraction Method
     def _extract_lyrics(self):
         """ Extract One Lyric
         """
         self.ensure_one()
 
-        metadata: LyricMetadata = get_lyric(
-            self.title,
-            self.artist,
-            self.duration
-        )
+        task_logger = self._make_logger()
+        try:
+            metadata: LyricMetadata = get_lyric(
+                self.title,
+                self.artist,
+                self.duration,
+                logger=task_logger,
+            )
+        except:
+            self._flush_logger_hook(task_logger)
+            raise
         self.write({
             'title': metadata.trackName,
             'artist': metadata.artistName,
@@ -208,7 +254,7 @@ class KaraokeKaraoke(models.Model):
 
             if len(error_entries) > 0:
                 valid_data['status'] = 'failed'
-                valid_data['error_entries'] = merge_log(karaoke.error_entries, error_entries)
+                valid_data['error_entries'] = merge_log(error_entries, karaoke.error_entries)
             elif valid_data.get('download_url'):
                 valid_data['status'] = 'completed'
             else:

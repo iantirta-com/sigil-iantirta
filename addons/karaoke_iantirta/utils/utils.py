@@ -48,17 +48,18 @@ def check_access_token(access_token, *values) -> bool:
 
 def merge_log(
     current_log: str | bool | list,
-    new_log: list,
+    new_log: str | bool | list,
 ) -> list:
-    if not current_log:
-        parsed_current = []
-    else:
-        try:
-            if isinstance(current_log, list):
-                parsed_current = current_log
-            else:
-                parsed_current = json.loads(current_log)
-        except json.decoder.JSONDecodeError:
-            parsed_current = ast.literal_eval(current_log)
+    def _parse_log(log: str | bool | list) -> list:
+        if not log:
+            return []
+        else:
+            try:
+                if isinstance(log, list):
+                    return log
+                else:
+                    return json.loads(log)
+            except json.decoder.JSONDecodeError:
+                return ast.literal_eval(log)
 
-    return parsed_current + new_log
+    return _parse_log(current_log) + _parse_log(new_log)

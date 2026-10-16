@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="karaoke_iantirta.LogEntriesField">
-        <pre class="text-nowrap">
+        <pre class="text-nowrap" style="max-height: 400px;">
             <t t-if="logs.length > 0">
                 <t class="d-flex" t-foreach="logs" t-as="log" t-key="log_index">
                     <div t-out='stripLogAnsi(log)'/>

@@ -9,7 +9,7 @@
                     </h5>
                     <div class='mb-2'>
                         <code t-esc="error.error_type"/>
-                        <div class="text-wrap" t-out='error.error_desc'/>
+                        <div class="text-wrap" t-out='stripLogAnsi(error.error_desc)'/>
                     </div>
                     <t t-if="error.traceback">
                         <details>
