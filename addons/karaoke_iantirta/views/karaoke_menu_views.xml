@@ -17,7 +17,7 @@
                 </header>
                 <sheet string="Song" invisible="not title">
                     <separator string="Song" style="margin-top: 0 !important;"/>
-                    <div class="d-flex justify-content-between flex-column flex-sm-row gap-2">
+                    <div class="d-flex justify-content-between flex-column flex-sm-row gap-2" style="margin-bottom: 20px;">
                         <div>
                             <field
                                 name="thumbnail_url"
@@ -37,43 +37,23 @@
                             </div>
                         </div>
                     </div>
-                    <group string="Log and Debug">
-                        <group colspan='2'>
-                            <field name="log_entries" widget='log_entries'/>
-                        </group>
-                    </group>
-                </sheet>
-                <sheet>
                     <group>
-                        <separator string="Source" style="margin-top: 0 !important;"/>
                         <group colspan="2">
                             <field name="source_url" widget="url" readonly="id != False"/>
                             <field name="karaoke_type"/>
+                            <field name="download_url" widget="url"/>
                         </group>
                     </group>
-                </sheet>
-                <sheet>
+                    
                     <notebook>
-                        <page string="Output">
-                            <group>
-                                <group colspan="2">
-                                    <field name="download_url" widget="url"/>
-                                    <!-- Link Go to Folder Drive and File Drive -->
-                                    <field name="log" widget="logger"/>
-                                    <field name="error" widget="error_traceback" string="Error Message"/>
-                                </group>
-                            </group>
-                        </page>
                         <page string="Lyric">
-                            <field
-                                name="lyric"
-                                placeholder="Generated lyrics..."
-                            />
+                            <field name="lyric" placeholder="Generated lyrics..."/>
                         </page>
-                        <page string="Debug">
+                        <page string="Log and Debug">
                             <group>
-                                <group>
-                                    <field name="error" widget="error_traceback" string="Error Message"/>
+                                <group colspan='2'>
+                                    <field name="log_entries" widget='log_entries'/>
+                                    <field name="error_entries" widget='error_entries'/>
                                 </group>
                             </group>
                         </page>
