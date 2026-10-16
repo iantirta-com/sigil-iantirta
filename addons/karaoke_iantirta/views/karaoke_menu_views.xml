@@ -29,7 +29,7 @@
                         <div class="flex-fill w-100">
                             <field class="h5" name="title" placeholder="track name.."/>
                             <field name="artist"/>
-                            <div class="d-flex">
+                            <div class="d-flex gap-2">
                                 <field name="karaoke_type" widget="badge"/>
                                 <field name="duration" class="badge"/>
                                 <field name="status" widget="badge"
@@ -37,6 +37,10 @@
                                     decoration-info="status == 'waiting'"
                                     decoration-warning="status in ('need_extraction', 'processing',)"
                                     decoration-danger="status == 'failed'"/>
+                                <field name="extraction_status" widget="badge"
+                                    decoration-success="extraction_status == 'extraction_success'"
+                                    decoration-warning="extraction_status == 'need_extraction'"
+                                    decoration-danger="extraction_status == 'extraction_failed'"/>
                             </div>
                         </div>
                     </div>
