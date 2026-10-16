@@ -14,11 +14,6 @@ class LogEntriesField extends Component {
         ...standardFieldProps,
     }
 
-    setup() {
-        console.log(this.props.record);
-        console.log(JSON.parse(this.props.record.data[this.props.name]));
-    }
-
     get logs() {
         try {
             const raw = this.props.record.data[this.props.name];

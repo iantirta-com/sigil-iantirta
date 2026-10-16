@@ -2,6 +2,7 @@ import json
 import os
 import threading
 import traceback
+import logging
 
 from sigil import _, api, fields, models
 from sigil.exceptions import UserError
@@ -10,11 +11,13 @@ from sigil.tools import config
 
 from ..utils import LyricMetadata, VideoMetadata, extract_video_info, get_lyric, merge_log
 
+_logger = logging.getLogger(__name__)
 
 class KaraokeKaraoke(models.Model):
     _name = 'karaoke.karaoke'
     _description = 'Karaoke Karaoke'
-    _rec_name = 'source_url'
+    _rec_name = 'title'
+    _order = 'write_date'
 
     source_url = fields.Char(required=True)
     karaoke_type = fields.Selection([
@@ -29,10 +32,11 @@ class KaraokeKaraoke(models.Model):
 
     status = fields.Selection([
         ("waiting", "Waiting"),
+        ('need_extraction', 'Extracting information'),
         ("processing", "Processing"),
         ("completed", "Completed"),
         ("failed", "Failed"),
-    ], default="waiting", required=True, readonly=True)
+    ], default="need_extraction", required=True, readonly=True)
 
     #worker_id = fields.Many2one()
 
@@ -56,6 +60,48 @@ class KaraokeKaraoke(models.Model):
     error_entries = fields.Json(readonly=True)
     log_entries = fields.Json(readonly=True)
 
+    @api.model
+    def _cron_extract_info_karaoke(self, batch_size=50):
+        """Extract info from source url.
+
+        Extracting concurrently or many many at a times
+        can sometimes be a heavy process, since it require network
+        and wait time.
+        """
+        to_extracts = self.search([('status', '=', 'need_extraction')])
+        
+        if not to_extracts:
+            _logger.debug('No karaoke task to extract, returning...')
+            return
+
+        commit_progress = self.env['ir.cron']._commit_progress
+        commit_progress(remaining=len(to_extracts))
+        
+        for karaoke in to_extracts[:batch_size]:
+            karaoke = karaoke.try_lock_for_update().filtered(lambda d: d.status == 'need_extraction')
+
+            if not karaoke:
+                continue
+
+            try:
+                karaoke._extract_info()
+                karaoke.status = 'waiting'
+                _logger.debug(
+                    'Karaoke id(%s) information fetched.', karaoke.id
+                )
+                commit_progress(1)
+            except Exception as e:
+                self.env.cr.rollback()
+                _logger.error(
+                    'Karaoke (%s) information cannot be fetched. Error: %s',
+                    karaoke.id, e
+                )
+                karaoke.status = "failed"
+                # commit and progress even when failed
+                if commit_progress(1):
+                    continue
+                else:
+                    break
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -113,39 +159,12 @@ class KaraokeKaraoke(models.Model):
     def extract_info(self):
         """ Full Extraction multiple records
         """
-        def extract_info_with_new_cursor():
-            with Registry(self.env.cr.dbname).cursor() as cr:
-                env = api.Environment(cr, self.env.uid, self.env.context)
+        self.write({'status': 'need_extraction'})
 
-                karaoke: KaraokeKaraoke
-                for karaoke in env["karaoke.karaoke"].browse(self.ids):
-                    try:
-                        karaoke._extract_info()
-                    except Exception as exc:
-                        error = {
-                            "type": str(type(exc)),
-                            "message": str(exc),
-                            "traceback": "".join(traceback.format_exception(exc)),
-                        }
-                        karaoke.error = error
-                    else:
-                        if karaoke.karaoke_type == "plus":
-                            try:
-                                karaoke._extract_lyrics()
-                            except Exception as exc:
-                                error = {
-                                    "type": str(type(exc)),
-                                    "message": str(exc),
-                                    "traceback": "".join(traceback.format_exception(exc)),
-                                }
-                                karaoke.error = error
+        if cron := self.env.ref('karaoke_iantirta.ir_cron_extract_info_karaoke'):
+            cron._trigger()
 
-        @self.env.cr.postcommit.add
-        def launch_thread() -> None:
-            thread = threading.Thread(target=extract_info_with_new_cursor)
-            thread.daemon = True  # Allows the server to shut down without getting stuck
-            thread.start()
-
+        _logger.debug('Running extract karaoke cron %s', cron.name)
         return self
 
     # Api Data Processing
@@ -200,7 +219,7 @@ class KaraokeKaraoke(models.Model):
     # Action
     def action_refetch_info(self):
         self.extract_info()
-        message = _("Successfully refetch info %s task(s).") % len(self)
+        message = _("Posting refetch info %s task(s) to cron job.") % len(self)
         return {
             'type': 'ir.actions.client',
             'tag': 'display_notification',
