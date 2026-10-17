@@ -35,35 +35,36 @@ class KaraokeKaraoke(models.Model):
     )
 
     status = fields.Selection([
-        ("waiting", "Waiting"),
+        ("waiting", "Ready"),
         ('need_extraction', 'Extracting information'),
-        ("processing", "Processing"),
-        ("completed", "Completed"),
-        ("failed", "Failed"),
-    ], default="need_extraction", required=True, readonly=True)
-
+        ("processing", "Processing Karaoke"),
+        ("completed", "Processing Completed"),
+        ("failed", "Processing Failed"),
+    ], default="waiting", required=True, readonly=True)
+    extraction_status = fields.Selection([
+        ('need_extraction', 'Extracting information'),
+        ('extraction_success', 'Extracting completed.'),
+        ('extraction_failed', 'Extraction failed')
+    ], default='need_extraction', readonly=True)
     #worker_id = fields.Many2one()
 
-    # Auto Generated
+    # Extracted Information.
     title = fields.Char(readonly=True,)
     artist = fields.Char(readonly=True,)
     duration = fields.Float(readonly=True,)
     thumbnail_url = fields.Char(
         default="https://via.placeholder.com/320x180/1C1B1F/FFFFFF?text=No+Thumbnail"
     )
-
     lyric = fields.Text()
 
-    # Karaoke Attributes
+    # Karaoke Generated Attributes
     download_url = fields.Char(readonly=True)
     drive_folder_id = fields.Char(readonly=True)
     drive_file_id = fields.Char(readonly=True) # Can be used for preview video
-    error = fields.Text(readonly=True)
-    log = fields.Text(readonly=True)
 
+    # Debugging
     error_entries = fields.Json(readonly=True)
     log_entries = fields.Json(readonly=True)
-
     note = fields.Text('Notes')
 
     @api.model
@@ -74,7 +75,7 @@ class KaraokeKaraoke(models.Model):
         can sometimes be a heavy process, since it require network
         and wait time.
         """
-        to_extracts = self.search([('status', '=', 'need_extraction')])
+        to_extracts = self.search([('extraction_status', '=', 'need_extraction')])
         
         if not to_extracts:
             _logger.debug('No karaoke task to extract, returning...')
@@ -84,23 +85,27 @@ class KaraokeKaraoke(models.Model):
         commit_progress(remaining=len(to_extracts))
         
         for karaoke in to_extracts[:batch_size]:
-            karaoke = karaoke.try_lock_for_update().filtered(lambda d: d.status == 'need_extraction')
+            karaoke = karaoke.try_lock_for_update().filtered(lambda d: d.extraction_status == 'need_extraction')
 
             if not karaoke:
                 continue
 
             try:
                 karaoke._extract_video_info()
-                karaoke.status = 'waiting'
+                
                 _logger.debug(
                     'Karaoke id(%s) information fetched.', karaoke.id
                 )
+
                 if karaoke.karaoke_type == "plus":
                     karaoke._extract_lyrics()
                     _logger.debug(
                         'Karaoke id(%s) lyrics fetched.', karaoke.id
                     )
+
+                karaoke.extraction_status = 'extraction_success'
                 commit_progress(1)
+
             except Exception as e:
                 self.env.cr.rollback()
                 _logger.error(
@@ -108,7 +113,7 @@ class KaraokeKaraoke(models.Model):
                     karaoke.id, e
                 )
                 karaoke.error_entries = merge_log([('cron_extract_info_karaoke', str(type(e)), str(e), traceback.format_exc())], karaoke.error_entries)
-                karaoke.status = "failed"
+                karaoke.extraction_status = "extraction_failed"
                 # commit and progress even when failed
                 if commit_progress(1):
                     continue
@@ -179,14 +184,17 @@ class KaraokeKaraoke(models.Model):
                 self.duration,
                 logger=task_logger,
             )
+
         except:
             self._flush_logger_hook(task_logger)
             raise
+
         self.write({
             'title': metadata.trackName,
             'artist': metadata.artistName,
             "lyric": metadata.plainLyrics
         })
+
         del metadata
 
         return self
@@ -210,7 +218,7 @@ class KaraokeKaraoke(models.Model):
     def extract_info(self):
         """ Full Extraction multiple records
         """
-        self.write({'status': 'need_extraction'})
+        self.write({'extraction_status': 'need_extraction'})
 
         if cron := self.env.ref('karaoke_iantirta.ir_cron_extract_info_karaoke'):
             cron._trigger()
@@ -234,11 +242,11 @@ class KaraokeKaraoke(models.Model):
             "karaoke_type": karaoke.karaoke_type,
         } for karaoke in karaokes]
 
-
     def _update_from_dict(self, **data) -> None:
         valid_values = [
             'title',
             'artist',
+            'thumbnail',
             "download_url",
             "drive_folder_id",
             "drive_file_id",
@@ -286,8 +294,6 @@ class KaraokeKaraoke(models.Model):
     def action_reset_status(self):
         self.write({
             "status": "waiting",
-            "log": False,
-            "error": False,
             "log_entries": False,
             "error_entries": False,
         })
