@@ -29,7 +29,7 @@
                         <div class="flex-fill w-100">
                             <field class="h5" name="title" placeholder="track name.."/>
                             <field name="artist"/>
-                            <div class="d-flex gap-2">
+                            <div class="d-flex gap-2 flex-wrap">
                                 <field name="karaoke_type" widget="badge"/>
                                 <field name="duration" class="badge"/>
                                 <field name="status" widget="badge"

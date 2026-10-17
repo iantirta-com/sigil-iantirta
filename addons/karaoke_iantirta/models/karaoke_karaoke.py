@@ -45,7 +45,7 @@ class KaraokeKaraoke(models.Model):
         ('need_extraction', 'Extracting information'),
         ('extraction_success', 'Extracting completed.'),
         ('extraction_failed', 'Extraction failed')
-    ], default='need_extration', readonly=True)
+    ], default='need_extraction', readonly=True)
     #worker_id = fields.Many2one()
 
     # Extracted Information.
