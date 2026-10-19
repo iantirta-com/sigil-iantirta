@@ -67,6 +67,13 @@ class KaraokeKaraoke(models.Model):
     log_entries = fields.Json(readonly=True)
     note = fields.Text('Notes')
 
+    @api.depends('title')
+    def _compute_display_name(self):
+        super()._compute_display_name()
+        for karaoke in self:
+            if isinstance(karaoke.display_name, str) and len(karaoke.display_name) > 20:
+                karaoke.display_name = f"{karaoke.display_name[:20]}(...)"
+
     @api.model
     def _cron_extract_info_karaoke(self, batch_size=50):
         """Extract info from source url.
