@@ -46,7 +46,10 @@ class KaraokeKaraoke(models.Model):
         ('extraction_success', 'Extracting completed.'),
         ('extraction_failed', 'Extraction failed')
     ], default='need_extraction', readonly=True)
-    #worker_id = fields.Many2one()
+    worker_id = fields.Many2one(
+        comodel_name='gpu.worker',
+        readonly=True
+    )
 
     # Extracted Information.
     title = fields.Char(readonly=True,)
@@ -272,6 +275,9 @@ class KaraokeKaraoke(models.Model):
         if karaoke := self.sudo().browse(karaoke_id).exists():
             valid_data = {k: v for k, v in data.items() if k in valid_values}
             error_entries = valid_data.pop("error_entries", [])
+
+            if thumbnail_url := valid_data.pop('thumbnail', None):
+                valid_data['thumbnail_url'] = thumbnail_url
 
             if valid_data.get('download_url') or valid_data.get('download_uris'):
                 valid_data['status'] = 'completed'

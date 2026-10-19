@@ -9,4 +9,12 @@
         <field name="interval_type">months</field>
         <field name='priority'>2</field>
     </record>
+    <record id="ir_cron_auto_vacuum_gpu_workers" model="ir.cron">
+        <field name="name">Karaoke: Auto Vacuum Dead GPU Workers</field>
+        <field name="model_id" ref="model_gpu_worker"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_auto_vacuum_workers()</field>
+        <field name="interval_number">35</field>
+        <field name="interval_type">minutes</field>
+    </record>
 </sigil>
