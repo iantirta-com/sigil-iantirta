@@ -62,10 +62,19 @@ class KaraokeKaraoke(models.Model):
     drive_folder_id = fields.Char(readonly=True)
     drive_file_id = fields.Char(readonly=True) # Can be used for preview video
 
+    download_uris = fields.Json(readonly=True)
+
     # Debugging
     error_entries = fields.Json(readonly=True)
     log_entries = fields.Json(readonly=True)
     note = fields.Text('Notes')
+
+    @api.depends('title')
+    def _compute_display_name(self):
+        super()._compute_display_name()
+        for karaoke in self:
+            if isinstance(karaoke.display_name, str) and len(karaoke.display_name) > 20:
+                karaoke.display_name = f"{karaoke.display_name[:20]}(...)"
 
     @api.model
     def _cron_extract_info_karaoke(self, batch_size=50):
@@ -247,9 +256,13 @@ class KaraokeKaraoke(models.Model):
             'title',
             'artist',
             'thumbnail',
+
             "download_url",
             "drive_folder_id",
             "drive_file_id",
+
+            'download_uris',
+
             'log_entries',
             "error_entries",
         ]
@@ -260,13 +273,11 @@ class KaraokeKaraoke(models.Model):
             valid_data = {k: v for k, v in data.items() if k in valid_values}
             error_entries = valid_data.pop("error_entries", [])
 
-            if len(error_entries) > 0:
-                valid_data['status'] = 'failed'
-                valid_data['error_entries'] = merge_log(error_entries, karaoke.error_entries)
-            elif valid_data.get('download_url'):
+            if valid_data.get('download_url') or valid_data.get('download_uris'):
                 valid_data['status'] = 'completed'
             else:
                 valid_data['status'] = 'failed'
+                valid_data['error_entries'] = merge_log(error_entries, karaoke.error_entries)
 
             valid_data['log_entries'] = merge_log(karaoke.log_entries, valid_data['log_entries'])
 

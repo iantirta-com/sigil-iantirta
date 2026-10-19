@@ -24,54 +24,12 @@
                         </group>
                         <group>
                             <field name="provider"/>
+                            <field name='storage_id'/>
                         </group>
                     </group>
                     <notebook>
                         <page string="Quotas">
                             <field name="quota_json" />
-                        </page>
-                        <page string="Storage">
-                            <div class="d-flex">
-                                <div class="col-7 col-sm-6 col-lg-3 d-flex flex-column">
-                                    <span class="o_form_label">
-                                        Drive Root Folder ID
-                                    </span>
-                                    <span class="text-muted small">
-                                        Root folder destination.
-                                    </span>
-                                </div>
-                                <field name="gdrive_root_folder_id" class="w-100 h-100 my-auto"/>
-                            </div>
-                            <div class="d-md-flex mt-3">
-                                <div class="w-md-50 w-lg-25 d-flex flex-column">
-                                    <label for="gdrive_credentials" string="Credentials" class="o_form_label"/>
-                                    <span class="text-muted small">
-                                        Service Account Credentials
-                                    </span>
-                                    <field name="gdrive_credentials"
-                                        widget="binary"
-                                        class="o_field_binary_hide_download"
-                                        options="{'accepted_file_extensions': '.json'}" />
-                                </div>
-                                <div class="w-md-50 w-lg-75 d-flex flex-column my-auto">
-                                    <field name="gdrive_client_config" widget="text" class="w-100" />
-                                </div>
-                            </div>
-                            <div invisible="not gdrive_client_config" class="d-md-flex mt-3">
-                                <div class="w-md-50 w-lg-25  d-flex flex-column">
-                                    <label for="gdrive_access_token_json" string="User Token" class="o_form_label"/>
-                                    <span class="text-muted">
-                                        User specific token.
-                                    </span>
-                                </div>
-                                <div class="w-md-50 w-lg-75 d-flex flex-column my-auto">
-                                    <field name="gdrive_access_token_json" widget="text" class="w-100"/>
-                                    <div>
-                                        <button invisible="not gdrive_access_token_json" name="action_setup_user_token" type="object" string="Refresh Token" class="btn btn-secondary h-100"/>
-                                        <button invisible="gdrive_access_token_json" name="action_setup_user_token" type="object" string="Setup User Token" class="btn btn-secondary h-100"/>
-                                    </div>
-                                </div>
-                            </div>
                         </page>
                         <page string="Log and Debug">
                             <group>
