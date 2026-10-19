@@ -1,13 +1,13 @@
-import typing as t
+from typing import TYPE_CHECKING
 
+from sigil.addons.karaoke_iantirta import utils as karaoke_utils
 from werkzeug.exceptions import BadRequest, Forbidden
 
 from sigil.http import Controller, request, route
 
-from sigil.addons.karaoke_iantirta import utils as karaoke_utils
-
-if t.TYPE_CHECKING:
+if TYPE_CHECKING:
     from ..models.karaoke_karaoke import KaraokeKaraoke
+    from ..models.storage_drive import CloudStorage
 
 
 class DriveController(Controller):
@@ -26,10 +26,9 @@ class DriveController(Controller):
         if not storage_id:
             return request.make_response("Invalid request. Missing Storage ID.")
 
-        storage = request.env['iantirta.cloud.storage'].browse(int(storage_id)).exists()
+        storage: CloudStorage = request.env['iantirta.cloud.storage'].browse(int(storage_id)).exists()
         
-        creds = DriveStorage.get_gdrive_credentials_from_auth_url(
-            storage.gdrive_client_config,
+        creds = DriveStorage.get_credentials_from_flow(
             key=f'drive_{storage.id}',
             code=kwargs.pop('code'),
         )
