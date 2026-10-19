@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="karaoke_iantirta.KaraokeDownloadUris">
+        <t t-if="downloadUris.length > 0">
+            <div class="d-flex align-items-center">
+                <button type="button" 
+                        class="btn btn-primary" 
+                        t-on-click="onClickDownload"
+                        t-att-disabled="state.isDownloading">
+                    
+                    <t t-if="!state.isDownloading">
+                        <i class="fa fa-download me-1"/> Download Video (<t t-esc="downloadUris.length"/> chunks)
+                    </t>
+                    <t t-else="">
+                        <i class="fa fa-spinner fa-spin me-1"/> Downloading...
+                    </t>
+                </button>
+                
+                <!-- Text Status Output next to button -->
+                <span t-if="state.isDownloading" class="ms-3 text-muted">
+                    <t t-if="state.isMerging">
+                        Merging chunks into video file...
+                    </t>
+                    <t t-else="">
+                        <t t-esc="formatBytes(state.downloadedBytes)"/> 
+                        <t t-if="state.totalBytes > 0">
+                            / <t t-esc="formatBytes(state.totalBytes)"/>
+                        </t>
+                        (<t t-esc="state.progressPercent"/>%)
+                    </t>
+                </span>
+                
+                <!-- Error Message -->
+                <span t-if="state.errorMessage" class="ms-3 text-danger">
+                    <i class="fa fa-exclamation-triangle me-1"/> <t t-esc="state.errorMessage"/>
+                </span>
+            </div>
+
+            <!-- Progress Bar -->
+            <t t-if="state.isDownloading and !state.isMerging">
+                <div class="progress mt-2" style="height: 10px; max-width: 400px;">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                            role="progressbar"
+                            t-attf-style="width: {{ state.progressPercent }}%;"
+                            t-att-aria-valuenow="state.progressPercent"
+                            aria-valuemin="0"
+                            aria-valuemax="100">
+                    </div>
+                </div>
+            </t>
+        </t>
+        <t t-else="">
+            <span class="text-muted">No video files available.</span>
+        </t>
+    </t>
+</templates>

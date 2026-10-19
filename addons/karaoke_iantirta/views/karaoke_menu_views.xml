@@ -49,6 +49,7 @@
                             <field name="source_url" widget="url" readonly="id != False"/>
                             <field name="karaoke_type"/>
                             <field name="download_url" widget="url"/>
+                            <field name="download_uris" widget="karaoke_download_uris"/>
                         </group>
                     </group>
                     
