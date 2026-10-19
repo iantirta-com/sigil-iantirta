@@ -36,6 +36,8 @@ class KaraokeController(Controller):
         ):
             raise Forbidden()
 
+        worker_sudo._mark_heartbeat()
+
         return worker_sudo
 
     @route('/karaoke/tasks/get', type='jsonrpc', auth='public')
@@ -75,7 +77,7 @@ class KaraokeController(Controller):
         if karaokes := request.env["karaoke.karaoke"].sudo().browse(task_ids).exists():
             karaokes.write({
                 "status": "processing",
-                #'worker_id': worker_sudo.id
+                'worker_id': worker_sudo.id
             })
 
         return True
@@ -100,6 +102,10 @@ class KaraokeController(Controller):
 
         worker_sudo.write({
             "status": "ready",
-            'log_entries': karaoke_utils.merge_log(worker_sudo.log_entries, log_entries)
+            'log_entries': karaoke_utils.merge_log(
+                worker_sudo.log_entries,
+                log_entries,
+                max_items=1000,
+            )
         })
         return True

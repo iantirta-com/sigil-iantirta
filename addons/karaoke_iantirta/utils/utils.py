@@ -49,6 +49,8 @@ def check_access_token(access_token, *values) -> bool:
 def merge_log(
     current_log: str | bool | list,
     new_log: str | bool | list,
+    *,
+    max_items: int = 100,
 ) -> list:
     def _parse_log(log: str | bool | list) -> list:
         if not log:
@@ -62,4 +64,5 @@ def merge_log(
             except json.decoder.JSONDecodeError:
                 return ast.literal_eval(log)
 
-    return _parse_log(current_log) + _parse_log(new_log)
+    combined = _parse_log(current_log) + _parse_log(new_log)
+    return combined[-max_items:]
