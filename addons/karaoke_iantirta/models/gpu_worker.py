@@ -98,10 +98,18 @@ class GPUWorker(models.Model):
     def _mark_heartbeat(self):
         """Called by the controller to update the worker's active status."""
         self.ensure_one()
-        self.write({
-            'last_heartbeat': fields.Datetime.now(),
-            'status': 'running' if self.status == 'starting_up' else self.status
-        })
+        now = fields.Datetime.now()
+
+        needs_status_change = (self.status == 'starting_up')
+        is_stale = not self.last_heartbeat or (now - self.last_heartbeat).total_seconds() > 30
+        if is_stale or needs_status_change:
+            try:
+                self.write({
+                    'last_heartbeat': now,
+                    'status': 'running' if needs_status_change else self.status
+                })
+            except Exception as e:
+                _logger.debug("Skipped concurrent heartbeat write for worker %s: %s", self.id, e)
 
     @api.depends("access_token", 'name', "provider")
     def _compute_quotas(self):
