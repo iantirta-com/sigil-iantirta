@@ -3,9 +3,9 @@ import json
 import logging
 import tempfile
 import uuid
+from datetime import timedelta
 from pathlib import Path
 from typing import TYPE_CHECKING
-from datetime import timedelta
 
 from sigil.addons.karaoke_iantirta import utils as karaoke_utils
 
@@ -103,19 +103,18 @@ class GPUWorker(models.Model):
 
         needs_status_change = (self.status == 'starting_up')
         is_stale = not self.last_heartbeat or (now - self.last_heartbeat).total_seconds() > 30
+        # Avoid serialization error
         if is_stale or needs_status_change:
-            try:
-                with self.env.cr.savepoint():
-                    worker = self.try_lock_for_update().filtered(lambda d: (now - self.last_heartbeat).total_seconds() > 30)
-                    if not worker:
-                        return
-
-                    worker.write({
-                        'last_heartbeat': now,
-                        'status': 'running' if needs_status_change else worker.status
-                    })
-            except Exception as e:
-                _logger.debug("Skipped concurrent heartbeat write for worker %s: %s", self.id, e)
+            self.env.cr.execute("""
+                UPDATE gpu_worker SET last_heartbeat=%(now)s
+                WHERE id IN (
+                    SELECT id FROM gpu_worker WHERE id = %(worker_id)s
+                    FOR NO KEY UPDATE SKIP LOCKED
+                )
+            """, {
+                'now': now,
+                'worker_id': self.id,
+            })
 
     @api.depends("access_token", 'name', "provider")
     def _compute_quotas(self):
