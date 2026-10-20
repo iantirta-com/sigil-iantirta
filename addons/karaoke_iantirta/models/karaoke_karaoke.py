@@ -36,7 +36,6 @@ class KaraokeKaraoke(models.Model):
 
     status = fields.Selection([
         ("waiting", "Ready"),
-        ('need_extraction', 'Extracting information'),
         ("processing", "Processing Karaoke"),
         ("completed", "Processing Completed"),
         ("failed", "Processing Failed"),
@@ -171,7 +170,6 @@ class KaraokeKaraoke(models.Model):
 
         # Custom logger buffer
         if not hasattr(logger, 'task_log_buffer'):
-            print("Log doesnt have task_logger buffer")
             logger.task_log_buffer = []
 
             def _store_log_entries(record):

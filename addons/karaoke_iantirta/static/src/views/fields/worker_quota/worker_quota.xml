@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="karaoke_iantirta.WorkerQuotaField">
+        <div class="w-100">
+            <t t-set="data" t-value="quotaData"/>
+            
+            <t t-if="data and data.bars.length > 0">
+                <div class="d-flex flex-column gap-2 mb-1">
+                    <t t-foreach="data.bars" t-as="bar" t-key="bar.label">
+                        
+                        <!-- Progress Bar Container -->
+                        <div class="d-flex flex-column">
+                            <!-- Labels -->
+                            <div class="d-flex justify-content-between align-items-end mb-1" style="font-size: 0.85em;">
+                                <strong><t t-esc="bar.label"/> Quota</strong>
+                                <span class="text-muted">
+                                    <t t-esc="bar.usedLabel"/> / <t t-esc="bar.allowedLabel"/> (<t t-esc="bar.percent"/>%)
+                                </span>
+                            </div>
+                            
+                            <!-- The Bar itself -->
+                            <div class="progress" style="height: 8px;">
+                                <div t-attf-class="progress-bar {{ bar.colorClass }}"
+                                     role="progressbar"
+                                     t-attf-style="width: {{ bar.percent }}%;"
+                                     t-att-aria-valuenow="bar.percent"
+                                     aria-valuemin="0"
+                                     aria-valuemax="100">
+                                </div>
+                            </div>
+                        </div>
+
+                    </t>
+                </div>
+                
+                <!-- Refresh Time Footer -->
+                <div class="text-muted mt-2" style="font-size: 0.8em;">
+                    <i class="fa fa-refresh me-1"/> Resets: <t t-esc="data.refreshTime"/>
+                </div>
+            </t>
+            
+            <t t-else="">
+                <span class="text-muted"><i class="fa fa-info-circle me-1"/> No quota data available.</span>
+            </t>
+        </div>
+    </t>
+</templates>

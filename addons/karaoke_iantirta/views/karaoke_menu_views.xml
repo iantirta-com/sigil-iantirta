@@ -35,7 +35,7 @@
                                 <field name="status" widget="badge"
                                     decoration-success="status == 'completed'"
                                     decoration-info="status == 'waiting'"
-                                    decoration-warning="status in ('need_extraction', 'processing',)"
+                                    decoration-warning="status == 'processing'"
                                     decoration-danger="status == 'failed'"/>
                                 <field name="extraction_status" widget="badge"
                                     decoration-success="extraction_status == 'extraction_success'"
@@ -151,7 +151,11 @@
                 <field name="title"/>
                 <field name="artist"/>
                 <field name="karaoke_type" widget="badge"/>
-                <field name="status" widget="badge"/>
+                <field name="status" widget="badge"
+                    decoration-success="status == 'completed'"
+                    decoration-info="status == 'waiting'"
+                    decoration-warning="status == 'processing'"
+                    decoration-danger="status == 'failed'"/>
                 <field name="duration" widget="float_time" options="{'display_seconds':'1'}"/>
                 <field name="source_url" widget="url"/>
                 <field name="write_date"/>
