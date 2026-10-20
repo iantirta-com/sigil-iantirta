@@ -1,3 +1,4 @@
+import base64
 import json
 import logging
 import tempfile
@@ -104,10 +105,15 @@ class GPUWorker(models.Model):
         is_stale = not self.last_heartbeat or (now - self.last_heartbeat).total_seconds() > 30
         if is_stale or needs_status_change:
             try:
-                self.write({
-                    'last_heartbeat': now,
-                    'status': 'running' if needs_status_change else self.status
-                })
+                with self.env.cr.savepoint():
+                    worker = self.try_lock_for_update().filtered(lambda d: (now - self.last_heartbeat).total_seconds() > 30)
+                    if not worker:
+                        return
+
+                    worker.write({
+                        'last_heartbeat': now,
+                        'status': 'running' if needs_status_change else worker.status
+                    })
             except Exception as e:
                 _logger.debug("Skipped concurrent heartbeat write for worker %s: %s", self.id, e)
 
@@ -140,11 +146,13 @@ class GPUWorker(models.Model):
         from iantirta.media import constants
         default_cookiepath = constants.DEFAULT_NOROTATE_COOKIEPATH
         cookie_content = default_cookiepath.read_text(encoding='utf-8')
+        b64_payload = base64.b64encode(cookie_content.encode('utf-8')).decode('utf-8')
         return [
+            'import base64\n',
             'from pathlib import Path\n',
             'WORKER_COOKIEPATH = Path("~/.cache/iantirta/cookies.txt").expanduser().resolve()\n',
             'WORKER_COOKIEPATH.parent.mkdir(parents=True, exist_ok=True)\n',
-            'WORKER_COOKIEPATH.write_text(r"""' + cookie_content + '""", encoding="utf-8")\n',
+            f'WORKER_COOKIEPATH.write_bytes(base64.b64decode("{b64_payload}"))\n',
         ]
 
     def _prepare_notebook(self) -> dict:
