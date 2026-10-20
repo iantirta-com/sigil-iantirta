@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING
 
 from sigil.addons.karaoke_iantirta import utils as karaoke_utils
 
-from sigil import api, fields, models
+from sigil import _, api, fields, models
 
 if TYPE_CHECKING:
     from .storage_drive import CloudStorage
@@ -217,4 +217,15 @@ class GPUWorker(models.Model):
         return quotas
 
     def action_get_quotas(self):
-        return self.get_quotas()
+        self.get_quotas()
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'target': 'new',
+            'params': {
+                'message': _('Successfully refresh quota information.'),
+                'type': 'success',
+                'sticky': False,
+                'next': {'type': 'ir.actions.act_window_close'},
+            }
+        }

@@ -100,6 +100,9 @@ class KaraokeController(Controller):
     ) -> bool:
         worker_sudo = self._check_access(**kwargs)
 
+        if len(log_entries) > 1000:
+            log_entries = log_entries[-1000:]
+
         worker_sudo.write({
             "status": "ready",
             'log_entries': karaoke_utils.merge_log(
