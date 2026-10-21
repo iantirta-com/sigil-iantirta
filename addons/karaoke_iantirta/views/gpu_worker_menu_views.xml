@@ -39,7 +39,18 @@
                         <page string="Log and Debug">
                             <group>
                                 <group colspan="2">
-                                    <field name="log_entries" widget="log_entries"/>
+                                    <field name="log_entry_ids">
+                                        <list string="Log Entries">
+                                            <field name='create_uid'/>
+                                            <field name='create_date'/>
+                                            <field name='name'/>
+                                            <field name='level'/>
+                                            <field name="message"/>
+                                            <field name='path'/>
+                                            <field name='line'/>
+                                            <field name='func'/>
+                                        </list>
+                                    </field>
                                 </group>
                             </group>
                         </page>

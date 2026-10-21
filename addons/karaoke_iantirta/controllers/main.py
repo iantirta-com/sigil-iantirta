@@ -4,11 +4,12 @@ import logging
 import typing as t
 from itertools import groupby
 from typing import Any, Literal
+import warnings
 
 from werkzeug.exceptions import BadRequest, Forbidden, NotFound
 
 from sigil import _
-from sigil.exceptions import ValidationError
+from sigil.exceptions import ValidationError, UserError
 from sigil.http import Controller, request, route
 
 from .. import utils as karaoke_utils
@@ -54,17 +55,30 @@ class KaraokeController(Controller):
     @route('/karaoke/task/update', type='jsonrpc', auth='public')
     def karaoke_task_update(
         self,
-        task: dict,
+        task: dict | None = None,
+        tasks: list[dict] | None = None,
         **kwargs
     ) -> bool:
         worker_sudo = self._check_access(**kwargs)
+
+        if not task and not tasks:
+            raise UserError(_('At least param of `tasks` need to be provided.'))
         
+        if task is not None:
+            warnings.warn("Deprecated the `task` parameter should be converted to `task`: list[dict] instead.", DeprecationWarning)
+            if tasks:
+                tasks = tasks + [task]
+            else:
+                tasks = [task]
+
         karaoke: KaraokeKaraoke
-        if karaoke := request.env["karaoke.karaoke"].sudo().browse(task['id']).exists():
-            karaoke._update_from_dict(**task)
+        try:
+            for _task in tasks:
+                if karaoke := request.env["karaoke.karaoke"].sudo().browse(_task['id']).exists():
+                    karaoke._update_from_dict(**_task)
             return True
-        
-        raise NotFound("Karaoke id not found in the database")
+        except Exception as e:
+            return UserError(f'Error while updating karaoke model: {e}')    
 
     @route('/karaoke/worker/claim_task', type='jsonrpc', auth='public')
     def karaoke_worker_claim_task(
@@ -95,7 +109,7 @@ class KaraokeController(Controller):
     @route('/karaoke/worker/stop', type='jsonrpc', auth='public')
     def karaoke_worker_stop(
         self,
-        log_entries: list[str],
+        log_entries: list[dict],
         **kwargs,
     ) -> bool:
         worker_sudo = self._check_access(**kwargs)
@@ -103,12 +117,22 @@ class KaraokeController(Controller):
         if len(log_entries) > 1000:
             log_entries = log_entries[-1000:]
 
+        abandoned = 0
+        for karaoke in worker_sudo.karaoke_ids:
+            if karaoke.status == 'processing':
+                karaoke.status = 'waiting'
+                abandoned += 1
+        if abandoned > 0:
+            _logger.debug(f"Abandoning karaoke task, count=({abandoned})")
+
         worker_sudo.write({
             "status": "ready",
+            'karaoke_ids': False,
             'log_entries': karaoke_utils.merge_log(
                 worker_sudo.log_entries,
                 log_entries,
                 max_items=1000,
             )
         })
+        worker_sudo.update_log_entries(log_entries)
         return True

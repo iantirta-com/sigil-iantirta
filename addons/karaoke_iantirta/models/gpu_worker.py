@@ -60,6 +60,10 @@ class GPUWorker(models.Model):
 
     last_heartbeat = fields.Datetime("Last Heartbeat", readonly=True)
     log_entries = fields.Json(readonly=True)
+    log_entry_ids = fields.One2many(
+        comodel_name='gpu.worker.log',
+        inverse_name='worker_id',
+    )
 
     @api.model
     def _cron_auto_vacuum_workers(self):
@@ -229,3 +233,14 @@ class GPUWorker(models.Model):
                 'next': {'type': 'ir.actions.act_window_close'},
             }
         }
+
+    def update_log_entries(self, log_entries: list[dict]) -> None:
+        self.ensure_one()
+        self.log_entries = False
+
+        for log in log_entries:
+            log['worker_id'] = self.id
+            log['type'] = 'client'
+            log['dbname'] = self.env.cr.dbname
+        
+        return self.env['gpu.worker.log'].create(log_entries)
