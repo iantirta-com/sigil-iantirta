@@ -21,14 +21,35 @@ class KaraokeDownloadUrisField extends Component {
             progressPercent: 0,
         });
         this.notification = useService("notification");
+
+        this.isLegacy = false;
     }
 
     formatBytes(bytes) {
         return humanSize(bytes);
     }
 
+    _legacyDownload(uris) {
+        // Support gdrive
+        if (!uris.length) return;
+    }
+
+    _download(metadata) {
+        // support hf
+        // this metadata consist of:
+        // - suffix, count, size, files
+        if (!metadata.files.length) return;
+        
+    }
+
     async onClickDownload() {
         const uris = this.downloadUris;
+        if (this.isLegacy) {
+            return _legacyDownload(uris);
+        }
+        else {
+            return _download(uris)
+        }
         if (!uris.length) return;
 
         const targetTitle = this.props.record.data.title || 'karaoke_video';
@@ -123,13 +144,25 @@ class KaraokeDownloadUrisField extends Component {
         }
 
         if (typeof raw === 'object' && raw !== null) {
-            return Array.isArray(raw) ? raw : [raw];
+            if (Array.isArray(raw)) {
+                this.isLegacy = true;
+                return raw
+            } else {
+                this.isLegacy = false;
+                return raw
+            }
         }
 
         if (typeof raw === 'string') {
             try {
                 const parsed = JSON.parse(raw);
-                return Array.isArray(parsed) ? parsed : [parsed];
+                if (Array.isArray(parsed)) {
+                    this.isLegacy = true;
+                    return parsed;
+                } else {
+                    this.isLegacy = false;
+                    return parsed;
+                }
             } catch (e) {
                 console.error(`Error while handling json log entries: ${e}`);
                 return [];

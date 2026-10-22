@@ -27,6 +27,15 @@ class CloudStorage(models.Model):
         default='disabled', required=True, copy=False
     )
 
+    storage_endpoint = fields.Char(compute='_compute_storage_endpoint',)
+
+    def _compute_storage_endpoint(self):
+        for record in self:
+            record._get_storage_endpoint()
+            
+    def _get_storage_endpoint(self):
+        return ''
+
     @api.model_create_multi
     def create(self, vals_list):
         storages = super().create(vals_list)

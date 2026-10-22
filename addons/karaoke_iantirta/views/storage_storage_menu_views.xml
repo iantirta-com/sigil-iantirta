@@ -15,7 +15,7 @@
                             <field name="name" placeholder="e.g. My Personal Storage"/>
                             <field name='code'/>
                             <field name="state" widget="radio"/>
-                            
+                            <field name='storage_endpoint'/>
                         </group>
                     </group>
 
