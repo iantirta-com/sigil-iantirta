@@ -1,5 +1,5 @@
 
-from sigil import fields, models
+from sigil import fields, models, api
 
 
 class CloudStorage(models.Model):
@@ -17,6 +17,21 @@ class CloudStorage(models.Model):
         required_if_provider='hf_dataset',
         copy=False,
     )
+
+    @api.depends('hf_repo_id')
+    def _compute_storage_endpoint(self):
+        super()._compute_storage_endpoint()
+
+    def _get_storage_endpoint(self):
+        if self.code != 'hf_dataset':
+            return super()._get_storage_endpoint()
+
+        return (
+            'https://huggingface.co/'
+            'datasets/'
+            + self.hf_repo_id.strip('/') +
+            '/resolve/main/'
+        )
 
     def action_test_connection(self):
         if self.code != 'hf_dataset':

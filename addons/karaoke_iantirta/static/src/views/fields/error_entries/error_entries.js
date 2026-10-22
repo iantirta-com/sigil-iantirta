@@ -15,10 +15,6 @@ class ErrorEntriesField extends Component {
         return stripAnsi(text);
     }
 
-    setup() {
-        console.log(this.props.record.data[this.props.name])
-    }
-
     get errors() {
         const raw = this.props.record.data[this.props.name];
 

@@ -19,11 +19,6 @@ class WorkerQuotaField extends Component {
         ...standardFieldProps,
     }
 
-    setup() {
-        console.log(this);
-        console.log(deserializeDateTime(this.quota.refresh_time));
-    }
-
     /**
      * Helper to parse time strings into total seconds.
      * Handles "HH:MM:SS.mmmmmm" and "X days, HH:MM:SS" formats.

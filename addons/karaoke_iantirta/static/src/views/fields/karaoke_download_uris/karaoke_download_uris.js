@@ -3,6 +3,7 @@ import { registry } from "@web/core/registry";
 import { _t } from "@web/core/l10n/translation";
 import { standardFieldProps } from "@web/views/fields/standard_field_props";
 import { useService } from "@web/core/utils/hooks";
+import { humanSize } from "@web/core/utils/binary";
 
 
 class KaraokeDownloadUrisField extends Component {
@@ -20,21 +21,42 @@ class KaraokeDownloadUrisField extends Component {
             progressPercent: 0,
         });
         this.notification = useService("notification");
+
+        this.isLegacy = false;
     }
 
     formatBytes(bytes) {
-        if (!bytes || bytes === 0) return '0 B';
-        const k = 1024;
-        const sizes = ['B', 'KB', 'MB', 'GB'];
-        const i = Math.floor(Math.log(bytes) / Math.log(k));
-        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        return humanSize(bytes);
+    }
+
+    _legacyDownload(uris) {
+        // Support gdrive
+        if (!uris.length) return;
+    }
+
+    _download(metadata) {
+        // support hf
+        // this metadata consist of:
+        // - suffix, count, size, files
+        if (!metadata.files.length) return;
+        
     }
 
     async onClickDownload() {
         const uris = this.downloadUris;
+        if (this.isLegacy) {
+            return _legacyDownload(uris);
+        }
+        else {
+            return _download(uris)
+        }
         if (!uris.length) return;
 
+        const targetTitle = this.props.record.data.title || 'karaoke_video';
+        const targetResId = this.props.record.resId;
+
         this.state.isDownloading = true;
+        this.state.activeResId = targetResId;
         this.state.isMerging = false;
         this.state.downloadedBytes = 0;
         this.state.totalBytes = 0;
@@ -69,7 +91,7 @@ class KaraokeDownloadUrisField extends Component {
                     chunkUint8Arrays.push(value);
                     this.state.downloadedBytes += value.length;
 
-                    if (this.state.totalBytes > 0) {
+                    if (this.props.record.resId === targetResId && this.state.totalBytes > 0) {
                         this.state.progressPercent = Math.min(
                             100, 
                             Math.round((this.state.downloadedBytes / this.state.totalBytes) * 100)
@@ -82,7 +104,9 @@ class KaraokeDownloadUrisField extends Component {
             }
 
             // Enter merging phase
-            this.state.isMerging = true;
+            if (this.props.record.resId === targetResId) {
+                this.state.isMerging = true;
+            }
 
             // Use a small timeout to let the UI update to "Merging..." before the CPU locks up
             await new Promise(resolve => setTimeout(resolve, 50));
@@ -90,8 +114,7 @@ class KaraokeDownloadUrisField extends Component {
             const mergedVideoBlob = new Blob(downloadedBlobs, { type: 'video/mkv' });
             const localVideoUrl = URL.createObjectURL(mergedVideoBlob);
 
-            const recordName = this.props.record.data.title || 'karaoke_video';
-            const fileName = `${recordName}.mkv`;
+            const fileName = `${targetTitle}.mkv`;
 
             const a = document.createElement('a');
             a.href = localVideoUrl;
@@ -101,7 +124,8 @@ class KaraokeDownloadUrisField extends Component {
             a.remove();
 
             setTimeout(() => URL.revokeObjectURL(localVideoUrl), 10000);
-
+            
+            this.notification.add(_t(`Successfully downloaded ${fileName}`), { type: "success" });
         } catch (error) {
             console.error("Download failed:", error);
             this.state.errorMessage = error.message || "Network error occurred";
@@ -120,13 +144,25 @@ class KaraokeDownloadUrisField extends Component {
         }
 
         if (typeof raw === 'object' && raw !== null) {
-            return Array.isArray(raw) ? raw : [raw];
+            if (Array.isArray(raw)) {
+                this.isLegacy = true;
+                return raw
+            } else {
+                this.isLegacy = false;
+                return raw
+            }
         }
 
         if (typeof raw === 'string') {
             try {
                 const parsed = JSON.parse(raw);
-                return Array.isArray(parsed) ? parsed : [parsed];
+                if (Array.isArray(parsed)) {
+                    this.isLegacy = true;
+                    return parsed;
+                } else {
+                    this.isLegacy = false;
+                    return parsed;
+                }
             } catch (e) {
                 console.error(`Error while handling json log entries: ${e}`);
                 return [];

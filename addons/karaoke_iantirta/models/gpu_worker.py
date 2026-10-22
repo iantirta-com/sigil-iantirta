@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING
 
 from sigil.addons.karaoke_iantirta import utils as karaoke_utils
 
-from sigil import api, fields, models
+from sigil import _, api, fields, models
 
 if TYPE_CHECKING:
     from .storage_drive import CloudStorage
@@ -60,6 +60,10 @@ class GPUWorker(models.Model):
 
     last_heartbeat = fields.Datetime("Last Heartbeat", readonly=True)
     log_entries = fields.Json(readonly=True)
+    log_entry_ids = fields.One2many(
+        comodel_name='gpu.worker.log',
+        inverse_name='worker_id',
+    )
 
     @api.model
     def _cron_auto_vacuum_workers(self):
@@ -217,4 +221,26 @@ class GPUWorker(models.Model):
         return quotas
 
     def action_get_quotas(self):
-        return self.get_quotas()
+        self.get_quotas()
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'target': 'new',
+            'params': {
+                'message': _('Successfully refresh quota information.'),
+                'type': 'success',
+                'sticky': False,
+                'next': {'type': 'ir.actions.act_window_close'},
+            }
+        }
+
+    def update_log_entries(self, log_entries: list[dict]) -> None:
+        self.ensure_one()
+        self.log_entries = False
+
+        for log in log_entries:
+            log['worker_id'] = self.id
+            log['type'] = 'client'
+            log['dbname'] = self.env.cr.dbname
+        
+        return self.env['gpu.worker.log'].create(log_entries)
