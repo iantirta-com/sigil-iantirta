@@ -26,7 +26,7 @@ class CloudStorage(models.Model):
         if self.code != 'hf_dataset':
             return super()._get_storage_endpoint()
 
-        self.storage_endpoint = (
+        return (
             'https://huggingface.co/'
             'datasets/'
             + self.hf_repo_id.strip('/') +

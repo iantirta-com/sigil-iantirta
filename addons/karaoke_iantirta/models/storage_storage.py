@@ -31,7 +31,7 @@ class CloudStorage(models.Model):
 
     def _compute_storage_endpoint(self):
         for record in self:
-            record._get_storage_endpoint()
+            record.storage_endpoint = record._get_storage_endpoint()
             
     def _get_storage_endpoint(self):
         return ''

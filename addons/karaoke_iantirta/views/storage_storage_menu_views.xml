@@ -68,7 +68,7 @@
                                 <group colspan='2' invisible='code != "hf_dataset"'>
                                     <group>
                                         <field name='hf_repo_id'/>
-                                        <field name='hf_access_token'/>
+                                        <field name='hf_access_token' password="true"/>
                                     </group>
                                 </group>
                             </group>
