@@ -1,6 +1,7 @@
 import base64
 import json
 import logging
+import re
 import tempfile
 import uuid
 from datetime import timedelta
@@ -8,6 +9,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 from sigil.addons.karaoke_iantirta import utils as karaoke_utils
+from sigil.exceptions import ValidationError
 
 from sigil import _, api, fields, models
 
@@ -18,30 +20,24 @@ if TYPE_CHECKING:
 _logger = logging.getLogger(__name__)
 
 
+ANSI_COLOR_CODE_RE = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
+
+
 class GPUWorker(models.Model):
     _name = 'gpu.worker'
     _description = 'GPU Worker'
 
     name = fields.Char(required=True)
 
-    provider = fields.Selection(
-        selection=[('none', "No Provider Set")],
-        default='none',
-        required=True,
+    quota_json = fields.Json(
+        # compute="_compute_quotas",
+        store=True
     )
 
-    status = fields.Selection([
-        ('starting_up', 'Starting Up'),
-        ("ready", "Ready"),
-        ("running", "Running"),
-        ("error", "Error"),
-    ], default="ready", readonly=True)
-    access_token = fields.Char(
-        string="API Token", required=True,
-    )
+    def _valid_field_parameter(self, field, name):
+        return name == 'required_if_provider' or super()._valid_field_parameter(field, name)
 
-    quota_json = fields.Json(compute="_compute_quotas", store=True)
-
+    # Required relational
     storage_id = fields.Many2one(
         comodel_name="iantirta.cloud.storage",
         string="Storage",
@@ -53,16 +49,37 @@ class GPUWorker(models.Model):
         required=True
     )
 
-    karaoke_ids = fields.One2many(
-        comodel_name='karaoke.karaoke',
-        inverse_name='worker_id',
+    # State management
+    code = fields.Selection(
+        string="Provider",
+        help="The technical code of this worker provider.",
+        selection=[('none', "No Provider Set")],
+        default='none',
+        required=True,
+    )
+    state = fields.Selection(
+        string="State",
+        selection=[('disabled', "Disabled"), ('enabled', "Enabled")],
+        default='disabled', required=True, copy=False
     )
 
-    last_heartbeat = fields.Datetime("Last Heartbeat", readonly=True)
-    log_entries = fields.Json(readonly=True)
+    # Logging and debug
+    run_state = fields.Selection([
+        ('starting_up', 'Starting Up'),
+        ("ready", "Ready"),
+        ("running", "Running"),
+        ("error", "Error"),
+    ], default="ready", readonly=True, copy=False)
+    last_heartbeat = fields.Datetime("Last Heartbeat", readonly=True, copy=False)
     log_entry_ids = fields.One2many(
         comodel_name='gpu.worker.log',
         inverse_name='worker_id',
+        copy=False,
+    )
+    karaoke_ids = fields.One2many(
+        comodel_name='karaoke.karaoke',
+        inverse_name='worker_id',
+        copy=False
     )
 
     @api.model
@@ -120,21 +137,73 @@ class GPUWorker(models.Model):
                 'worker_id': self.id,
             })
 
-    @api.depends("access_token", 'name', "provider")
-    def _compute_quotas(self):
-        for record in self:
-            if record.access_token:
-                try:
-                    record.get_quotas()
-                except Exception as e:
-                    _logger.error("Failed to fetch quotas for %s: %s", record.name, e)
-                    record.quota_json = {
-                        "error": "Failed to fetch quotas",
-                        "error_str": str(e),
-                    }
-            else:
-                record.quota_json = {}
+    # @api.depends('name', "code")
+    # def _compute_quotas(self):
+    #     for record in self:
+    #         if record.access_token:
+    #             try:
+    #                 record.get_quotas()
+    #             except Exception as e:
+    #                 _logger.error("Failed to fetch quotas for %s: %s", record.name, e)
+    #                 record.quota_json = {
+    #                     "error": "Failed to fetch quotas",
+    #                     "error_str": str(e),
+    #                 }
+    #         else:
+    #             record.quota_json = {}
 
+    def _get_code(self):
+        """ Return the code of the provider.
+
+        Note: `self.ensure_one()`
+
+        :return: The code of the provider.
+        :rtype: str
+        """
+        self.ensure_one()
+        return self.code
+
+    def _check_required_if_provider(self):
+        """ Check that provider-specific required fields have been filled.
+
+        The fields that have the `required_if_provider='<provider_code>'` attribute are made
+        required for all `google` records with the `code` field equal to `<provider_code>`
+        and with the `state` field equal to `'enabled'` or `'test'`.
+
+        Provider-specific views should make the form fields required under the same conditions.
+
+        :return: None
+        :raise ValidationError: If a provider-specific required field is empty.
+        """
+        field_names = []
+        enabled_records = self.filtered(lambda p: p.state == 'enabled')
+        for field_name, field in self._fields.items():
+            required_for_provider_code = getattr(field, 'required_if_provider', None)
+            if required_for_provider_code and any(
+                required_for_provider_code == record._get_code() and not record[field_name]
+                for record in enabled_records
+            ):
+                ir_field = self.env['ir.model.fields']._get(self._name, field_name)
+                field_names.append(ir_field.field_description)
+        if field_names:
+            raise ValidationError(
+                _("The following fields must be filled: %s", ", ".join(field_names))
+            )
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        records = super().create(vals_list)
+        records._check_required_if_provider()
+
+        return records
+
+    def write(self, vals):
+        result = super().write(vals)
+        self._check_required_if_provider()
+
+        return result
+
+    # Abstract child method
     def get_worker(self):
         raise NotImplementedError()
 
@@ -242,5 +311,6 @@ class GPUWorker(models.Model):
             log['worker_id'] = self.id
             log['type'] = 'client'
             log['dbname'] = self.env.cr.dbname
+            log['level'] = ANSI_COLOR_CODE_RE.sub('', log['level']).strip()
         
         return self.env['gpu.worker.log'].create(log_entries)

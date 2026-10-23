@@ -7,9 +7,14 @@ from sigil import fields, models
 class GPUWorker(models.Model):
     _inherit = 'gpu.worker'
 
-    provider = fields.Selection(selection_add=[
+    code = fields.Selection(selection_add=[
         ('kaggle', 'Kaggle')
     ], ondelete={'kaggle': 'set default'})
+
+    kaggle_access_token = fields.Char(
+        copy=False,
+        required_if_provider='kaggle',
+    )
 
     def get_worker(self):
         if self.provider != 'kaggle':

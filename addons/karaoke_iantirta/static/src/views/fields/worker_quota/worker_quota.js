@@ -91,7 +91,7 @@ class WorkerQuotaField extends Component {
     }
 
     get quotaData() {
-        if (!this.quota) return null;
+        if (!this.quota || !this.quota.types) return null;
 
         const quotaBars = this.quota.types.map(quotaObj => {
             const typeKey = Object.keys(quotaObj)[0];
