@@ -103,7 +103,7 @@ class KaraokeController(Controller):
     ) -> bool:
         worker_sudo = self._check_access(**kwargs)
 
-        worker_sudo.write({"status": "running"})
+        worker_sudo.write({"run_state": "running"})
         return True
 
     @route('/karaoke/worker/stop', type='jsonrpc', auth='public')
@@ -126,7 +126,7 @@ class KaraokeController(Controller):
             _logger.debug(f"Abandoning karaoke task, count=({abandoned})")
 
         worker_sudo.write({
-            "status": "ready",
+            "run_state": "ready",
             'karaoke_ids': False,
             'log_entries': karaoke_utils.merge_log(
                 worker_sudo.log_entries,
