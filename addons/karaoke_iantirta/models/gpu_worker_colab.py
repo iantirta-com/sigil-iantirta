@@ -41,13 +41,13 @@ class GPUWorker(models.Model):
 
     @api.onchange('google_client_secrets')
     def _compute_google_client_secrets_json(self):
-        for provider in self:
-            if provider.code == 'colab':
-                creds = provider.with_context(
+        for record in self:
+            if record.code == 'colab':
+                creds = record.with_context(
                     bin_size=False
                 ).google_client_secrets
 
-                provider.google_client_secrets_json = (
+                record.google_client_secrets_json = (
                     base64.b64decode(creds)
                     if creds else False
                 )
