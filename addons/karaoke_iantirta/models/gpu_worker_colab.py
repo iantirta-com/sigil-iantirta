@@ -1,4 +1,7 @@
 import base64
+import json
+from pathlib import Path
+import tempfile
 
 from sigil import api, fields, models
 
@@ -58,3 +61,47 @@ class GPUWorker(models.Model):
             client_config_field='google_client_secrets_json',
             scopes=_DEFAULT_COLAB_SCOPES,
         )
+
+    # OVERRIDE
+    def post_vacuum(self):
+        for worker in self:
+            worker.get_worker().close()
+
+    def get_worker_name(self) -> str:
+        if self.code != 'colab':
+            return super().get_worker_name()
+    
+        return f'colab_worker:{self.id}'
+
+    def get_worker(self):
+        if self.code != 'colab':
+            return super().get_worker()
+
+        try:
+            from iantirta.media import ColabWorker
+        except ModuleNotFoundError:
+            raise ModuleNotFoundError("Cannot Continue as iantirta-media is not installed")
+
+        return ColabWorker(access_token=self.google_user_token_json, name=self.get_worker_name())
+
+    def _prepare_folder(self, tmpdir: str, tmp_script_path: Path) -> str:
+        if self.code != 'colab':
+            return super()._prepare_folder(tmpdir, tmp_script_path)
+
+        return tmp_script_path
+
+    def action_run(self):
+        if self.code != 'colab':
+            return super().action_run()
+
+        env_lines: list[str] = self._prepare_env_params()
+        code_lines: list[str] = self.notebook_id.to_source_code()
+        source_code = "".join(env_lines + code_lines)
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp_script_path = Path(tmpdir) / "worker_job.py"
+
+            with open(str(tmp_script_path), "w", encoding="utf-8") as f:
+                f.write(source_code)
+
+            self.run_state = 'starting_up'
+            self.get_worker().run(str(tmp_script_path))
