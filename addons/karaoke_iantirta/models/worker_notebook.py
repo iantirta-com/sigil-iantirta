@@ -23,6 +23,9 @@ class WorkerNotebook(models.Model):
 
     language = fields.Selection([("python", "Python")], default="python")
 
+    def to_source_code(self) -> list[str]:
+        return [f"{line}\n" for line in (self.code or "").splitlines()]
+
     def to_metadata_dict(self) -> dict:
         self.ensure_one()
         return {
@@ -33,7 +36,7 @@ class WorkerNotebook(models.Model):
                     "id": str(uuid.uuid4())[:8],
                     "metadata": {},
                     "outputs": [],
-                    "source": [f"{line}\n" for line in (self.code or "").splitlines()],
+                    "source": self.to_source_code(),
                 }
             ],
             "metadata": {

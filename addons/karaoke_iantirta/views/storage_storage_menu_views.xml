@@ -38,7 +38,7 @@
                                         <div class="w-md-50 w-lg-25 d-flex flex-column">
                                             <label for="gdrive_credentials" string="Credentials" class="o_form_label"/>
                                             <span class="text-muted small">
-                                                Service Account Credentials
+                                                Client Config Credentials
                                             </span>
                                             <field name="gdrive_credentials"
                                                 widget="binary"

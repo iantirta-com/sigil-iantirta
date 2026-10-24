@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="karaoke_iantirta.KaraokeDownloadUris">
-        <t t-if="downloadUris.length > 0">
+        <t t-if="totalFilesCount > 0">
             <t t-set="isThisRecordDownloading" t-value="state.isDownloading and state.activeResId === props.record.resId"/>
             <t t-set="isOtherRecordDownloading" t-value="state.isDownloading and state.activeResId !== props.record.resId"/>
 
@@ -18,7 +18,7 @@
                         <i class="fa fa-hourglass-half me-1"/> Background Download Active...
                     </t>
                     <t t-else="">
-                        <i class="fa fa-download me-1"/> Download Video (<t t-esc="downloadUris.length"/> chunks)
+                        <i class="fa fa-download me-1"/> Download Video (<t t-esc="totalFilesCount"/> chunks)
                     </t>
                 </button>
                 

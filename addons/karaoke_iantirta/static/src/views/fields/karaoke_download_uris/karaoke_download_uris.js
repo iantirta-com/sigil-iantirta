@@ -21,12 +21,69 @@ class KaraokeDownloadUrisField extends Component {
             progressPercent: 0,
         });
         this.notification = useService("notification");
-
-        this.isLegacy = false;
     }
 
     formatBytes(bytes) {
         return humanSize(bytes);
+    }
+
+    get parsedData() {
+        const raw = this.props.record.data[this.props.name];
+        if (!raw) return null;
+        if (typeof raw === 'object' && raw !== null) return raw;
+        if (typeof raw === 'string') {
+            try {
+                return JSON.parse(raw);
+            } catch (e) {
+                console.error(`Error parsing download URIs: ${e}`);
+                return null;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Legacy downloadUris is consisting of
+     * list[str] => where it is a list[downloadable href link].
+     * it mostly use from google drive storage api we used to have.
+     * the new one, we add hugging face storage api, where instead the
+     * downloadUris = {
+     *  'provider': "hf_dataset | gdrive",
+     *  'suffix': str, => type suffix of the file.
+     *  'count': int, => total files count
+     *  'files': list[str], => list of local file [folder_path/file_path] in encoded pattern without suffix.
+     *  'size': int, => size in bytes
+     * }
+     */
+    get isLegacy() {
+        return Array.isArray(this.parsedData);
+    }
+
+    get fileUris() {
+        const data = this.parsedData;
+        if (!data) return [];
+        return this.isLegacy ? data : (data.files || []);
+    }
+
+    get totalFilesCount() {
+        const data = this.parsedData;
+        if (!data) return 0;
+        return this.isLegacy ? data.length : (data.count || data.files?.length || 0);
+    }
+
+    get fileSuffix() {
+        const data = this.parsedData;
+        return (!this.isLegacy && data?.suffix) ? data.suffix : 'mkv';
+    }
+
+    get expectedTotalSize() {
+        const data = this.parsedData;
+        return (!this.isLegacy && data?.size) ? data.size : 0;
+    }
+
+    get storageProvier() {
+        const data = this.parsedData;
+        return (!this.isLegacy && data?.provider) ? data.provider : 'gdrive'
     }
 
     _legacyDownload(uris) {
@@ -43,23 +100,18 @@ class KaraokeDownloadUrisField extends Component {
     }
 
     async onClickDownload() {
-        const uris = this.downloadUris;
-        if (this.isLegacy) {
-            return _legacyDownload(uris);
-        }
-        else {
-            return _download(uris)
-        }
+        const uris = this.fileUris;
         if (!uris.length) return;
 
         const targetTitle = this.props.record.data.title || 'karaoke_video';
         const targetResId = this.props.record.resId;
+        const suffix = this.fileSuffix;
 
         this.state.isDownloading = true;
         this.state.activeResId = targetResId;
         this.state.isMerging = false;
         this.state.downloadedBytes = 0;
-        this.state.totalBytes = 0;
+        this.state.totalBytes = this.expectedTotalSize;
         this.state.progressPercent = 0;
         this.state.errorMessage = "";
 
@@ -69,15 +121,20 @@ class KaraokeDownloadUrisField extends Component {
 
         try {
             for (let i = 0; i < totalChunks; i++) {
-                const chunkUri = uris[i];
+                let chunkUri = uris[i];
+                // TODO: Change this into backend server later on
+                // Or instead in the library iantirta.media
+                if (!chunkUri.startsWith('http') && this.storageProvier == 'hf_dataset') {
+                    chunkUri = `https://huggingface.co/datasets/yancovenant/karaoke-archive/resolve/main/${chunkUri}?download=true`
+                }
                 const fetchUrl = `${workerBaseUrl}/?source=${encodeURIComponent(chunkUri)}`;
                 
                 const response = await fetch(fetchUrl);
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 
+                // Estimate size for legacy Drive links if we don't have HF metadata size
                 const contentLength = parseInt(response.headers.get('content-length') || '0', 10);
-                if (contentLength && i === 0) {
-                    // Estimate total file size assuming equal chunk sizes
+                if (this.state.totalBytes === 0 && contentLength && i === 0) {
                     this.state.totalBytes = contentLength * totalChunks;
                 }
                 
@@ -133,40 +190,6 @@ class KaraokeDownloadUrisField extends Component {
             // Reset UI back to default state
             this.state.isDownloading = false;
             this.state.isMerging = false;
-        }
-    }
-
-    get downloadUris() {
-        const raw = this.props.record.data[this.props.name];
-        
-        if (!raw) {
-            return [];
-        }
-
-        if (typeof raw === 'object' && raw !== null) {
-            if (Array.isArray(raw)) {
-                this.isLegacy = true;
-                return raw
-            } else {
-                this.isLegacy = false;
-                return raw
-            }
-        }
-
-        if (typeof raw === 'string') {
-            try {
-                const parsed = JSON.parse(raw);
-                if (Array.isArray(parsed)) {
-                    this.isLegacy = true;
-                    return parsed;
-                } else {
-                    this.isLegacy = false;
-                    return parsed;
-                }
-            } catch (e) {
-                console.error(`Error while handling json log entries: ${e}`);
-                return [];
-            }
         }
     }
 }

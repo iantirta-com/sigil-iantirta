@@ -10,20 +10,57 @@
                     <button string="Refresh Quota" type="object" class="btn-secondary"
                         name="action_get_quotas" />
                     <button string="Start Worker" type="object" class="btn-primary"
-                        invisible="status == 'running'" name="action_run" />
-                    <field name="status" widget="statusbar" statusbar_visible="ready,running,error" />
+                        invisible="run_state == 'running'" name="action_run" />
+                    <field name="run_state" widget="statusbar" statusbar_visible="ready,running,error" />
                 </header>
                 <sheet>
                     <separator string="Worker" style="margin-top: 0 !important; margin-bottom: 0 !important;"/>
                     <div class="small mb-3 text-muted">Remote compute Configuration</div>
                     <group>
                         <group>
+                            <field name="state" widget='radio'/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
                             <field name="name"/>
                             <field name="notebook_id"/>
-                            <field name="access_token" password="true"/>
+                            <field invisible='code != "kaggle"' name="kaggle_access_token" password="true"/>
+                            <t invisible="code != 'colab'">
+                                <div class="d-md-flex mt-3">
+                                    <div class="w-md-50 w-lg-25 d-flex flex-column">
+                                        <label for="google_client_secrets" string="Credentials" class="o_form_label"/>
+                                        <span class="text-muted small">
+                                            Client Config Credentials
+                                        </span>
+                                        <field name="google_client_secrets"
+                                            widget="binary"
+                                            class="o_field_binary_hide_download"
+                                            options="{'accepted_file_extensions': '.json'}" />
+                                    </div>
+                                    <div class="w-md-50 w-lg-75 d-flex flex-column my-auto">
+                                        <field name="google_client_secrets_json" widget="text" class="w-100" />
+                                    </div>
+                                </div>
+                                <div invisible="not google_client_secrets_json" class="d-md-flex mt-3">
+                                    <div class="w-md-50 w-lg-25  d-flex flex-column">
+                                        <label for="google_user_token_json" string="User Token" class="o_form_label"/>
+                                        <span class="text-muted">
+                                            User specific token.
+                                        </span>
+                                    </div>
+                                    <div class="w-md-50 w-lg-75 d-flex flex-column my-auto">
+                                        <field name="google_user_token_json" widget="text" class="w-100"/>
+                                        <div>
+                                            <button invisible="not google_user_token_json" name="action_setup_user_token" type="object" string="Refresh Token" class="btn btn-secondary h-100"/>
+                                            <button invisible="google_user_token_json" name="action_setup_user_token" type="object" string="Setup User Token" class="btn btn-secondary h-100"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
                         </group>
                         <group>
-                            <field name="provider"/>
+                            <field name="code"/>
                             <field name='storage_id'/>
                         </group>
                     </group>

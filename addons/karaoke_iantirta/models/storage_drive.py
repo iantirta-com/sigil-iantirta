@@ -4,6 +4,9 @@ import base64
 from sigil import api, fields, models
 
 
+_DEFAULT_DRIVE_SCOPES = ['https://www.googleapis.com/auth/drive']
+
+
 class CloudStorage(models.Model):
     _inherit = 'iantirta.cloud.storage'
 
@@ -48,40 +51,13 @@ class CloudStorage(models.Model):
 
     def action_setup_user_token(self):
         self.ensure_one()
-        try:
-            from iantirta.media import DriveStorage
-        except ModuleNotFoundError:
-            raise ModuleNotFoundError("Cannot Continue as iantirta-media is not installed")
-
-        if (
-            not self.gdrive_access_token_json
-            or not (creds := DriveStorage.get_credentials(
-                self.gdrive_access_token_json
-            ))
-        ):
-            auth_uri, _ = DriveStorage.setup_user_token(
-                client_config=self.gdrive_client_config,
-                redirect_uri=f"{self.get_base_url().rstrip('/')}/google_drive/callback",
-                state=str(self.id),
-                key=f'drive_{self.id}'
-            )
-            return {
-                'type': 'ir.actions.act_url',
-                'url': auth_uri,
-                'target': 'self',
-            }
-        else:
-            self.gdrive_access_token_json = creds.to_json()
-            return {
-                'type': 'ir.actions.client',
-                'tag': 'display_notification',
-                'params': {
-                    'title': 'Success',
-                    'message': 'Google Drive token refreshed successfully.',
-                    'type': 'success',
-                    'sticky': False,
-                }
-            }
+        from ..utils.google_utils import setup_user_token
+        return setup_user_token(
+            self,
+            creds_field='gdrive_access_token_json',
+            client_config_field='gdrive_client_config',
+            scopes=_DEFAULT_DRIVE_SCOPES,
+        )
 
     # OVERRIDES
     def action_test_connection(self):

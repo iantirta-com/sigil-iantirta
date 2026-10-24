@@ -7,12 +7,17 @@ from sigil import fields, models
 class GPUWorker(models.Model):
     _inherit = 'gpu.worker'
 
-    provider = fields.Selection(selection_add=[
+    code = fields.Selection(selection_add=[
         ('kaggle', 'Kaggle')
     ], ondelete={'kaggle': 'set default'})
 
+    kaggle_access_token = fields.Char(
+        copy=False,
+        required_if_provider='kaggle',
+    )
+
     def get_worker(self):
-        if self.provider != 'kaggle':
+        if self.code != 'kaggle':
             return super().get_worker()
 
         try:
@@ -20,10 +25,10 @@ class GPUWorker(models.Model):
         except ModuleNotFoundError:
             raise ModuleNotFoundError("Cannot Continue as iantirta-media is not installed")
 
-        return KaggleWorker(access_token=self.access_token)
+        return KaggleWorker(access_token=self.kaggle_access_token)
 
     def _prepare_folder(self, tmpdir: str, tmp_script_path: Path) -> str:
-        if self.provider != 'kaggle':
+        if self.code != 'kaggle':
             return super()._prepare_folder(tmpdir, tmp_script_path)
 
         kernel_metadata: dict = {
