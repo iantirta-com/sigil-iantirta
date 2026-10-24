@@ -33,7 +33,7 @@ class KaraokeController(Controller):
             raise ValidationError(_("The provided parameters are invalid."))
 
         if not karaoke_utils.check_access_token(
-            access_token, worker_sudo.name, worker_sudo.provider
+            access_token, worker_sudo.name, worker_sudo.code
         ):
             raise Forbidden()
 
