@@ -128,11 +128,6 @@ class KaraokeController(Controller):
         worker_sudo.write({
             "run_state": "ready",
             'karaoke_ids': False,
-            'log_entries': karaoke_utils.merge_log(
-                worker_sudo.log_entries,
-                log_entries,
-                max_items=1000,
-            )
         })
         worker_sudo.update_log_entries(log_entries)
         return True
