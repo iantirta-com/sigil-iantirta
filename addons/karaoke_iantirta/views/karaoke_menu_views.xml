@@ -143,8 +143,11 @@
         <field name="name">karaoke.karaoke.list</field>
         <field name="model">karaoke.karaoke</field>
         <field name="arch" type="xml">
-            <list string="Karaoke Task" duplicate="false" js_class="batch_input_list">
+            <list string="Karaoke Task" duplicate="false" js_class="karaoke_list_view">
+                <!-- Required for js -->
+                <field name='download_uris' invisible='1'/>
                 <header>
+                    <button string="Downloads" type="object" name="action_mass_downloads"/>
                     <button string="Refresh Song Info" type="object" name="action_refetch_info"/>
                     <button string="Reset Task" type="object" name="action_reset_status"/>
                 </header>
