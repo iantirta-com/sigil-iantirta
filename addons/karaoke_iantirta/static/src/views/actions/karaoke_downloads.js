@@ -65,16 +65,17 @@ async function karaokeDownloads(env, records) {
 
         for (let r = 0; r < records.length; r++) {
             const record = records[r];
-
-            // const targetResId = record.resId;
-            // const suffix = this.fileSuffix;
             const targetTitle = record.data.title || 'karaoke_video';
+
+            let fileName = null;
+            let writableStream = null;
             
             try {
                 let metadata = record.data.download_uris;
                 if (typeof metadata === 'string') metadata = JSON.parse(metadata);
 
                 const isLegacy = Array.isArray(metadata);
+                const fileSuffix = (!isLegacy && metadata?.suffix) ? metadata.suffix : 'mkv';
                 const uris = isLegacy ? metadata : (metadata?.files || []);
                 const provider = (!isLegacy && metadata?.provider) ? metadata.provider : 'gdrive';
 
@@ -84,10 +85,10 @@ async function karaokeDownloads(env, records) {
                 }
 
                 const totalChunks = uris.length;
-                const fileName = `${targetTitle}.mkv`;
+                fileName = `${targetTitle}.${fileSuffix.replace('.', '')}`;
 
                 const fileHandle = await directoryHandle.getFileHandle(fileName, { create: true });
-                const writableStream = await fileHandle.createWritable();
+                writableStream = await fileHandle.createWritable();
 
                 let totalBytesAcrossChunks = 0;
                 let bytesWrittenForCurrentFile = 0;
@@ -104,12 +105,6 @@ async function karaokeDownloads(env, records) {
                     const response = await fetch(fetchUrl);
                     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                     
-                    // Estimate size for legacy Drive links if we don't have HF metadata size
-                    
-                    // if (this.state.totalBytes === 0 && contentLength && i === 0) {
-                    //     this.state.totalBytes = contentLength * totalChunks;
-                    // }
-
                     const contentLength = parseInt(response.headers.get('content-length') || '0', 10);
                     if (totalBytesAcrossChunks === 0 && contentLength > 0) {
                         totalBytesAcrossChunks = contentLength * totalChunks;
@@ -128,21 +123,31 @@ async function karaokeDownloads(env, records) {
                             const percent = Math.min(100, Math.round((bytesWrittenForCurrentFile / totalBytesAcrossChunks) * 100));
                             ui.update(`${fileName} (Part ${i + 1}/${totalChunks})`, r + 1, records.length, percent);
                         }
-                        // this.state.downloadedBytes += value.length;
-
-                        // if (this.props.record.resId === targetResId && this.state.totalBytes > 0) {
-                        //     this.state.progressPercent = Math.min(
-                        //         100, 
-                        //         Math.round((this.state.downloadedBytes / this.state.totalBytes) * 100)
-                        //     );
-                        // }
                     }
                 }
                 await writableStream.close(); // Save file
+                writableStream = null;
                 downloaded++;
 
             } catch (error) {
                 console.error(`Failed on ${targetTitle}:`, error);
+                
+                if (writableStream) {
+                    try { 
+                        await writableStream.abort(); 
+                    } catch (e) { 
+                        console.error("Failed to abort stream", e); 
+                    }
+                }
+
+                if (fileName) {
+                    try { 
+                        await directoryHandle.removeEntry(fileName); 
+                    } catch (e) { 
+                        console.error("Failed to delete corrupted file", e); 
+                    }
+                }
+                
                 skipped++;
             }
         }
