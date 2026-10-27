@@ -78,7 +78,7 @@ class KaraokeController(Controller):
                     karaoke._update_from_dict(**_task)
             return True
         except Exception as e:
-            return UserError(f'Error while updating karaoke model: {e}')    
+            return UserError(f'Error while updating karaoke model: {e}')
 
     @route('/karaoke/worker/claim_task', type='jsonrpc', auth='public')
     def karaoke_worker_claim_task(
@@ -128,11 +128,6 @@ class KaraokeController(Controller):
         worker_sudo.write({
             "run_state": "ready",
             'karaoke_ids': False,
-            'log_entries': karaoke_utils.merge_log(
-                worker_sudo.log_entries,
-                log_entries,
-                max_items=1000,
-            )
         })
         worker_sudo.update_log_entries(log_entries)
         return True
