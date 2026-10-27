@@ -310,7 +310,8 @@ class GPUWorker(models.Model):
 
     def update_log_entries(self, log_entries: list[dict]) -> None:
         self.ensure_one()
-        self.log_entries = False
+        if getattr(self, 'log_entries', False,):
+            self.log_entries = False
 
         for log in log_entries:
             log['worker_id'] = self.id

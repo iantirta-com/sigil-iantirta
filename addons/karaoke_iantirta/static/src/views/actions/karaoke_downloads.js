@@ -84,6 +84,13 @@ async function karaokeDownloads(env, records) {
                 }
 
                 const totalChunks = uris.length;
+                const fileName = `${targetTitle}.mkv`;
+
+                const fileHandle = await directoryHandle.getFileHandle(fileName, { create: true });
+                const writableStream = await fileHandle.createWritable();
+
+                let totalBytesAcrossChunks = 0;
+                let bytesWrittenForCurrentFile = 0;
 
                 for (let i = 0; i < totalChunks; i++) {
                     let chunkUri = uris[i];
@@ -103,12 +110,11 @@ async function karaokeDownloads(env, records) {
                     //     this.state.totalBytes = contentLength * totalChunks;
                     // }
 
-                    const fileName = totalChunks > 1 ? `${targetTitle}_part${i + 1}.mkv` : `${targetTitle}.mkv`;
-                    const fileHandle = await directoryHandle.getFileHandle(fileName, { create: true });
-                    const writableStream = await fileHandle.createWritable();
+                    const contentLength = parseInt(response.headers.get('content-length') || '0', 10);
+                    if (totalBytesAcrossChunks === 0 && contentLength > 0) {
+                        totalBytesAcrossChunks = contentLength * totalChunks;
+                    }
 
-                    const totalBytes = parseInt(response.headers.get('content-length') || '0', 10);
-                    let downloadedBytes = 0;
                     const reader = response.body.getReader();
 
                     while (true) {
@@ -116,11 +122,11 @@ async function karaokeDownloads(env, records) {
                         if (done) break;
                         
                         await writableStream.write(value);
-                        downloadedBytes += value.length;
+                        bytesWrittenForCurrentFile += value.length;
 
-                        if (totalBytes) {
-                            const percent = Math.round((downloadedBytes / totalBytes) * 100);
-                            ui.update(fileName, r + 1, records.length, percent);
+                        if (totalBytesAcrossChunks > 0) {
+                            const percent = Math.min(100, Math.round((bytesWrittenForCurrentFile / totalBytesAcrossChunks) * 100));
+                            ui.update(`${fileName} (Part ${i + 1}/${totalChunks})`, r + 1, records.length, percent);
                         }
                         // this.state.downloadedBytes += value.length;
 
@@ -131,11 +137,10 @@ async function karaokeDownloads(env, records) {
                         //     );
                         // }
                     }
-
-                    await writableStream.close(); // Save file
                 }
-
+                await writableStream.close(); // Save file
                 downloaded++;
+
             } catch (error) {
                 console.error(`Failed on ${targetTitle}:`, error);
                 skipped++;

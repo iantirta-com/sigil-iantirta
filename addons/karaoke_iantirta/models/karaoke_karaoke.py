@@ -324,12 +324,3 @@ class KaraokeKaraoke(models.Model):
                 'next': {'type': 'ir.actions.act_window_close'},
             }
         }
-
-    def action_mass_downloads(self):
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'karaoke_downloads',
-            'params': {
-                'records': self,
-            }
-        }

@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sigil>
 
+    <!-- Binding Actions -->
+    <record id="reset_karaoke_task_action" model="ir.actions.client">
+        <field name="name">Reset Task</field>
+        <field name='tag'>karaoke_reset_tasks</field>
+        <field name="binding_model_id" ref="model_karaoke_karaoke"/>
+    </record>
+
+    <record id="refresh_information_karaoke_task_action" model="ir.actions.client">
+        <field name="name">Refresh Song Info</field>
+        <field name='tag'>karaoke_refresh_song_info</field>
+        <field name="binding_model_id" ref="model_karaoke_karaoke"/>
+    </record>
+
     <record id="karaoke_karaoke_view_form" model="ir.ui.view">
         <field name="name">karaoke.karaoke.form</field>
         <field name="model">karaoke.karaoke</field>
         <field name="arch" type="xml">
             <form string="Karaoke Task" duplicate="false">
                 <header>
-                    <button string="Refresh Song Info" type="object" name="action_refetch_info"/>
-                    <button string="Reset Task" type="object" name="action_reset_status"/>
                     <field
                         name="status"
                         widget="statusbar"
@@ -146,11 +157,6 @@
             <list string="Karaoke Task" duplicate="false" js_class="karaoke_list_view">
                 <!-- Required for js -->
                 <field name='download_uris' invisible='1'/>
-                <header>
-                    <button string="Downloads" type="object" name="action_mass_downloads"/>
-                    <button string="Refresh Song Info" type="object" name="action_refetch_info"/>
-                    <button string="Reset Task" type="object" name="action_reset_status"/>
-                </header>
                 <field name="title"/>
                 <field name="artist"/>
                 <field name="karaoke_type" widget="badge"/>
