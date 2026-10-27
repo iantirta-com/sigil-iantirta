@@ -283,7 +283,8 @@ class KaraokeKaraoke(models.Model):
                 valid_data['status'] = 'failed'
                 valid_data['error_entries'] = merge_log(error_entries, karaoke.error_entries)
 
-            valid_data['log_entries'] = merge_log(karaoke.log_entries, valid_data['log_entries'])
+            if valid_data.get('log_entries'):
+                valid_data['log_entries'] = merge_log(karaoke.log_entries, valid_data['log_entries'])
 
             karaoke.write(valid_data)
 
