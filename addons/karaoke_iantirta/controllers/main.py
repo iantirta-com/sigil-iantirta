@@ -78,7 +78,7 @@ class KaraokeController(Controller):
                     karaoke._update_from_dict(**_task)
             return True
         except Exception as e:
-            return UserError(f'Error while updating karaoke model: {e}')
+            raise UserError(f'Error while updating karaoke model: {e}')
 
     @route('/karaoke/worker/claim_task', type='jsonrpc', auth='public')
     def karaoke_worker_claim_task(

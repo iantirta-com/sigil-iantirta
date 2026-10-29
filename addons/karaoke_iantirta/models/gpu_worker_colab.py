@@ -104,4 +104,8 @@ class GPUWorker(models.Model):
                 f.write(source_code)
 
             self.run_state = 'starting_up'
-            self.get_worker().run(str(tmp_script_path))
+            self.get_worker().run(
+                str(tmp_script_path),
+                run_in_background=True,
+                gpu=True,
+            )

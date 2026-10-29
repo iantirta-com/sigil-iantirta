@@ -277,13 +277,14 @@ class KaraokeKaraoke(models.Model):
             if thumbnail_url := valid_data.pop('thumbnail', None):
                 valid_data['thumbnail_url'] = thumbnail_url
 
-            if valid_data.get('download_url') or valid_data.get('download_uris'):
+            if not error_entries and (valid_data.get('download_url') or valid_data.get('download_uris')):
                 valid_data['status'] = 'completed'
             else:
                 valid_data['status'] = 'failed'
                 valid_data['error_entries'] = merge_log(error_entries, karaoke.error_entries)
 
-            valid_data['log_entries'] = merge_log(karaoke.log_entries, valid_data['log_entries'])
+            if valid_data.get('log_entries'):
+                valid_data['log_entries'] = merge_log(karaoke.log_entries, valid_data['log_entries'])
 
             karaoke.write(valid_data)
 
