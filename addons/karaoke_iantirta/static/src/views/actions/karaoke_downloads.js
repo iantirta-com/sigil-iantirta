@@ -42,7 +42,6 @@ class DownloadProgressUI {
 
 
 async function karaokeDownloads(env, records) {
-    console.log("karaoke download", env, records)
     const notification = env.services.notification;
     
     if (!window.showDirectoryPicker) {
@@ -53,15 +52,21 @@ async function karaokeDownloads(env, records) {
         return;
     }
     
-    notification.add(_t(`Starting mass download of ${records.length} files. Please do not close this tab.`), { type: "info" });
+    notification.add(
+        _t(`Starting mass download of ${records.length} files. Please do not close this tab.`),
+        { type: "info" }
+    );
 
     try {
         const directoryHandle = await window.showDirectoryPicker({ mode: "readwrite" });
         const ui = new DownloadProgressUI();
 
         const workerBaseUrl = "https://karaoke-cdn-proxy.iantirta.com";
+        
         let downloaded = 0;
-        let skipped = 0;
+        let alreadyExists = 0;
+        let noDownloadUri = 0;
+        let failed = 0;
 
         for (let r = 0; r < records.length; r++) {
             const record = records[r];
@@ -69,6 +74,7 @@ async function karaokeDownloads(env, records) {
 
             let fileName = null;
             let writableStream = null;
+            let createdFile = false;
             
             try {
                 let metadata = record.data.download_uris;
@@ -80,14 +86,29 @@ async function karaokeDownloads(env, records) {
                 const provider = (!isLegacy && metadata?.provider) ? metadata.provider : 'gdrive';
 
                 if (!uris.length) {
-                    skipped++;
+                    noDownloadUri++;
                     continue;
                 }
 
                 const totalChunks = uris.length;
                 fileName = `${targetTitle}.${fileSuffix.replace('.', '')}`;
 
+                try {
+                    await directoryHandle.getFileHandle(fileName);
+                
+                    // File already exists, skip downloading.
+                    alreadyExists++;
+                    console.log(`Skipping existing file: ${fileName}`);
+                    continue;
+                
+                } catch (error) {
+                    if (error.name !== "NotFoundError") {
+                        throw error;
+                    }
+                }
+
                 const fileHandle = await directoryHandle.getFileHandle(fileName, { create: true });
+                createdFile = true;
                 writableStream = await fileHandle.createWritable();
 
                 let totalBytesAcrossChunks = 0;
@@ -121,7 +142,7 @@ async function karaokeDownloads(env, records) {
 
                         if (totalBytesAcrossChunks > 0) {
                             const percent = Math.min(100, Math.round((bytesWrittenForCurrentFile / totalBytesAcrossChunks) * 100));
-                            ui.update(`${fileName} (Part ${i + 1}/${totalChunks})`, r + 1, records.length, percent);
+                            ui.update(`(Part ${i + 1}/${totalChunks}) ${fileName}`, r + 1, records.length, percent);
                         }
                     }
                 }
@@ -140,21 +161,24 @@ async function karaokeDownloads(env, records) {
                     }
                 }
 
-                if (fileName) {
+                if (createdFile && fileName) {
                     try { 
                         await directoryHandle.removeEntry(fileName); 
                     } catch (e) { 
                         console.error("Failed to delete corrupted file", e); 
                     }
                 }
-                
-                skipped++;
+
+                failed++;
             }
         }
         ui.close();
         notification.add(
-            _t(`Mass download complete! Saved: ${downloaded} | Skipped/Failed: ${skipped}`), 
-            { type: "success" }
+            _t(`Mass download complete! Downloaded: ${downloaded} | Already exists: ${alreadyExists} | Skipped: ${noDownloadUri} | Failed: ${failed}`), 
+            { 
+                type: "success",
+                sticky: true,
+            }
         );
     } catch (err) {
         console.error("Download manager failed:", err, err.name);
