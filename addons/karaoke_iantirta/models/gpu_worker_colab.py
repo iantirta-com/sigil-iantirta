@@ -52,7 +52,7 @@ class GPUWorker(models.Model):
         string='Remaining Free CCU Tokens',
         readonly=True,
         copy=False,
-        compute='_compute_remaining_tokens',
+        # compute='_compute_remaining_tokens',
         store=True,
     )
     refill_timestamp = fields.Datetime(string='Next Refill Timestamp', readonly=True, copy=False)
