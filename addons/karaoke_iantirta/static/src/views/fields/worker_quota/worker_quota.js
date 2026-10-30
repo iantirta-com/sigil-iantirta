@@ -19,6 +19,108 @@ class WorkerQuotaField extends Component {
         ...standardFieldProps,
     }
 
+    setup() {
+        this.isColab = this.props.record.data?.code === 'colab';
+        console.log("Setup is colab", this.isColab, this.colabQuotaData);
+    }
+
+    get colabQuotaData() {
+        if (!this.isColab) return;
+        const quota = this.quota || {};
+        const data = this.props.record.data;
+        console.log(data)
+        
+        const initial = data.initial_token;
+        const remaining = data.remaining_tokens;
+
+        const hasQuota =
+            remaining !== null &&
+            (
+                (initial !== null && initial > 0) ||
+                remaining > 0
+            );
+        const hasBaseline = initial !== null && initial > 0;
+
+        let remainingPercent = null;
+        let consumedPercent = null;
+        let consumedTokens = null;
+
+        if (hasQuota && hasBaseline) {
+            remainingPercent = Math.min(
+                100,
+                Math.max(0, (remaining / initial) * 100)
+            );
+
+            consumedPercent = 100 - remainingPercent;
+
+            consumedTokens = Math.max(0, initial - remaining);
+        }
+
+        let colorClass = "bg-success";
+
+        if (remainingPercent !== null) {
+            if (remainingPercent <= 10) {
+                colorClass = "bg-danger";
+            } else if (remainingPercent <= 25) {
+                colorClass = "bg-warning";
+            }
+        }
+
+        const status = !hasQuota
+            ? "unknown"
+            : remaining > 0
+                ? "available"
+                : "exhausted";
+
+        const statusLabel = {
+            unknown: _t("Quota unknown"),
+            available: _t("Quota available"),
+            exhausted: _t("Quota exhausted"),
+        }[status];
+
+        const statusClass = {
+            unknown: "text-bg-secondary",
+            available: "text-bg-success",
+            exhausted: "text-bg-danger",
+        }[status];
+
+        return {
+            hasQuota,
+            hasBaseline,
+
+            initialTokens: initial,
+            remainingTokens: remaining,
+            consumedTokens,
+
+            remainingPercent,
+            consumedPercent,
+
+            remainingLabel: remaining,
+            initialLabel: initial,
+            consumedLabel: consumedTokens,
+
+            colorClass,
+
+            status,
+            statusLabel,
+            statusClass,
+
+            assignmentsCount: quota.assignmentsCount,
+
+            consumptionRate: quota.consumptionRateHourly,
+
+            refillTime: formatDateTime(data.refill_timestamp),
+
+            eligibleGpus: Array.isArray(quota.eligibleGpus)
+                ? quota.eligibleGpus
+                : [],
+
+            eligibleTpus: Array.isArray(quota.eligibleTpus)
+                ? quota.eligibleTpus
+                : [],
+        };
+    }
+
     /**
      * Helper to parse time strings into total seconds.
      * Handles "HH:MM:SS.mmmmmm" and "X days, HH:MM:SS" formats.
