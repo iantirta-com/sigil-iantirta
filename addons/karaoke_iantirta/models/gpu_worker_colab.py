@@ -64,8 +64,7 @@ class GPUWorker(models.Model):
 
     # OVERRIDE
     def post_vacuum(self):
-        for worker in self:
-            worker.get_worker().close()
+        pass
 
     def get_worker_name(self) -> str:
         if self.code != 'colab':

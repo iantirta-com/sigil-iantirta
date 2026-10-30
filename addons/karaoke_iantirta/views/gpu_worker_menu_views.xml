@@ -96,6 +96,22 @@
             </form>
         </field>
     </record>
+    <record id="gpu_worker_view_tree" model="ir.ui.view">
+        <field name="name">gpu.worker.tree</field>
+        <field name="model">gpu.worker</field>
+        <field name="arch" type="xml">
+            <list string="GPU Worker">
+                <field name="name"/>
+                <field name='code'/>
+                <field name='state' widget='badge'/>
+                <field name='run_state' widget="badge"
+                    decoration-success="run_state == 'ready'"
+                    decoration-info="run_state == 'running'"
+                    decoration-warning="run_state == 'starting_up'"
+                    decoration-danger="run_state == 'error'"/>
+            </list>
+        </field>
+    </record>
 
     <record id="worker_notebook_view_form" model="ir.ui.view">
         <field name="name">worker.notebook.form</field>
@@ -120,6 +136,11 @@
         <field name="res_model">gpu.worker</field>
         <field name="path">gpu-worker</field>
         <field name='view_mode'>list,kanban,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Manage karaoke GPU Worker
+            </p>
+        </field>
     </record>
 
     <record id="worker_notebook_action" model="ir.actions.act_window">
@@ -127,6 +148,11 @@
         <field name="res_model">worker.notebook</field>
         <field name="path">gpu-worker-notebook</field>
         <field name='view_mode'>list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Manage karaoke GPU Worker Notebook
+            </p>
+        </field>
     </record>
 
     <menuitem

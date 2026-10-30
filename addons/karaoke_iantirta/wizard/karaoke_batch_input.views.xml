@@ -13,10 +13,7 @@
         <field name="arch" type="xml">
             <form string="Add Karaoke Tasks">
                 <sheet>
-                    <p class="text-muted">
-                        Create multiple karaoke tasks from YouTube links
-                    </p>
-                    <separator/>
+                    <separator string="Create multiple karaoke tasks from YouTube links" class="text-muted" style="margin-top: 0 !important;"/>
                     <group>
                         <group colspan="2">
                             <field name="youtube_urls" class="mb-0" string="Sources" placeholder="Paste YouTube links here..."/>
