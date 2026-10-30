@@ -1,9 +1,13 @@
 import base64
-import json
-from pathlib import Path
+import logging
 import tempfile
+from pathlib import Path
 
-from sigil import api, fields, models
+from sigil import SUPERUSER_ID, api, fields, models
+from sigil.modules.registry import Registry
+
+_logger = logging.getLogger(__name__)
+
 
 _DEFAULT_COLAB_SCOPES = [
     "openid",
@@ -39,6 +43,20 @@ class GPUWorker(models.Model):
         copy=False,
     )
 
+    initial_token = fields.Integer(
+        string='Initial Free CCU Tokens',
+        readonly=True,
+        copy=False,
+    )
+    remaining_tokens = fields.Integer(
+        string='Remaining Free CCU Tokens',
+        readonly=True,
+        copy=False,
+        compute='_compute_remaining_tokens',
+        store=True,
+    )
+    refill_timestamp = fields.Datetime(string='Next Refill Timestamp', readonly=True, copy=False)
+
     @api.onchange('google_client_secrets')
     def _compute_google_client_secrets_json(self):
         for record in self:
@@ -63,8 +81,30 @@ class GPUWorker(models.Model):
         )
 
     # OVERRIDE
-    def post_vacuum(self):
-        pass
+    # @api.depends('quota_json')
+    # def _compute_remaining_tokens(self):
+    #     """get remaining tokens"""
+    #     for record in self:
+    #         if (
+    #             record.code == 'colab'
+    #             and record.quota_json
+    #             and (ccuInfo := record.quota_json.get('freeCcuQuotaInfo'))
+    #         ):
+    #             record.remaining_tokens = ccuInfo.get('remainingTokens')
+    #             if not record.initial_token:
+    #                 record.initial_token = record.remaining_tokens
+    
+    def _check_is_available(self):
+        """To be override with other provider"""
+        if self.code != 'colab':
+            return super()._check_is_available()
+
+        self.ensure_one()
+
+        free_quota = (self.quota_json or {}).get('freeCcuQuotaInfo') or {}
+
+        self.remaining_tokens = free_quota.get('remainingTokens')
+        return self.remaining_tokens is not None and self.remaining_tokens > 0
 
     def get_worker_name(self) -> str:
         if self.code != 'colab':
@@ -89,9 +129,9 @@ class GPUWorker(models.Model):
 
         return tmp_script_path
 
-    def action_run(self):
+    def worker_run(self):
         if self.code != 'colab':
-            return super().action_run()
+            return super().worker_run()
 
         env_lines: list[str] = self._prepare_env_params()
         code_lines: list[str] = self.notebook_id.to_source_code()
@@ -103,8 +143,77 @@ class GPUWorker(models.Model):
                 f.write(source_code)
 
             self.run_state = 'starting_up'
-            self.get_worker().run(
-                str(tmp_script_path),
-                run_in_background=True,
-                gpu=True,
-            )
+
+            dbname = self.env.cr.dbname
+            _context = self.env.context
+            worker_id = self.id
+            try:
+                worker = self.get_worker()
+
+                def on_close():
+                    remaining = None
+                    refill_at = None
+
+                    try:
+                        quota = worker.state.client.get_consumption_user_info()
+                    except Exception as e:
+                        _logger.warning(f"Error while getting consumtion info, Error: {e}")
+                        quota = None
+                    
+                    if quota and quota.freeCcuQuotaInfo:
+                        remaining = quota.freeCcuQuotaInfo.remainingTokens
+                        refill_at = quota.freeCcuQuotaInfo.nextRefillTimestampSec
+
+                    elif quota:
+                        remaining = 0
+
+                    with Registry(dbname).cursor() as new_cr:
+                        env = api.Environment(new_cr, SUPERUSER_ID, _context)
+                        if record := env['gpu.worker'].browse(worker_id).exists():
+                            vals = {'run_state': 'ready'}
+                            if remaining is not None:
+                                vals['remaining_tokens'] = remaining
+                            if refill_at is not None:
+                                vals['refill_timestamp'] = refill_at
+
+                            record.write(vals)
+
+                            new_cr.commit()
+
+                            abandoned_tasks = record.karaoke_ids.filtered(
+                                lambda k: k.status == 'processing'
+                            )
+                            if abandoned_tasks:
+                                abandoned_tasks.write({
+                                    'status': 'waiting',
+                                    'worker_id': False
+                                })
+                            _logger.warning("Closed GPU workers and reset %s abandoned tasks.", len(abandoned_tasks))
+
+                            new_cr.commit()
+    
+                worker.run(
+                    str(tmp_script_path),
+                    run_in_background=True,
+                    gpu=True,
+                    on_close_hook=on_close,
+                )
+
+                try:
+                    initial_quota = worker.state.client.get_consumption_user_info()
+                except Exception as e:
+                    _logger.warning(f"Error while getting consumtion info, Error: {e}")
+                    initial_quota = None
+                
+                if initial_quota and initial_quota.freeCcuQuotaInfo:
+                    initial_token = initial_quota.freeCcuQuotaInfo.remainingTokens
+                    self.write({
+                        'initial_token': initial_token,
+                        'remaining_tokens': initial_token,
+                        'refill_timestamp': initial_quota.freeCcuQuotaInfo.nextRefillTimestampSec,
+                    })
+            except Exception as e:
+                if e.__class__.__name__ == 'ColabRequestError':
+                    self.run_state = 'ready'
+                    raise
+                raise

@@ -2,45 +2,229 @@
 <templates xml:space="preserve">
     <t t-name="karaoke_iantirta.WorkerQuotaField">
         <div class="w-100">
-            <t t-set="data" t-value="quotaData"/>
-            
-            <t t-if="data and data.bars.length > 0">
-                <div class="d-flex flex-column gap-2 mb-1">
-                    <t t-foreach="data.bars" t-as="bar" t-key="bar.label">
-                        
-                        <!-- Progress Bar Container -->
-                        <div class="d-flex flex-column">
-                            <!-- Labels -->
-                            <div class="d-flex justify-content-between align-items-end mb-1" style="font-size: 0.85em;">
-                                <strong><t t-esc="bar.label"/> Quota</strong>
-                                <span class="text-muted">
-                                    <t t-esc="bar.usedLabel"/> / <t t-esc="bar.allowedLabel"/> (<t t-esc="bar.percent"/>%)
-                                </span>
+            <t t-if="isColab">
+                <t t-set="data" t-value="colabQuotaData"/>
+
+                <div class="d-flex flex-column gap-3">
+
+                    <!-- Header -->
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div class="fw-semibold">
+                            Google Colab Free Quota
+                        </div>
+
+                        <span t-attf-class="badge {{ data.statusClass }}">
+                            <t t-esc="data.statusLabel"/>
+                        </span>
+
+                    </div>
+
+                    <t t-if="data.hasQuota">
+
+                        <!-- Token Progress -->
+                        <div class="d-flex flex-column gap-2">
+
+                            <div class="d-flex justify-content-between align-items-end">
+
+                                <div>
+                                    <div class="fs-2 fw-semibold">
+                                        <t t-esc="data.remainingLabel"/>
+                                    </div>
+
+                                    <div class="text-muted small">
+                                        Free CCU tokens remaining
+                                    </div>
+                                </div>
+
+                                <div class="text-muted small text-end">
+                                    <t t-if="data.hasBaseline">
+                                        of
+                                        <strong>
+                                            <t t-esc="data.initialLabel"/>
+                                        </strong>
+                                        initial tokens
+                                    </t>
+                                </div>
+
                             </div>
-                            
-                            <!-- The Bar itself -->
-                            <div class="progress" style="height: 8px;">
-                                <div t-attf-class="progress-bar {{ bar.colorClass }}"
-                                     role="progressbar"
-                                     t-attf-style="width: {{ bar.percent }}%;"
-                                     t-att-aria-valuenow="bar.percent"
-                                     aria-valuemin="0"
-                                     aria-valuemax="100">
+
+                            <!-- Progress Bar -->
+                            <t t-if="data.hasBaseline">
+
+                                <div
+                                    class="progress"
+                                    style="height: 12px;"
+                                    role="progressbar"
+                                    t-att-aria-valuenow="data.remainingPercent"
+                                    aria-valuemin="0"
+                                    aria-valuemax="100"
+                                    aria-label="Remaining Colab quota"
+                                >
+                                    <div
+                                        t-attf-class="progress-bar {{ data.colorClass }}"
+                                        t-attf-style="width: {{ data.remainingPercent }}%;"
+                                    />
+                                </div>
+
+                                <div class="d-flex justify-content-between small">
+
+                                    <span class="text-muted">
+                                        <t t-esc="data.consumedPercent.toFixed(1)"/>% consumed
+                                    </span>
+
+                                    <span class="text-muted">
+                                        <t t-esc="data.remainingPercent.toFixed(1)"/>% remaining
+                                    </span>
+
+                                </div>
+
+                                <div class="text-muted small">
+                                    <t t-esc="data.consumedLabel"/>
+                                    /
+                                    <t t-esc="data.initialLabel"/>
+                                    tokens consumed
+                                </div>
+
+                            </t>
+
+                        </div>
+
+                        <hr class="my-1"/>
+
+                        <!-- Quota Information -->
+                        <div class="row g-3">
+
+                            <div class="col-6 col-md-4">
+                                <div class="text-muted small">
+                                    Assignments
+                                </div>
+                                <div class="fw-semibold">
+                                    <t t-esc="data.assignmentsCount"/>
                                 </div>
                             </div>
+
+                            <div class="col-6 col-md-4">
+                                <div class="text-muted small">
+                                    Hourly consumption rate
+                                </div>
+                                <div class="fw-semibold">
+                                    <t t-esc="data.consumptionRate"/>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="text-muted small">
+                                    Next refill
+                                </div>
+                                <div class="fw-semibold">
+                                    <i class="fa fa-refresh me-1"/>
+                                    <t t-esc="data.refillTime"/>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <hr class="my-1"/>
+
+                        <!-- Eligible GPUs -->
+                        <div t-if="data.eligibleGpus.length">
+
+                            <div class="text-muted small mb-2">
+                                Eligible GPUs
+                            </div>
+
+                            <div class="d-flex flex-wrap gap-2">
+
+                                <span
+                                    t-foreach="data.eligibleGpus"
+                                    t-as="gpu"
+                                    t-key="gpu"
+                                    class="badge text-bg-light border"
+                                >
+                                    <t t-esc="gpu"/>
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Eligible TPUs -->
+                        <div t-if="data.eligibleTpus.length">
+
+                            <div class="text-muted small mb-2">
+                                Eligible TPUs
+                            </div>
+
+                            <div class="d-flex flex-wrap gap-2">
+
+                                <span
+                                    t-foreach="data.eligibleTpus"
+                                    t-as="tpu"
+                                    t-key="tpu"
+                                    class="badge text-bg-light border"
+                                >
+                                    <t t-esc="tpu"/>
+                                </span>
+
+                            </div>
+
                         </div>
 
                     </t>
-                </div>
-                
-                <!-- Refresh Time Footer -->
-                <div class="text-muted mt-2" style="font-size: 0.8em;">
-                    <i class="fa fa-refresh me-1"/> Resets: <t t-esc="data.refreshTime"/>
+
+                    <t t-else="">
+
+                        <div class="text-muted py-2">
+                            <i class="fa fa-info-circle me-1"/>
+                            No confirmed Colab quota information available.
+                        </div>
+
+                    </t>
+
                 </div>
             </t>
-            
             <t t-else="">
-                <span class="text-muted"><i class="fa fa-info-circle me-1"/> No quota data available.</span>
+                <t t-set="data" t-value="quotaData"/>
+                
+                <t t-if="data and data.bars.length > 0">
+                    <div class="d-flex flex-column gap-2 mb-1">
+                        <t t-foreach="data.bars" t-as="bar" t-key="bar.label">
+                            
+                            <!-- Progress Bar Container -->
+                            <div class="d-flex flex-column">
+                                <!-- Labels -->
+                                <div class="d-flex justify-content-between align-items-end mb-1" style="font-size: 0.85em;">
+                                    <strong><t t-esc="bar.label"/> Quota</strong>
+                                    <span class="text-muted">
+                                        <t t-esc="bar.usedLabel"/> / <t t-esc="bar.allowedLabel"/> (<t t-esc="bar.percent"/>%)
+                                    </span>
+                                </div>
+                                
+                                <!-- The Bar itself -->
+                                <div class="progress" style="height: 8px;">
+                                    <div t-attf-class="progress-bar {{ bar.colorClass }}"
+                                        role="progressbar"
+                                        t-attf-style="width: {{ bar.percent }}%;"
+                                        t-att-aria-valuenow="bar.percent"
+                                        aria-valuemin="0"
+                                        aria-valuemax="100">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </t>
+                    </div>
+                    
+                    <!-- Refresh Time Footer -->
+                    <div class="text-muted mt-2" style="font-size: 0.8em;">
+                        <i class="fa fa-refresh me-1"/> Resets: <t t-esc="data.refreshTime"/>
+                    </div>
+                </t>
+                
+                <t t-else="">
+                    <span class="text-muted"><i class="fa fa-info-circle me-1"/> No quota data available.</span>
+                </t>
             </t>
         </div>
     </t>

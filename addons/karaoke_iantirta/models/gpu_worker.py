@@ -82,8 +82,47 @@ class GPUWorker(models.Model):
         copy=False
     )
 
-    def post_vacuum(self):
-        """To be filled for provider that need post vacuum function."""
+    is_available = fields.Boolean(
+        readonly=True,
+        string="Available",
+        store=True,
+        compute="_compute_is_available"
+    )
+
+    @api.depends('state', 'run_state', 'quota_json')
+    def _compute_is_available(self):
+        """To be override with other provider"""
+        for record in self:
+            record.is_available = (
+                record.state == 'enabled'
+                and record.run_state == 'ready'
+                and record._check_is_available()
+            )
+
+    def _check_is_available(self):
+        """To be override with other provider"""
+        self.ensure_one()
+        return False
+
+    @api.model
+    def _cron_auto_run_workers(self):
+        # 2. Auto run worker if any task.
+        if self.env['karaoke.karaoke'].search_count([('status', '=', 'waiting')]) > 0:
+            domain = [
+                ('state', '=', 'enabled'),
+                ('run_state', '=', 'ready'),
+                ('is_available', '=', True)
+            ]
+            available_workers = self.search(domain)
+            if available_workers:
+                commit_progress = self.env['ir.cron']._commit_progress
+                commit_progress(remaining=len(available_workers))
+
+                for w in available_workers:
+                    w = w.try_lock_for_update().filtered_domain(domain)
+                    if not w:
+                        continue
+                    
 
     @api.model
     def _cron_auto_vacuum_workers(self):
@@ -93,14 +132,12 @@ class GPUWorker(models.Model):
         """
         timeout_threshold = fields.Datetime.now() - timedelta(minutes=30)
 
-        # Find workers marked as running or starting up that have timed out
         dead_workers = self.search([
             ('run_state', 'in', ['running', 'starting_up']),
             '|',
-            ('last_heartbeat', '<', timeout_threshold),
+            ('last_heartbeat', '<=', timeout_threshold),
             ('last_heartbeat', '=', False)
         ])
-
         if dead_workers:
             commit_progress = self.env['ir.cron']._commit_progress
             commit_progress(remaining=len(dead_workers))
@@ -119,7 +156,6 @@ class GPUWorker(models.Model):
 
             commit_progress(len(dead_workers))
             _logger.warning("Auto-vacuumed %s dead GPU workers and reset %s abandoned tasks.", len(dead_workers), len(abandoned_tasks))
-            dead_workers.post_vacuum()
 
     def _mark_heartbeat(self):
         """Called by the controller to update the worker's active status."""
@@ -141,20 +177,9 @@ class GPUWorker(models.Model):
                 'worker_id': self.id,
             })
 
-    # @api.depends('name', "code")
-    # def _compute_quotas(self):
-    #     for record in self:
-    #         if record.access_token:
-    #             try:
-    #                 record.get_quotas()
-    #             except Exception as e:
-    #                 _logger.error("Failed to fetch quotas for %s: %s", record.name, e)
-    #                 record.quota_json = {
-    #                     "error": "Failed to fetch quotas",
-    #                     "error_str": str(e),
-    #                 }
-    #         else:
-    #             record.quota_json = {}
+    @api.onchange('quota_json')
+    def _onchange_quota_json(self):
+        """To be override if needed."""
 
     def _get_code(self):
         """ Return the code of the provider.
@@ -273,7 +298,8 @@ class GPUWorker(models.Model):
     def _prepare_folder(tmpdir: str, tmp_script_path: Path):
         raise NotImplementedError()
 
-    def action_run(self):
+    def worker_run(self):
+        """Run worker"""
         self.ensure_one()
 
         notebook = self._prepare_notebook()
@@ -287,6 +313,31 @@ class GPUWorker(models.Model):
 
             self.run_state = 'starting_up'
             self.get_worker().run(str(folder))
+
+    def action_run(self):
+        params = {
+            'message': _('Successfully Run worker.'),
+            'type': 'success',
+            'sticky': False,
+            'next': {
+                'type': 'ir.actions.client',
+                'tag': 'soft_reload'
+            },
+        }
+        try:
+            self.worker_run()
+        except Exception:
+            params.update({
+                'message': _("Failed to run worker"),
+                'type': 'error',
+            })
+        
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'target': 'new',
+            'params': params
+        }
 
     def get_quotas(self) -> dict:
         self.ensure_one()
@@ -304,7 +355,10 @@ class GPUWorker(models.Model):
                 'message': _('Successfully refresh quota information.'),
                 'type': 'success',
                 'sticky': False,
-                'next': {'type': 'ir.actions.act_window_close'},
+                'next': {
+                    'type': 'ir.actions.client',
+                    'tag': 'soft_reload'
+                },
             }
         }
 

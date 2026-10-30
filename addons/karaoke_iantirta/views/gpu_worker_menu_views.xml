@@ -68,6 +68,11 @@
                         <page string="Quotas">
                             <group>
                                 <group colspan="2">
+                                    <!-- For colab -->
+                                    <field invisible='1' name='initial_token'/>
+                                    <field invisible='1' name='remaining_tokens'/>
+                                    <field invisible='1' name='refill_timestamp'/>
+
                                     <field nolabel='1' name="quota_json" widget="worker_quota"/>
                                     <field name="last_heartbeat"/>
                                 </group>
@@ -103,7 +108,9 @@
             <list string="GPU Worker">
                 <field name="name"/>
                 <field name='code'/>
-                <field name='state' widget='badge'/>
+                <field name="is_available"/>
+                <field name='state' widget='badge'
+                    decoration-success='state == "enabled"'/>
                 <field name='run_state' widget="badge"
                     decoration-success="run_state == 'ready'"
                     decoration-info="run_state == 'running'"
