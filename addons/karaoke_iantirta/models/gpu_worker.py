@@ -347,6 +347,7 @@ class GPUWorker(models.Model):
 
         :param Exception e:
         """
+        _logger.exception("Error while starting worker run.")
         raise e
 
     # -----------------------
@@ -495,6 +496,7 @@ class GPUWorker(models.Model):
         """
         if not self.access_token:
             raise UserError(_("Access token is needed to run worker"))
+
         params = {
             'message': _('Successfully Run worker.'),
             'type': 'success',
