@@ -1,12 +1,7 @@
-import ast
-import json
 import logging
-import typing as t
-from itertools import groupby
-from typing import Any, Literal
-import warnings
+from typing import Any, TYPE_CHECKING
 
-from werkzeug.exceptions import BadRequest, Forbidden, NotFound
+from werkzeug.exceptions import Forbidden
 
 from sigil import _
 from sigil.exceptions import ValidationError, UserError
@@ -14,8 +9,9 @@ from sigil.http import Controller, request, route
 
 from .. import utils as karaoke_utils
 
-if t.TYPE_CHECKING:
+if TYPE_CHECKING:
     from ..models.karaoke_karaoke import KaraokeKaraoke
+    from ..models.gpu_worker import GPUWorker
 
 
 _logger = logging.getLogger(__name__)
@@ -27,8 +23,20 @@ class KaraokeController(Controller):
         access_token: str,
         worker_id: int,
         **kwargs
-    ):
-        worker_sudo = request.env["gpu.worker"].sudo().browse(worker_id).exists()
+    ) -> 'GPUWorker':
+        """
+        Authenticate request via generated access token.
+        given to the worker at the time of running.
+
+        :param str access_token:
+        :param int worker_id:
+        :return: GPUWorker if the auth successfull.
+        :rtype: type[GPUWorker]
+        """
+        worker_sudo = request.env[
+            "gpu.worker"
+        ].sudo().browse(worker_id).exists()
+
         if not worker_sudo:
             raise ValidationError(_("The provided parameters are invalid."))
 
@@ -41,54 +49,98 @@ class KaraokeController(Controller):
 
         return worker_sudo
 
+    # -----------------------
+    # Karaoke endpoint
+    # -----------------------
+
     @route('/karaoke/tasks/get', type='jsonrpc', auth='public')
     def karaoke_tasks_get(
         self,
-        domain: list[tuple],
         limit: int | None = None,
         **kwargs
     ) -> list[dict[str, Any]]:
-        worker_sudo = self._check_access(**kwargs)
+        """
+        Get karaoke task based on the domain given.
+        and will return the prepared data.
 
+        :param int | None limit:
+        :return: list dictionary of karaoke data
+        :rtype: list[dict[str, Any]]
+        """
+        self._check_access(**kwargs)
+
+        domain = [
+            ('status', '=', 'waiting'),
+            ('worker_id', '=', False),
+        ]
+
+        # Should implement some kind of lock mechanism.
         return request.env["karaoke.karaoke"].sudo()._prepare_data_api(domain, limit=limit)
 
     @route('/karaoke/task/update', type='jsonrpc', auth='public')
     def karaoke_task_update(
         self,
-        task: dict | None = None,
         tasks: list[dict] | None = None,
         **kwargs
     ) -> bool:
+        """
+        Update task with new data specified in ``_update_from_dict``
+
+        :param list[dict[str, Any]] tasks:
+        :rtype: bool
+        """
         worker_sudo = self._check_access(**kwargs)
 
-        if not task and not tasks:
-            raise UserError(_('At least param of `tasks` need to be provided.'))
-        
-        if task is not None:
-            warnings.warn("Deprecated the `task` parameter should be converted to `task`: list[dict] instead.", DeprecationWarning)
-            if tasks:
-                tasks = tasks + [task]
-            else:
-                tasks = [task]
+        if not tasks:
+            raise UserError(_(
+                'At least param of `tasks` need to be provided.'
+            ))
 
         karaoke: KaraokeKaraoke
         try:
-            for _task in tasks:
-                if karaoke := request.env["karaoke.karaoke"].sudo().browse(_task['id']).exists():
-                    karaoke._update_from_dict(**_task)
+            for task in tasks:
+                if karaoke := request.env["karaoke.karaoke"].sudo().browse(task['id']).exists():
+
+                    if karaoke.worker_id != worker_sudo.id:
+                        raise Forbidden()
+
+                    if karaoke.status != 'processing':
+                        raise UserError(_(
+                            "Task is not being processed by this worker."
+                        ))
+
+                    karaoke._update_from_dict(**task)
             return True
+
         except Exception as e:
-            raise UserError(f'Error while updating karaoke model: {e}')
+            _logger.exception(f"Failed to update karaoke tasks. Error: {e}")
+            raise UserError(f'Error while updating karaoke model')
+
+    # -----------------------
+    # Worker endpoint
+    # -----------------------
 
     @route('/karaoke/worker/claim_task', type='jsonrpc', auth='public')
     def karaoke_worker_claim_task(
         self,
         task_ids: list[int],
         **kwargs,
-    ) -> list[dict[str, Any]]:
+    ) -> bool:
+        """
+        Claim tasks to be mark as processing
+
+        :param list[int] task_ids:
+        :rtype: bool
+        """
         worker_sudo = self._check_access(**kwargs)
 
-        if karaokes := request.env["karaoke.karaoke"].sudo().browse(task_ids).exists():
+        if karaokes := request.env[
+            "karaoke.karaoke"
+        ].sudo().browse(task_ids).exists():
+
+            if any(karaokes.filtered(lambda k: k.status != 'waiting' or k.worker_id)):
+                raise UserError(_("Duplicate processed karaoke tasks."))
+
             karaokes.write({
                 "status": "processing",
                 'worker_id': worker_sudo.id
@@ -101,7 +153,15 @@ class KaraokeController(Controller):
         self,
         **kwargs,
     ) -> bool:
+        """
+        Mark worker run state as running
+
+        :rtype: bool
+        """
         worker_sudo = self._check_access(**kwargs)
+
+        if worker_sudo.run_state != 'starting_up':
+            raise UserError(_("Worker is not starting up."))
 
         worker_sudo.write({"run_state": "running"})
         return True
@@ -109,25 +169,28 @@ class KaraokeController(Controller):
     @route('/karaoke/worker/stop', type='jsonrpc', auth='public')
     def karaoke_worker_stop(
         self,
-        log_entries: list[dict],
+        log_entries: list[dict] | None = None,
         **kwargs,
     ) -> bool:
+        """
+        Mark worker run state as finished successfully.
+        calling this api means that worker completely
+        finished the provided notebook, and really shutting down
+        normally.
+
+        :param list[dict] | None log_entries:
+        :rtype: bool
+        """
         worker_sudo = self._check_access(**kwargs)
 
-        if len(log_entries) > 1000:
-            log_entries = log_entries[-1000:]
+        # Only processed last 1000 logs
+        log_entries = (log_entries or [])[-1000:]
 
-        abandoned = 0
-        for karaoke in worker_sudo.karaoke_ids:
-            if karaoke.status == 'processing':
-                karaoke.status = 'waiting'
-                abandoned += 1
-        if abandoned > 0:
-            _logger.debug(f"Abandoning karaoke task, count=({abandoned})")
+        worker_sudo.clear_abandoned_tasks()
 
         worker_sudo.write({
             "run_state": "ready",
-            'karaoke_ids': False,
         })
         worker_sudo.update_log_entries(log_entries)
+
         return True

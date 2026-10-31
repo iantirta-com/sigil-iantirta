@@ -1,4 +1,5 @@
 import json
+import uuid
 from pathlib import Path
 
 from sigil import fields, models
@@ -9,12 +10,13 @@ class GPUWorker(models.Model):
 
     code = fields.Selection(selection_add=[
         ('kaggle', 'Kaggle')
-    ], ondelete={'kaggle': 'set default'})
+    ])
 
-    kaggle_access_token = fields.Char(
-        copy=False,
-        required_if_provider='kaggle',
-    )
+    # Override
+
+    # -----------------------
+    # Abstraction method
+    # -----------------------
 
     def get_worker(self):
         if self.code != 'kaggle':
@@ -22,17 +24,86 @@ class GPUWorker(models.Model):
 
         try:
             from iantirta.media import KaggleWorker
+
         except ModuleNotFoundError:
-            raise ModuleNotFoundError("Cannot Continue as iantirta-media is not installed")
+            raise ModuleNotFoundError(
+                "Cannot Continue as iantirta-media is not installed"
+            )
 
-        return KaggleWorker(access_token=self.kaggle_access_token)
+        return KaggleWorker(
+            access_token=self.access_token
+        )
 
-    def _prepare_folder(self, tmpdir: str, tmp_script_path: Path) -> str:
+    def _process_quota_json(self) -> None:
+        """
+        Process record quota json into
+        ``quota_refresh_time``, ``quota_allowed``, and
+        ``quota_used``.
+
+        It could also be used for any necessary checker when
+        ``quota_json`` is fetched.
+
+        Since different provider api will give different response.
+
+        Kaggle will actually return different types of
+        accelerator quota, 1. GPU, 2. TPU, we're just going to
+        be using the GPU quotas for this.
+        """
         if self.code != 'kaggle':
-            return super()._prepare_folder(tmpdir, tmp_script_path)
+            return super()._process_quota_json()
+
+        self.ensure_one()
+
+        if not self.quota_json:
+            return
+
+        quota = self.quota_json
+        gpu_quota = quota.get('types')[0].get('gpu')
+
+        self.quota_allowed = gpu_quota.get('time_allowed').total_seconds()
+        self.quota_used = gpu_quota.get('time_used').total_seconds()
+        self.quota_refresh_time = quota.get('refresh_time')
+
+    # -----------------------
+    # Worker run helper and abstraction method
+    # -----------------------
+
+    def _prepare_script(self, tmpdir: str, worker_instance) -> tuple[Path, dict]:
+        """
+        Prepare actual script path that would later be
+        sent to the worker instance to run.
+
+        Kaggle expect a notebook, thus we need to prepare
+        necessary data for it.
+
+        :param str tmpdir:
+        :return: tuple of script path, and run parameters.
+        :rtype: tuple[Path, dict]
+        """
+        if self.code != 'kaggle':
+            return super()._prepare_script(tmpdir, worker_instance)
+
+        tmp_script_path = Path(tmpdir) / "worker.ipynb"
+
+        notebook: dict = self.notebook_id.to_metadata_dict()
+        notebook_env_param: dict = {
+            "cell_type": "code",
+            "execution_count": None,
+            "id": str(uuid.uuid4())[:8],
+            "metadata": {},
+            "outputs": [],
+            "source": self._prepare_env_source_code(),
+        }
+        # Append the env param source on first index.
+        notebook["cells"].insert(0, notebook_env_param)
+
+        tmp_script_path.write_text(
+            json.dumps(notebook, indent=1),
+            encoding='utf-8'
+        )
 
         kernel_metadata: dict = {
-            "id": "burninfist/kplus-gpu-worker", # Todo Change it to name?
+            "id": "burninfist/kplus-gpu-worker",  # Todo Change it to name?
             "title": "KPlus GPU Worker",
             "code_file": "worker.ipynb",
             "language": "python",
@@ -47,10 +118,13 @@ class GPUWorker(models.Model):
             "kernel_sources": [],
             "model_sources": []
         }
-        tmp_metadata_path = Path(tmpdir) / "kernel-metadata.json"
-        with open(str(tmp_metadata_path), "w", encoding="utf-8") as f:
-            json.dump(kernel_metadata, f, indent=1)
 
-        # if kaggle it is a folder
-        # if colab it is a file
-        return tmpdir
+        tmp_metadata_path = Path(tmpdir) / "kernel-metadata.json"
+
+        tmp_metadata_path.write_text(
+            json.dumps(kernel_metadata, indent=1),
+            encoding='utf-8'
+        )
+
+        # kaggle expected a folder to be pushed
+        return Path(tmpdir), {}

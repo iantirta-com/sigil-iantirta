@@ -1,6 +1,5 @@
 import base64
 import logging
-import tempfile
 from pathlib import Path
 
 from sigil import SUPERUSER_ID, api, fields, models
@@ -24,38 +23,22 @@ class GPUWorker(models.Model):
 
     code = fields.Selection(selection_add=[
         ('colab', 'Google Colab')
-    ], ondelete={'colab': 'set default'})
+    ])
 
     google_client_secrets = fields.Binary(
         string="Google Client OAuth Credentials as .json",
         store=False,
-        copy=False,
     )
     google_client_secrets_json = fields.Char(
         string="Google Client Secrets",
         compute="_compute_google_client_secrets_json",
         readonly=False,
         store=True,
-        required_if_provider='colab',
-        copy=False,
-    )
-    google_user_token_json = fields.Char(
-        copy=False,
     )
 
-    initial_token = fields.Integer(
-        string='Initial Free CCU Tokens',
-        readonly=True,
-        copy=False,
-    )
-    remaining_tokens = fields.Integer(
-        string='Remaining Free CCU Tokens',
-        readonly=True,
-        copy=False,
-        # compute='_compute_remaining_tokens',
-        store=True,
-    )
-    refill_timestamp = fields.Datetime(string='Next Refill Timestamp', readonly=True, copy=False)
+    # -----------------------
+    # Compute method
+    # -----------------------
 
     @api.onchange('google_client_secrets')
     def _compute_google_client_secrets_json(self):
@@ -70,47 +53,28 @@ class GPUWorker(models.Model):
                     if creds else False
                 )
 
+    # -----------------------
+    # User Action
+    # -----------------------
+
     def action_setup_user_token(self):
+        """
+        Setup user token for google oauth api.
+        """
         self.ensure_one()
         from ..utils.google_utils import setup_user_token
         return setup_user_token(
             self,
-            creds_field='google_user_token_json',
+            creds_field='access_token',
             client_config_field='google_client_secrets_json',
             scopes=_DEFAULT_COLAB_SCOPES,
         )
 
-    # OVERRIDE
-    # @api.depends('quota_json')
-    # def _compute_remaining_tokens(self):
-    #     """get remaining tokens"""
-    #     for record in self:
-    #         if (
-    #             record.code == 'colab'
-    #             and record.quota_json
-    #             and (ccuInfo := record.quota_json.get('freeCcuQuotaInfo'))
-    #         ):
-    #             record.remaining_tokens = ccuInfo.get('remainingTokens')
-    #             if not record.initial_token:
-    #                 record.initial_token = record.remaining_tokens
-    
-    def _check_is_available(self):
-        """To be override with other provider"""
-        if self.code != 'colab':
-            return super()._check_is_available()
+    # Override
 
-        self.ensure_one()
-
-        free_quota = (self.quota_json or {}).get('freeCcuQuotaInfo') or {}
-
-        self.remaining_tokens = free_quota.get('remainingTokens')
-        return self.remaining_tokens is not None and self.remaining_tokens > 0
-
-    def get_worker_name(self) -> str:
-        if self.code != 'colab':
-            return super().get_worker_name()
-    
-        return f'colab_worker:{self.id}'
+    # -----------------------
+    # Abstraction method
+    # -----------------------
 
     def get_worker(self):
         if self.code != 'colab':
@@ -119,101 +83,146 @@ class GPUWorker(models.Model):
         try:
             from iantirta.media import ColabWorker
         except ModuleNotFoundError:
-            raise ModuleNotFoundError("Cannot Continue as iantirta-media is not installed")
+            raise ModuleNotFoundError(
+                "Cannot Continue as iantirta-media is not installed"
+            )
 
-        return ColabWorker(access_token=self.google_user_token_json, name=self.get_worker_name())
+        return ColabWorker(
+            access_token=self.access_token,
+            name=f'{self.code}-worker-{self.id}'
+        )
 
-    def _prepare_folder(self, tmpdir: str, tmp_script_path: Path) -> str:
+    def _process_quota_json(self) -> None:
+        """
+        Process record quota json into
+        ``quota_refresh_time``, ``quota_allowed``, and
+        ``quota_used``.
+
+        It could also be used for any necessary checker when
+        ``quota_json`` is fetched.
+
+        Since different provider api will give different response.
+
+        Colab is returning a response for usage only available when
+        instance/runtime is running, thus we are continuing this on
+        ``worker_run`` method for ``allowed`` field
+        """
         if self.code != 'colab':
-            return super()._prepare_folder(tmpdir, tmp_script_path)
+            return super()._process_quota_json()
 
-        return tmp_script_path
+        self.ensure_one()
 
-    def worker_run(self):
+        if not self.quota_json:
+            return
+
+        quota = self.quota_json
+
+        # Check unsynchronized run state.
+        if (
+            quota.get('assignmentsCount') == 0
+            and self.run_state == 'running'
+        ):
+            self.run_state = 'error'
+
+        # Process
+        if freeQuota := quota.get('freeCcuQuotaInfo'):
+            self.quota_used = (
+                self.quota_allowed - freeQuota.get('remainingTokens')
+                if self.quota_allowed > 0
+                else 0
+            )
+            self.quota_refresh_time = freeQuota.get('nextRefillTimestampSec')
+
+    # -----------------------
+    # Worker run helper and abstraction method
+    # -----------------------
+
+    def _prepare_script(self, tmpdir: str, worker_instance) -> tuple[Path, dict]:
+        """
+        Prepare actual script path that would later be
+        sent to the worker instance to run.
+
+        Colab expected a file directly
+
+        :param str tmpdir:
+        :return: tuple of script path, and run parameters.
+        :rtype: tuple[Path, dict]
+        """
         if self.code != 'colab':
-            return super().worker_run()
+            return super()._prepare_script(tmpdir, worker_instance)
 
-        env_lines: list[str] = self._prepare_env_params()
+        tmp_script_path = Path(tmpdir) / "worker_job.py"
+
+        env_lines: list[str] = self._prepare_env_source_code()
         code_lines: list[str] = self.notebook_id.to_source_code()
         source_code = "".join(env_lines + code_lines)
-        with tempfile.TemporaryDirectory() as tmpdir:
-            tmp_script_path = Path(tmpdir) / "worker_job.py"
 
-            with open(str(tmp_script_path), "w", encoding="utf-8") as f:
-                f.write(source_code)
+        tmp_script_path.write_text(source_code, encoding='utf-8')
 
-            self.run_state = 'starting_up'
+        dbname = self.env.cr.dbname
+        _context = self.env.context
+        worker_id = self.id
 
-            dbname = self.env.cr.dbname
-            _context = self.env.context
-            worker_id = self.id
+        def on_close():
+            """
+            Called when disconnected or close
+            """
+            # Update quota json
+            quotas = None
+
             try:
-                worker = self.get_worker()
-
-                def on_close():
-                    remaining = None
-                    refill_at = None
-
-                    try:
-                        quota = worker.state.client.get_consumption_user_info()
-                    except Exception as e:
-                        _logger.warning(f"Error while getting consumtion info, Error: {e}")
-                        quota = None
-                    
-                    if quota and quota.freeCcuQuotaInfo:
-                        remaining = quota.freeCcuQuotaInfo.remainingTokens
-                        refill_at = quota.freeCcuQuotaInfo.nextRefillTimestampSec
-
-                    elif quota:
-                        remaining = 0
-
-                    with Registry(dbname).cursor() as new_cr:
-                        env = api.Environment(new_cr, SUPERUSER_ID, _context)
-                        if record := env['gpu.worker'].browse(worker_id).exists():
-                            vals = {'run_state': 'ready'}
-                            if remaining is not None:
-                                vals['remaining_tokens'] = remaining
-                            if refill_at is not None:
-                                vals['refill_timestamp'] = refill_at
-
-                            record.write(vals)
-
-                            new_cr.commit()
-
-                            abandoned_tasks = record.karaoke_ids.filtered(
-                                lambda k: k.status == 'processing'
-                            )
-                            if abandoned_tasks:
-                                abandoned_tasks.write({
-                                    'status': 'waiting',
-                                    'worker_id': False
-                                })
-                            _logger.warning("Closed GPU workers and reset %s abandoned tasks.", len(abandoned_tasks))
-
-                            new_cr.commit()
-    
-                worker.run(
-                    str(tmp_script_path),
-                    run_in_background=True,
-                    gpu=True,
-                    on_close_hook=on_close,
+                quotas = worker_instance.get_quota()
+            except Exception as e:
+                _logger.exception(
+                    "Failed to refresh quota after Colab worker shutdown."
                 )
 
-                try:
-                    initial_quota = worker.state.client.get_consumption_user_info()
-                except Exception as e:
-                    _logger.warning(f"Error while getting consumtion info, Error: {e}")
-                    initial_quota = None
-                
-                if initial_quota and initial_quota.freeCcuQuotaInfo:
-                    initial_token = initial_quota.freeCcuQuotaInfo.remainingTokens
-                    self.write({
-                        'initial_token': initial_token,
-                        'remaining_tokens': initial_token,
-                        'refill_timestamp': initial_quota.freeCcuQuotaInfo.nextRefillTimestampSec,
-                    })
-            except Exception as e:
-                if e.__class__.__name__ == 'ColabRequestError':
-                    self.run_state = 'ready'
-                    raise
-                raise
+            with Registry(dbname).cursor() as new_cr:
+                env = api.Environment(new_cr, SUPERUSER_ID, _context)
+
+                if record := env['gpu.worker'].browse(worker_id).exists():
+
+                    # We change the state to ready
+                    # because we are not sure wether its
+                    # colab exhausted session or different connection issues.
+                    vals = {'run_state': 'ready'}
+                    if quotas:
+                        vals['quota_json'] = quotas
+
+                    record.write(vals)
+                    record.clear_abandoned_tasks()
+
+                    new_cr.commit()
+
+                    _logger.warning("GPU Worker %s closed.", worker_id)
+
+        return tmp_script_path, {
+            'run_in_background': True,
+            'gpu': True,
+            'on_close_hook': on_close,
+        }
+
+    def _on_post_worker_run(self, worker_instance):
+        """
+        Hook called after successfully run worker.
+
+        Continuation for ``allowed`` field that colab api
+        response only gives once the runtime is running.
+        """
+        if self.code != 'colab':
+            return super()._on_post_worker_run(worker_instance)
+
+        self.ensure_one()
+
+        quota = None
+        try:
+            quota = worker_instance.state.client.get_consumption_user_info()
+
+        except Exception as e:
+            _logger.warning(f"Error while getting consumtion info, Error: {e}")
+
+        if quota and (freeQuota := quota.freeCcuQuotaInfo):
+            self.write({
+                'quota_allowed': freeQuota.remainingTokens,
+                'quota_refresh_time': freeQuota.nextRefillTimestampSec,
+            })
