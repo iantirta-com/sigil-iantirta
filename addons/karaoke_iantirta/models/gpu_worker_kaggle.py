@@ -1,5 +1,9 @@
+# Part of Iantirta.com
+# See LICENSE file for full copyright and licensing details.
+
 import json
 import uuid
+from datetime import datetime, timedelta
 from pathlib import Path
 
 from sigil import fields, models
@@ -10,7 +14,7 @@ class GPUWorker(models.Model):
 
     code = fields.Selection(selection_add=[
         ('kaggle', 'Kaggle')
-    ])
+    ], ondelete={'kaggle': 'cascade'})
 
     # Override
 
@@ -60,8 +64,35 @@ class GPUWorker(models.Model):
         quota = self.quota_json
         gpu_quota = quota.get('types')[0].get('gpu')
 
-        self.quota_allowed = gpu_quota.get('time_allowed').total_seconds()
-        self.quota_used = gpu_quota.get('time_used').total_seconds()
+        # Convert str(timedelta) back to timedelta
+        for field_name, name in [("quota_allowed", 'time_allowed'), ('quota_used', 'time_used')]:
+            value = gpu_quota.get(name)
+            if isinstance(value, str):
+                terms = value.split(',')
+                if len(terms) == 2:
+                    days, ts = terms
+                    day_num, _ = days.split()
+                elif len(terms) == 1:
+                    ts = terms[0]
+                    day_num = 0
+                ts = ts.strip()
+                try:
+                    dt = datetime.strptime(ts, "%H:%M:%S.%f")
+                    usec = dt.microsecond
+                except ValueError:
+                    dt = datetime.strptime(ts, "%H:%M:%S")
+                    usec = 0
+                value = timedelta(
+                    days=int(day_num),
+                    hours=dt.hour,
+                    minutes=dt.minute,
+                    seconds=dt.second,
+                    microseconds=usec
+                )
+            elif not isinstance(value, timedelta):
+                raise TypeError(f"Value needed to be a timedelta or str but got {type(value)}")
+            self[field_name] = value.total_seconds()
+
         self.quota_refresh_time = quota.get('refresh_time')
 
     # -----------------------

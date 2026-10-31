@@ -2,6 +2,9 @@
 <templates xml:space="preserve">
     <t t-name="karaoke_iantirta.WorkerQuotaField">
         <div class="w-100">
+            <t t-esc="quotaAllowed"/>
+            <t t-esc="quotaRefreshTime"/>
+            <t t-esc="quotaUsed"/>
             <t t-if="isColab">
                 <t t-set="data" t-value="colabQuotaData"/>
 

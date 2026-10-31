@@ -18,46 +18,31 @@
                     <div class="small mb-3 text-muted">Remote compute Configuration</div>
                     <group>
                         <group>
-                            <field name="state" widget='radio'/>
-                        </group>
-                    </group>
-                    <group>
-                        <group>
                             <field name="name"/>
                             <field name="notebook_id"/>
-                            <field invisible='code != "kaggle"' name="kaggle_access_token" password="true"/>
-                            <t invisible="code != 'colab'">
-                                <div class="d-md-flex mt-3">
-                                    <div class="w-md-50 w-lg-25 d-flex flex-column">
-                                        <label for="google_client_secrets" string="Credentials" class="o_form_label"/>
-                                        <span class="text-muted small">
-                                            Client Config Credentials
-                                        </span>
-                                        <field name="google_client_secrets"
-                                            widget="binary"
-                                            class="o_field_binary_hide_download"
-                                            options="{'accepted_file_extensions': '.json'}" />
-                                    </div>
-                                    <div class="w-md-50 w-lg-75 d-flex flex-column my-auto">
-                                        <field name="google_client_secrets_json" widget="text" class="w-100" />
-                                    </div>
+                            <div invisible='code != "colab"' class="d-md-flex mt-3">
+                                <div class="w-md-50 w-lg-25 d-flex flex-column">
+                                    <label for="google_client_secrets" string="Credentials" class="o_form_label"/>
+                                    <span class="text-muted small">
+                                        Client Config Credentials
+                                    </span>
+                                    <field name="google_client_secrets"
+                                        widget="binary"
+                                        class="o_field_binary_hide_download"
+                                        options="{'accepted_file_extensions': '.json'}" />
                                 </div>
-                                <div invisible="not google_client_secrets_json" class="d-md-flex mt-3">
-                                    <div class="w-md-50 w-lg-25  d-flex flex-column">
-                                        <label for="google_user_token_json" string="User Token" class="o_form_label"/>
-                                        <span class="text-muted">
-                                            User specific token.
-                                        </span>
-                                    </div>
-                                    <div class="w-md-50 w-lg-75 d-flex flex-column my-auto">
-                                        <field name="google_user_token_json" widget="text" class="w-100"/>
-                                        <div>
-                                            <button invisible="not google_user_token_json" name="action_setup_user_token" type="object" string="Refresh Token" class="btn btn-secondary h-100"/>
-                                            <button invisible="google_user_token_json" name="action_setup_user_token" type="object" string="Setup User Token" class="btn btn-secondary h-100"/>
-                                        </div>
-                                    </div>
+                                <div class="w-md-50 w-lg-75 d-flex flex-column my-auto">
+                                    <field name="google_client_secrets_json" widget="text" class="w-100" />
                                 </div>
-                            </t>
+                            </div>
+                            <field name="access_token" password="0" invisible="code != 'colab'" widget="text"/>
+                            <field name="access_token" password="1" invisible="code == 'colab'"/>
+                            <div invisible='code != "colab"' class="w-md-50 w-lg-75 d-flex flex-column my-auto">
+                                <div>
+                                    <button invisible="not access_token" name="action_setup_user_token" type="object" string="Refresh Token" class="btn btn-secondary h-100"/>
+                                    <button invisible="access_token" name="action_setup_user_token" type="object" string="Setup User Token" class="btn btn-secondary h-100"/>
+                                </div>
+                            </div>
                         </group>
                         <group>
                             <field name="code"/>
@@ -68,12 +53,11 @@
                         <page string="Quotas">
                             <group>
                                 <group colspan="2">
-                                    <!-- For colab -->
-                                    <field invisible='1' name='initial_token'/>
-                                    <field invisible='1' name='remaining_tokens'/>
-                                    <field invisible='1' name='refill_timestamp'/>
+                                    <field name="quota_used" invisible="1"/>
+                                    <field name="quota_allowed" widget="progressbar" string='Quota Usage' options="{'current_value': 'quota_used', 'max_value': 'quota_allowed'}"/>
+                                    <field string="Next Refill Time" name="quota_refresh_time"/>
 
-                                    <field nolabel='1' name="quota_json" widget="worker_quota"/>
+                                    <!-- <field nolabel='1' name="quota_json" widget="worker_quota"/> -->
                                     <field name="last_heartbeat"/>
                                 </group>
                             </group>
@@ -101,6 +85,7 @@
             </form>
         </field>
     </record>
+
     <record id="gpu_worker_view_tree" model="ir.ui.view">
         <field name="name">gpu.worker.tree</field>
         <field name="model">gpu.worker</field>
@@ -109,8 +94,6 @@
                 <field name="name"/>
                 <field name='code'/>
                 <field name="is_available"/>
-                <field name='state' widget='badge'
-                    decoration-success='state == "enabled"'/>
                 <field name='run_state' widget="badge"
                     decoration-success="run_state == 'ready'"
                     decoration-info="run_state == 'running'"

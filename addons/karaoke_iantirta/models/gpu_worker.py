@@ -1,3 +1,6 @@
+# Part of Iantirta.com
+# See LICENSE file for full copyright and licensing details.
+
 import base64
 import logging
 import re
@@ -9,6 +12,7 @@ from typing import TYPE_CHECKING
 from sigil.addons.karaoke_iantirta import utils as karaoke_utils
 
 from sigil import _, api, fields, models
+from sigil.exceptions import UserError
 
 if TYPE_CHECKING:
     from .storage_drive import CloudStorage
@@ -52,7 +56,6 @@ class GPUWorker(models.Model):
 
     access_token = fields.Char(
         copy=False,
-        required=True,
     )
 
     # Logging and debug
@@ -221,7 +224,8 @@ class GPUWorker(models.Model):
         self.ensure_one()
 
         return bool(
-            self.run_state == 'ready'
+            self.access_token
+            and self.run_state == 'ready'
             and self.quota_json
             and self.quota_used < self.quota_allowed
         )
@@ -343,7 +347,7 @@ class GPUWorker(models.Model):
 
         :param Exception e:
         """
-        raise
+        raise e
 
     # -----------------------
     # Actionable Method
@@ -467,6 +471,8 @@ class GPUWorker(models.Model):
     # -----------------------
 
     def action_get_quotas(self):
+        if not self.access_token:
+            raise UserError(_("Access token is needed to fetch worker quota"))
         self.get_quotas()
         return {
             'type': 'ir.actions.client',
@@ -487,6 +493,8 @@ class GPUWorker(models.Model):
         """
         Run worker.
         """
+        if not self.access_token:
+            raise UserError(_("Access token is needed to run worker"))
         params = {
             'message': _('Successfully Run worker.'),
             'type': 'success',

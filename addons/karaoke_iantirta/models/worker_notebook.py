@@ -1,16 +1,10 @@
-import json
-import logging
-import shutil
-import tempfile
+# Part of Iantirta.com
+# See LICENSE file for full copyright and licensing details.
+
 import uuid
-from pathlib import Path
+from typing import Any
 
-from sigil.addons.karaoke_iantirta import utils as karaoke_utils
-
-from sigil import _, api, fields, models
-from sigil.exceptions import UserError
-
-_logger = logging.getLogger(__name__)
+from sigil import fields, models
 
 
 class WorkerNotebook(models.Model):
@@ -24,9 +18,22 @@ class WorkerNotebook(models.Model):
     language = fields.Selection([("python", "Python")], default="python")
 
     def to_source_code(self) -> list[str]:
+        """
+        Method to convert source code str into list[str] of source code.
+
+        :return: list of string of source code
+        :rtype: list[str]
+        """
+        self.ensure_one()
         return [f"{line}\n" for line in (self.code or "").splitlines()]
 
-    def to_metadata_dict(self) -> dict:
+    def to_metadata_dict(self) -> dict[str, Any]:
+        """
+        Method to convert source code into a notebook .ipynb metadata.
+
+        :return: dictonary metadata for notebook
+        :rtype: dict[str, Any]
+        """
         self.ensure_one()
         return {
             "cells": [

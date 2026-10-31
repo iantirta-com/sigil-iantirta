@@ -1,3 +1,5 @@
+# Part of Iantirta.com
+# See LICENSE file for full copyright and licensing details.
 
 from sigil.http import Controller, request, route
 
@@ -5,6 +7,11 @@ from sigil.http import Controller, request, route
 class GoogleOauthController(Controller):
     @route("/google_oauth/callback", type="http", auth="user")
     def google_oauth_callback(self, error: str | None = None, **kwargs):
+        """
+        Redirect callback used for google oauth ``redirect_uri``.
+        
+        :param str | None error:
+        """
         if error:
             return request.make_response(f"Authentication failed: {error}")
 

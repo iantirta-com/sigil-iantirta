@@ -24,6 +24,16 @@ class WorkerQuotaField extends Component {
         console.log("Setup is colab", this.isColab, this.colabQuotaData);
     }
 
+    get quotaAllowed() {
+        return this.props.record.data['quota_allowed']
+    }
+    get quotaUsed() {
+        return this.props.record.data['quota_used']
+    }
+    get quotaRefreshTime() {
+        return this.props.record.data['quota_refresh_time']
+    }
+
     get colabQuotaData() {
         if (!this.isColab) return;
         const quota = this.quota || {};

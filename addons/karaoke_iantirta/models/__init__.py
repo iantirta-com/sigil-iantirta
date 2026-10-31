@@ -1,3 +1,5 @@
+# Part of Iantirta.com
+# See LICENSE file for full copyright and licensing details.
 
 from . import karaoke_karaoke
 from . import gpu_worker

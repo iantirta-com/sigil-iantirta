@@ -1,17 +1,20 @@
+# Part of Iantirta.com
+# See LICENSE file for full copyright and licensing details.
+
 import logging
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from werkzeug.exceptions import Forbidden
 
 from sigil import _
-from sigil.exceptions import ValidationError, UserError
+from sigil.exceptions import UserError, ValidationError
 from sigil.http import Controller, request, route
 
 from .. import utils as karaoke_utils
 
 if TYPE_CHECKING:
-    from ..models.karaoke_karaoke import KaraokeKaraoke
     from ..models.gpu_worker import GPUWorker
+    from ..models.karaoke_karaoke import KaraokeKaraoke
 
 
 _logger = logging.getLogger(__name__)
@@ -112,9 +115,9 @@ class KaraokeController(Controller):
                     karaoke._update_from_dict(**task)
             return True
 
-        except Exception as e:
-            _logger.exception(f"Failed to update karaoke tasks. Error: {e}")
-            raise UserError(f'Error while updating karaoke model')
+        except Exception:
+            _logger.exception("Failed to update karaoke tasks")
+            raise UserError('Error while updating karaoke model')
 
     # -----------------------
     # Worker endpoint

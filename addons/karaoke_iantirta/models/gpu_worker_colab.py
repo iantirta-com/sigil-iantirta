@@ -1,3 +1,6 @@
+# Part of Iantirta.com
+# See LICENSE file for full copyright and licensing details.
+
 import base64
 import logging
 from pathlib import Path
@@ -23,7 +26,7 @@ class GPUWorker(models.Model):
 
     code = fields.Selection(selection_add=[
         ('colab', 'Google Colab')
-    ])
+    ], ondelete={'colab': 'cascade'})
 
     google_client_secrets = fields.Binary(
         string="Google Client OAuth Credentials as .json",

@@ -59,7 +59,6 @@
                         <group colspan="2">
                             <field name="source_url" widget="url" readonly="id != False"/>
                             <field name="karaoke_type"/>
-                            <field name="download_url" widget="url"/>
                             <field name="download_uris" widget="karaoke_download_uris"/>
                         </group>
                     </group>
@@ -156,7 +155,7 @@
         <field name="arch" type="xml">
             <list string="Karaoke Task" duplicate="false" js_class="karaoke_list_view">
                 <!-- Required for js -->
-                <field name='download_uris' invisible='1'/>
+                <field name='download_uris' invisible='true'/>
                 <field name="title"/>
                 <field name="artist"/>
                 <field name="karaoke_type" widget="badge"/>

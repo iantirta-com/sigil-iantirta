@@ -1,4 +1,7 @@
-from sigil import api, fields, models
+# Part of Iantirta.com
+# See LICENSE file for full copyright and licensing details.
+
+from sigil import fields, models
 
 
 class GpuWorkerLog(models.Model):
@@ -17,4 +20,3 @@ class GpuWorkerLog(models.Model):
     line = fields.Char(required=True)
 
     worker_id = fields.Many2one('gpu.worker', string='Worker', required=True, ondelete='cascade')
-    

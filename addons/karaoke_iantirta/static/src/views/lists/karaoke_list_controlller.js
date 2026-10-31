@@ -10,7 +10,6 @@ export class KaraokeListController extends ListController {
     setup() {
         super.setup();
         this.isKaraokeDownloadsEnable = true;
-        console.log(this);
         this.KaraokeDownloads = useKaraokeDownloads(this.env, this.model);
     }
 

@@ -1,5 +1,8 @@
+# Part of Iantirta.com
+# See LICENSE file for full copyright and licensing details.
 
-from sigil import fields, models, api
+from sigil import _, api, fields, models
+from sigil.exceptions import UserError
 
 
 class CloudStorage(models.Model):
@@ -7,22 +10,33 @@ class CloudStorage(models.Model):
 
     code = fields.Selection(selection_add=[
         ('hf_dataset', 'Huggingface Dataset')
-    ], ondelete={'hf_dataset': 'set default'})
+    ], ondelete={'hf_dataset': 'cascade'})
 
     hf_repo_id = fields.Char(
-        required_if_provider='hf_dataset',
         copy=False,
     )
-    hf_access_token = fields.Char(
-        required_if_provider='hf_dataset',
-        copy=False,
-    )
+
+    # -----------------------
+    # Compute method
+    # -----------------------
 
     @api.depends('hf_repo_id')
     def _compute_storage_endpoint(self):
         super()._compute_storage_endpoint()
 
-    def _get_storage_endpoint(self):
+    # Override
+
+    # -----------------------
+    # Abstraction method
+    # -----------------------
+
+    def _get_storage_endpoint(self) -> str:
+        """
+        Download endpoint for storage endpoint.
+
+        :return: url string for the base domain download endpoint.
+        :rtype: str
+        """
         if self.code != 'hf_dataset':
             return super()._get_storage_endpoint()
 
@@ -33,50 +47,59 @@ class CloudStorage(models.Model):
             '/resolve/main/'
         )
 
-    def action_test_connection(self):
+    # -----------------------
+    # Worker run helper and abstraction method
+    # -----------------------
+
+    def _prepare_notebook_params(self) -> dict:
+        """
+        Prepare necessary storage options that will be pass
+        along env source code worker run.
+
+        In hf dataset, we need repo_id.
+
+        :return: dictionary data
+        :rtype: dict[str, Any]
+        """
+        params = super()._prepare_notebook_params()
+
         if self.code != 'hf_dataset':
-            return super().action_test_connection()
+            return params
+
+        if not self.hf_repo_id:
+            raise UserError(_("hf repo id is required."))
+
+        return {
+            **params,
+            'repo_id': self.hf_repo_id,
+        }
+
+    # -----------------------
+    # Actionable Method
+    # -----------------------
+
+    def test_connection(self):
+        """
+        Actually test connection to the storage api.
+
+        Provider should override this method.
+        """
+        if self.code != 'hf_dataset':
+            return super().test_connection()
+
+        if not self.hf_repo_id:
+            raise UserError(_("hf repo id is required."))
 
         self.ensure_one()
+
         try:
             from iantirta.media import HFDatasetStorage
         except ModuleNotFoundError:
-            raise ModuleNotFoundError("Cannot Continue as iantirta-media is not installed")
+            raise ModuleNotFoundError(
+                "Cannot Continue as iantirta-media is not installed"
+            )
 
-        api = HFDatasetStorage(
-            access_token=self.hf_access_token,
+        return HFDatasetStorage(
+            access_token=self.access_token,
             repo_id=self.hf_repo_id,
-        )
-        try:
-            api.test_connection()
-            return {
-                'type': 'ir.actions.client',
-                'tag': 'display_notification',
-                'params': {
-                    'message': 'Huggingface connection success.',
-                    'type': 'success',
-                    'sticky': False,
-                }
-            }
-        except Exception as e:
-            self.state = 'disabled'
-            return {
-                'type': 'ir.actions.client',
-                'tag': 'display_notification',
-                'params': {
-                    'title': 'Error',
-                    'message': f'Huggingface connection failed: {e}.',
-                    'type': 'error',
-                    'sticky': False,
-                }
-            }
-
-    def _prepare_notebook_params(self) -> dict:
-        if self.code != 'hf_dataset':
-            return super()._prepare_notebook_params()
-
-        return {
-            'provider': self.code,
-            'access_token': self.hf_access_token,
-            'repo_id': self.hf_repo_id,
-        }
+        ).test_connection()
