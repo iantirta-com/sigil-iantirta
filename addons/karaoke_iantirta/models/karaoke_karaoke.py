@@ -318,6 +318,7 @@ class KaraokeKaraoke(models.Model):
         else:
             raise UserError(_("karaoke id not found in the database"))
 
+    @api.model
     def client_post_tasks(self, tasks: list[dict[str, Any]]) -> None:
         """
         This method is called by client worker to help ``write`` method
