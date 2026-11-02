@@ -318,6 +318,41 @@ class KaraokeKaraoke(models.Model):
         else:
             raise UserError(_("karaoke id not found in the database"))
 
+    def client_post_tasks(self, tasks: list[dict[str, Any]]) -> None:
+        """
+        This method is called by client worker to help ``write`` method
+        on a multiple task at once.
+
+        :param list[dict[str, Any]] tasks:
+        """
+        if not tasks:
+            return
+
+        self.check_access('write')
+
+        task_ids = [task.get('id') for task in tasks]
+
+        if any(not isinstance(task_id, int) or task_id <= 0 for task_id in task_ids):
+            raise UserError(_("Invalid karaoke task ID."))
+
+        if len(task_ids) != len(set(task_ids)):
+            raise UserError(_("Duplicate karaoke task IDs are not allowed."))
+
+        records = self.browse(task_ids).exists()
+
+        if len(records) != len(task_ids):
+            raise UserError(_("One or more karaoke tasks do not exist."))
+
+        records.check_access('write')
+
+        records_by_id = {record.id: record for record in records}
+
+        for task in tasks:
+            karaoke = records_by_id[task['id']]
+
+            # TODO: Verify that this task belongs to the authenticated user.
+            karaoke._update_from_dict(**task)
+
     def refetch_info(self):
         """
         Actually refetch song information.
