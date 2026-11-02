@@ -280,7 +280,7 @@ class KaraokeKaraoke(models.Model):
 
         :param dict[str, Any] data:
         """
-        valid_fields = set({
+        valid_fields = {
             'title',
             'artist',
             'duration',
@@ -290,12 +290,12 @@ class KaraokeKaraoke(models.Model):
             'status',
             'error_entries',
             'log_entries'
-        })
+        }
         if not (karaoke_id := data.pop("id", None)):
             raise UserError(_('Method update_from_dict require karaoke id to be passed'))
 
         if karaoke := self.sudo().browse(karaoke_id).exists():
-            error_entries = data.pop("error_entries", [])
+            error_entries = data.pop("error_entries", None) or []
 
             # Success only if not error_entries
             # And download_uris exists.
