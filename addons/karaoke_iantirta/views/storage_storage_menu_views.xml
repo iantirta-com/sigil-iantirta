@@ -7,14 +7,13 @@
         <field name="arch" type="xml">
             <form string="Cloud Storage">
                 <header>
-                    <button name="action_test_connection" type="object" string="Test Connection" invisible='state == "disabled"'/>
+                    <button name="action_test_connection" type="object" string="Test Connection"/>
                 </header>
                 <sheet>
                     <group>
                         <group>
                             <field name="name" placeholder="e.g. My Personal Storage"/>
                             <field name='code'/>
-                            <field name="state" widget="radio"/>
                             <field name='storage_endpoint'/>
                         </group>
                     </group>
@@ -22,62 +21,49 @@
                     <notebook>
                         <page string="Configuration">
                             <group name="provider_settings">
-                                <group colspan='2' invisible='code != "gdrive"'>
-                                    <div class="d-flex">
-                                        <div class="col-7 col-sm-6 col-lg-3 d-flex flex-column">
-                                            <span class="o_form_label">
-                                                Drive Root Folder ID
-                                            </span>
-                                            <span class="text-muted small">
-                                                Root folder destination.
-                                            </span>
-                                        </div>
-                                        <field name="gdrive_root_folder_id" class="w-100 h-100 my-auto"/>
-                                    </div>
-                                    <div class="d-md-flex mt-3">
+                                <group colspan="2">
+                                    <field invisible='code != "gdrive"' name="gdrive_root_folder_id" class="w-100 h-100 my-auto"/>
+                                    <field invisible='code != "hf_dataset"' name='hf_repo_id'/>
+                                    <div invisible='code != "gdrive"' class="d-md-flex mt-3">
                                         <div class="w-md-50 w-lg-25 d-flex flex-column">
-                                            <label for="gdrive_credentials" string="Credentials" class="o_form_label"/>
+                                            <label for="google_client_secrets" string="Credentials" class="o_form_label"/>
                                             <span class="text-muted small">
                                                 Client Config Credentials
                                             </span>
-                                            <field name="gdrive_credentials"
+                                            <field name="google_client_secrets"
                                                 widget="binary"
                                                 class="o_field_binary_hide_download"
                                                 options="{'accepted_file_extensions': '.json'}" />
                                         </div>
                                         <div class="w-md-50 w-lg-75 d-flex flex-column my-auto">
-                                            <field name="gdrive_client_config" widget="text" class="w-100" />
+                                            <field name="google_client_secrets_json" widget="text" class="w-100" />
                                         </div>
                                     </div>
-                                    <div invisible="not gdrive_client_config" class="d-md-flex mt-3">
-                                        <div class="w-md-50 w-lg-25  d-flex flex-column">
-                                            <label for="gdrive_access_token_json" string="User Token" class="o_form_label"/>
-                                            <span class="text-muted">
-                                                User specific token.
-                                            </span>
-                                        </div>
-                                        <div class="w-md-50 w-lg-75 d-flex flex-column my-auto">
-                                            <field name="gdrive_access_token_json" widget="text" class="w-100"/>
-                                            <div>
-                                                <button invisible="not gdrive_access_token_json" name="action_setup_user_token" type="object" string="Refresh Token" class="btn btn-secondary h-100"/>
-                                                <button invisible="gdrive_access_token_json" name="action_setup_user_token" type="object" string="Setup User Token" class="btn btn-secondary h-100"/>
-                                            </div>
+                                    <field name="access_token" password="0" invisible="code != 'gdrive'" widget="text"/>
+                                    <field name="access_token" password="1" invisible="code == 'gdrive'"/>
+                                    <div invisible='code != "gdrive"' class="w-md-50 w-lg-75 d-flex flex-column my-auto">
+                                        <div>
+                                            <button invisible="not access_token" name="action_setup_user_token" type="object" string="Refresh Token" class="btn btn-secondary h-100"/>
+                                            <button invisible="access_token" name="action_setup_user_token" type="object" string="Setup User Token" class="btn btn-secondary h-100"/>
                                         </div>
                                     </div>
-                                </group>
-                                <group colspan='2' invisible='code != "hf_dataset"'>
-                                    <group>
-                                        <field name='hf_repo_id'/>
-                                        <field name='hf_access_token' password="true"/>
-                                    </group>
                                 </group>
                             </group>
                         </page>
                     </notebook>
-                    
-                    
                 </sheet>
             </form>
+        </field>
+    </record>
+
+    <record id="view_cloud_storage_tree" model="ir.ui.view">
+        <field name="name">cloud.storage.tree</field>
+        <field name="model">iantirta.cloud.storage</field>
+        <field name="arch" type="xml">
+            <list string="Cloud Storage">
+                <field name="name"/>
+                <field name='code'/>
+            </list>
         </field>
     </record>
 

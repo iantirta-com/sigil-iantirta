@@ -1,10 +1,12 @@
+# Part of Iantirta.com
+# See LICENSE file for full copyright and licensing details.
+
 import logging
-import os
 import traceback
+from typing import Any
 
 from sigil import _, api, fields, models
 from sigil.exceptions import UserError
-from sigil.tools import config
 
 from ..utils import (
     LyricMetadata,
@@ -12,7 +14,6 @@ from ..utils import (
     extract_video_info,
     get_lyric,
     merge_log,
-    netsvc,
 )
 
 _logger = logging.getLogger(__name__)
@@ -52,218 +53,241 @@ class KaraokeKaraoke(models.Model):
 
     # Extracted Information.
     title = fields.Char(readonly=True,)
-    artist = fields.Char(readonly=True,)
+    artist = fields.Char(readonly=True, index=True)
     duration = fields.Float(readonly=True,)
     thumbnail_url = fields.Char(
         default="https://via.placeholder.com/320x180/1C1B1F/FFFFFF?text=No+Thumbnail"
     )
     lyric = fields.Text()
 
-    # Karaoke Generated Attributes
-    download_url = fields.Char(readonly=True)
-    drive_folder_id = fields.Char(readonly=True)
-    drive_file_id = fields.Char(readonly=True) # Can be used for preview video
-
     download_uris = fields.Json(readonly=True)
 
-    # Debugging
+    # Logging and debug
     error_entries = fields.Json(readonly=True)
     log_entries = fields.Json(readonly=True)
     note = fields.Text('Notes')
 
-    @api.depends('title')
-    def _compute_display_name(self):
-        super()._compute_display_name()
-        for karaoke in self:
-            if isinstance(karaoke.display_name, str) and len(karaoke.display_name) > 20:
-                karaoke.display_name = f"{karaoke.display_name[:20]}(...)"
+    # -----------------------
+    # Cron method
+    # -----------------------
 
     @api.model
     def _cron_extract_info_karaoke(self, batch_size=50):
-        """Extract info from source url.
+        """
+        Cron action that is not actually a scheduled, we mock this as to make it
+        not running on the main thread.
+
+        But there still error where VM not having enough memory/RAM to run script.
+        especially since this is connected to yt-dlp, and its javascript code using
+        either deno or node will use much more memory.
 
         Extracting concurrently or many many at a times
         can sometimes be a heavy process, since it require network
         and wait time.
-        """
-        to_extracts = self.search([('extraction_status', '=', 'need_extraction')])
-        
-        if not to_extracts:
-            _logger.debug('No karaoke task to extract, returning...')
-            return
-
-        commit_progress = self.env['ir.cron']._commit_progress
-        commit_progress(remaining=len(to_extracts))
-        
-        for karaoke in to_extracts[:batch_size]:
-            karaoke = karaoke.try_lock_for_update().filtered(lambda d: d.extraction_status == 'need_extraction')
-
-            if not karaoke:
-                continue
-
-            try:
-                karaoke._extract_video_info()
-                
-                _logger.debug(
-                    'Karaoke id(%s) information fetched.', karaoke.id
+        """        
+        if to_extracts := self.search([('extraction_status', '=', 'need_extraction')]):
+            commit_progress = self.env['ir.cron']._commit_progress
+            commit_progress(remaining=len(to_extracts))
+            
+            for karaoke in to_extracts[:batch_size]:
+                karaoke = karaoke.try_lock_for_update().filtered(
+                    lambda d: d.extraction_status == 'need_extraction'
                 )
 
-                if karaoke.karaoke_type == "plus":
-                    karaoke._extract_lyrics()
-                    _logger.debug(
-                        'Karaoke id(%s) lyrics fetched.', karaoke.id
-                    )
-
-                karaoke.extraction_status = 'extraction_success'
-                commit_progress(1)
-
-            except Exception as e:
-                self.env.cr.rollback()
-                _logger.error(
-                    'Karaoke id(%s) information cannot be fetched. Error: %s',
-                    karaoke.id, e
-                )
-                karaoke.error_entries = merge_log([('cron_extract_info_karaoke', str(type(e)), str(e), traceback.format_exc())], karaoke.error_entries)
-                karaoke.extraction_status = "extraction_failed"
-                # commit and progress even when failed
-                if commit_progress(1):
+                if not karaoke:
                     continue
-                else:
-                    break
+
+                try:
+                    karaoke._fetch_info()
+                    karaoke.extraction_status = 'extraction_success'
+                    commit_progress(1)
+
+                except Exception as e:
+                    self.env.cr.rollback()
+                    _logger.error(
+                        'Karaoke id(%s) information cannot be fetched. Error: %s',
+                        karaoke.id, e
+                    )
+                    karaoke.error_entries = merge_log([('cron_extract_info_karaoke', str(type(e)), str(e), traceback.format_exc())], karaoke.error_entries)
+                    karaoke.extraction_status = "extraction_failed"
+                    # commit and progress even when failed
+                    # Break if remaining time is less or equal 40s.
+                    if commit_progress(1) > 40:
+                        continue
+                    else:
+                        break
+
+    # -----------------------
+    # Crud Method
+    # -----------------------
 
     @api.model_create_multi
     def create(self, vals_list):
-        """ On Karaoke creation, well use a new threading env.
-            To extract necessary information such as title,
-            artist, duration, lyrics
+        """
+        On Karaoke Creation. we also wanted to trigger
+        fetching info cron.
         """
         karaokes: KaraokeKaraoke = super().create(vals_list)
 
-        karaokes.extract_info()
+        karaokes.refetch_info()
 
         return karaokes
 
-    @api.model
-    def get_cookiepath(self):
-        #TODO: Rotate cookiefile and populate cookiefile
-        return os.path.join(config['data_dir'], "cookies.txt")
+    # -----------------------
+    # Actionable Method
+    # -----------------------
 
-    def _flush_logger_hook(self, logger):
-        if hasattr(logger, 'task_log_buffer') and logger.task_log_buffer:
-            self.log_entries = merge_log(self.log_entries, logger.task_log_buffer)
-            logger.task_log_buffer = []
-            # We're commiting instead of rollback from when using cron.
-            # Log output should be commited.
-            self.env.cr.commit()
-            netsvc.reset_logger()
-    
-    def _make_logger(self):
-        """ Will make the current karaoke task logger with implementation of
-        logger hook from iantirta.media.
+    def _fetch_lyric_info(self):
         """
-        self.ensure_one()
-        logger = logging.getLogger(f"iantirta.karaoke.Task({self.id!s})")
-        logger.setLevel(logging.DEBUG)
+        Method that will make api call for song lyric information
+        Extraction.
 
-        if not hasattr(logger, 'add_hook'):
-            netsvc.setup_logger('iantirta')
+        Song lyric metadata also have artist, title, and sometimes much
+        more accurate than video info.
 
-        # Custom logger buffer
-        if not hasattr(logger, 'task_log_buffer'):
-            logger.task_log_buffer = []
-
-            def _store_log_entries(record):
-                msg = netsvc.formatLogMessage(record)
-                logger.task_log_buffer.append(msg)
-
-            logger.add_hook(_store_log_entries)
-
-        return logger
-
-    # Extraction Method
-    def _extract_lyrics(self):
-        """ Extract One Lyric
+        Will not fetch if needed fields already defined unless erased.
         """
         self.ensure_one()
 
-        task_logger = self._make_logger()
-        try:
-            metadata: LyricMetadata = get_lyric(
-                self.title,
-                self.artist,
-                self.duration,
-                logger=task_logger,
-            )
+        if not self.title or not self.artist or not self.duration:
+            raise UserError(_("Fetching lyric info should be after title, artist, and duration defined."))
 
-        except:
-            self._flush_logger_hook(task_logger)
-            raise
+        # Will not fetch if lyric already defined
+        if self.lyric:
+            return
 
-        self.write({
-            'title': metadata.trackName,
-            'artist': metadata.artistName,
-            "lyric": metadata.plainLyrics
-        })
+        metadata: LyricMetadata = get_lyric(
+            self.title,
+            self.artist,
+            self.duration,
+        )
+
+        # Will override title, and artist information.
+        self.title = metadata.trackName
+        self.artist = metadata.artistName
+        self.lyric = metadata.plainLyrics
 
         del metadata
 
-        return self
+    def _fetch_video_info(self):
+        """
+        Method that will make api call for song video information
+        Extraction.
 
-    def _extract_video_info(self):
-        """ Extract One Indo
+        Will not fetch if needed fields already defined unless erased.
         """
         self.ensure_one()
+
+        if self.title and self.artist and self.duration and self.thumbnail_url:
+            return
 
         metadata: VideoMetadata = extract_video_info(self.source_url)
-        self.write({
-            "title": metadata.title,
-            "artist": metadata.resolved_artist,
-            "duration": metadata.duration,
-            "thumbnail_url": metadata.thumbnail,
-        })
+
+        # Avoid unnecessary ORM
+        # And will only update if not already defined.
+
+        if not self.title:
+            self.title = metadata.title
+
+        if not self.artist:
+            self.artist = metadata.resolved_artist
+
+        if not self.duration:
+            self.duration = metadata.duration
+
+        if not self.thumbnail_url:
+            self.thumbnail_url = metadata.thumbnail_url
+
         del metadata
 
-        return self
-
-    def extract_info(self):
-        """ Full Extraction multiple records
+    def _fetch_info(self):
         """
-        self.write({'extraction_status': 'need_extraction'})
+        Method that will make api call for both song and lyric inforation.
+        Routed by field ``karaoke_type``
 
-        if cron := self.env.ref('karaoke_iantirta.ir_cron_extract_info_karaoke'):
-            cron._trigger()
+        Will not fetch if needed fields already defined unless erased.
+        """
+        self.ensure_one()
 
-        _logger.debug('Running extract karaoke cron %s', cron.name)
-        return self
+        _last_error = None
 
-    # Api Data Processing
-    def _prepare_data_api(self, domain: list[tuple], *, limit: int | None = None) -> list[dict]:
-        """ Prepare data for api usage
+        try:
+            self._fetch_video_info()
+            _logger.debug(
+                'Karaoke id(%s) information fetched.', self.id
+            )
+        except Exception as e:
+            _logger.exception(
+                'Karaoke id(%s) information cannot be fetched.',
+                self.id
+            )
+            _last_error = e
+
+        # Only fetch lyrics only if no error
+        # type is ``plus`` and necesssary fields exists.
+        if (
+            _last_error is None
+            and self.karaoke_type == 'plus'
+            and self.title
+            and self.artist
+            and self.duration
+        ):
+            try:
+                self._fetch_lyric_info()
+                _logger.debug(
+                    'Karaoke id(%s) lyric fetched.', self.id
+                )
+            except Exception as e:
+                _logger.exception(
+                    'Karaoke id(%s) Lyric cannot be fetched.',
+                    self.id
+                )
+                _last_error = e
+
+        if _last_error is not None:
+            raise _last_error
+
+    def _prepare_data_api(self, domain: list[tuple], *, limit: int | None = None) -> list[dict[str, Any]]:
+        """
+        Called by controllers to send necessary data for processing. 
+        
+        Any data given by this should be common and general usage only.
+
+        :param DomainType domain:
+        :param int | None limit:
+        :return: list dictionary of karaoke data
+        :rtype: list[dict[str, Any]]
         """
         karaokes = self.sudo().search(domain, limit=limit)
-        return [{
-            "id": karaoke.id,
-            "title": karaoke.title,
-            "artist": karaoke.artist,
-            "duration": karaoke.duration,
-            "lyric": karaoke.lyric,
-            "status": karaoke.status,
-            "source": karaoke.source_url,
-            "karaoke_type": karaoke.karaoke_type,
-        } for karaoke in karaokes]
-
-    def _update_from_dict(self, **data) -> None:
-        valid_values = [
+        valid_fields = [
+            'id',
             'title',
             'artist',
-            'thumbnail',
+            'duration',
+            'lyric',
+            'status',
+            'source_url',
+            'karaoke_type',
+        ]
+        return [{field: karaoke[field] for field in valid_fields} for karaoke in karaokes]
 
-            "download_url",
-            "drive_folder_id",
-            "drive_file_id",
+    def _update_from_dict(self, **data) -> None:
+        """
+        Called by controllers to update necessary data after processing. 
+        
+        Any data given by controller should be filtered according whats needed
+        and valid fields..
 
+        :param dict[str, Any] data:
+        """
+        valid_fields = [
+            'title',
+            'artist',
+            'duration',
+            'thumbnail_url',
+            'lyric',
             'download_uris',
-
+            'status',
             'log_entries',
             "error_entries",
         ]
@@ -271,29 +295,57 @@ class KaraokeKaraoke(models.Model):
             raise UserError(_('Method update_from_dict require karaoke id to be passed'))
 
         if karaoke := self.sudo().browse(karaoke_id).exists():
-            valid_data = {k: v for k, v in data.items() if k in valid_values}
-            error_entries = valid_data.pop("error_entries", [])
+            error_entries = data.pop("error_entries", [])
 
-            if thumbnail_url := valid_data.pop('thumbnail', None):
-                valid_data['thumbnail_url'] = thumbnail_url
+            # Success only if not error_entries
+            # And download_uris exists.
+            if not error_entries and data.get('download_uris'):
+                data['status'] = 'completed'
 
-            if not error_entries and (valid_data.get('download_url') or valid_data.get('download_uris')):
-                valid_data['status'] = 'completed'
             else:
-                valid_data['status'] = 'failed'
-                valid_data['error_entries'] = merge_log(error_entries, karaoke.error_entries)
+                data['status'] = 'failed'
+                data['error_entries'] = merge_log(error_entries, karaoke.error_entries)
 
-            if valid_data.get('log_entries'):
-                valid_data['log_entries'] = merge_log(karaoke.log_entries, valid_data['log_entries'])
+            if log_entries := data.get('log_entries'):
+                data['log_entries'] = merge_log(karaoke.log_entries, log_entries)
 
-            karaoke.write(valid_data)
+            karaoke.write({field: data[field] for field in valid_fields})
 
         else:
             raise UserError(_("karaoke id not found in the database"))
 
-    # Action
+    def refetch_info(self):
+        """
+        Actually refetch song information.
+        
+        This is posting job only to cron.
+        """
+        self.write({'extraction_status': 'need_extraction'})
+
+        if cron := self.env.ref('karaoke_iantirta.ir_cron_extract_info_karaoke'):
+            cron._trigger()
+
+        _logger.debug('Running extract karaoke cron %s', cron.name)
+
+    def reset_status(self):
+        """
+        Reset karaoke status
+        """
+        self.write({
+            "status": "waiting",
+            "log_entries": False,
+            "error_entries": False,
+        })
+
+    # -----------------------
+    # User Action
+    # -----------------------
+
     def action_refetch_info(self):
-        self.extract_info()
+        """
+        Method action to refetch info.
+        """
+        self.refetch_info()
         message = _("Posting refetch info %s task(s) to cron job.") % len(self)
         return {
             'type': 'ir.actions.client',
@@ -308,11 +360,10 @@ class KaraokeKaraoke(models.Model):
         }
 
     def action_reset_status(self):
-        self.write({
-            "status": "waiting",
-            "log_entries": False,
-            "error_entries": False,
-        })
+        """
+        Method action to reset karaoke status.
+        """
+        self.reset_status()
         message = _("Successfully reset %s task(s).") % len(self)
         return {
             'type': 'ir.actions.client',

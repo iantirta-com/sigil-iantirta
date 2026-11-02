@@ -1,4 +1,5 @@
+# Part of Iantirta.com
+# See LICENSE file for full copyright and licensing details.
 
 from . import main
-from . import drive
 from . import google
