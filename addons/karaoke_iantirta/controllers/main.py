@@ -8,6 +8,7 @@ from werkzeug.exceptions import Forbidden
 
 from sigil import _
 from sigil.exceptions import UserError, ValidationError
+from sigil.fields import Domain
 from sigil.http import Controller, request, route
 
 from .. import utils as karaoke_utils
@@ -59,6 +60,7 @@ class KaraokeController(Controller):
     @route('/karaoke/tasks/get', type='jsonrpc', auth='public')
     def karaoke_tasks_get(
         self,
+        domain: list[tuple] | None = None,
         limit: int | None = None,
         **kwargs
     ) -> list[dict[str, Any]]:
@@ -67,18 +69,38 @@ class KaraokeController(Controller):
         and will return the prepared data.
 
         :param int | None limit:
+        :param list[tuple] | None domain:
         :return: list dictionary of karaoke data
         :rtype: list[dict[str, Any]]
         """
         self._check_access(**kwargs)
 
-        domain = [
+        required_domain = [
             ('status', '=', 'waiting'),
             ('worker_id', '=', False),
         ]
+        # Fields that clients are not allowed to filter or override.
+        reserved_fields = {'status', 'worker_id'}
+
+        extra_domain = []
+        for condition in domain or []:
+            if not isinstance(condition, (list, tuple)) or len(condition) != 3:
+                raise ValueError("Invalid domain condition.")
+
+            field = condition[0]
+
+            if field in reserved_fields:
+                raise ValueError(f"Filtering by '{field}' is not allowed.")
+
+            extra_domain.append(tuple(condition))
+
+        final_domain = Domain.AND([
+            required_domain,
+            extra_domain,
+        ])
 
         # Should implement some kind of lock mechanism.
-        return request.env["karaoke.karaoke"].sudo()._prepare_data_api(domain, limit=limit)
+        return request.env["karaoke.karaoke"].sudo()._prepare_data_api(final_domain, limit=limit)
 
     @route('/karaoke/task/update', type='jsonrpc', auth='public')
     def karaoke_task_update(
