@@ -102,7 +102,7 @@ class KaraokeController(Controller):
         # Should implement some kind of lock mechanism.
         return request.env["karaoke.karaoke"].sudo()._prepare_data_api(final_domain, limit=limit)
 
-    @route('/karaoke/task/update', type='jsonrpc', auth='public')
+    @route('/karaoke/tasks/update', type='jsonrpc', auth='public')
     def karaoke_task_update(
         self,
         tasks: list[dict] | None = None,
