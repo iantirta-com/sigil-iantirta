@@ -126,8 +126,15 @@ class KaraokeController(Controller):
             for task in tasks:
                 if karaoke := request.env["karaoke.karaoke"].sudo().browse(task['id']).exists():
 
-                    if karaoke.worker_id != worker_sudo.id:
-                        raise Forbidden()
+                    if karaoke.worker_id.id != worker_sudo.id:
+                        _logger.warning(
+                            "Forbidden to write another worker task: "
+                            "task_id=%s, task_worker_id=%s, authenticated_worker_id=%s",
+                            karaoke.id,
+                            karaoke.worker_id.id,
+                            worker_sudo.id,
+                        )
+                        raise Forbidden('Forbidden to write another worker task')
 
                     if karaoke.status != 'processing':
                         raise UserError(_(

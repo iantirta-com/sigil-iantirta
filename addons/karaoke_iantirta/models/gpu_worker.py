@@ -168,7 +168,9 @@ class GPUWorker(models.Model):
         """
         if self.env['karaoke.karaoke'].search_count([
             ('status', '=', 'waiting')
-        ]) > 0:
+        ]) > 0 and self.search_count([
+            ('run_state', '=', 'running')
+        ]) == 0:
             domain = [
                 ('run_state', '=', 'ready'),
                 ('is_available', '=', True)
