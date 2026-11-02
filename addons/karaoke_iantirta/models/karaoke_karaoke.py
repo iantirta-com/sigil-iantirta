@@ -280,7 +280,7 @@ class KaraokeKaraoke(models.Model):
 
         :param dict[str, Any] data:
         """
-        valid_fields = [
+        valid_fields = set({
             'title',
             'artist',
             'duration',
@@ -288,9 +288,9 @@ class KaraokeKaraoke(models.Model):
             'lyric',
             'download_uris',
             'status',
-            'log_entries',
-            "error_entries",
-        ]
+            'error_entries',
+            'log_entries'
+        })
         if not (karaoke_id := data.pop("id", None)):
             raise UserError(_('Method update_from_dict require karaoke id to be passed'))
 
@@ -309,7 +309,11 @@ class KaraokeKaraoke(models.Model):
             if log_entries := data.get('log_entries'):
                 data['log_entries'] = merge_log(karaoke.log_entries, log_entries)
 
-            karaoke.write({field: data[field] for field in valid_fields})
+            karaoke.write({
+                k: v
+                for k, v in data.items()
+                if k in valid_fields
+            })
 
         else:
             raise UserError(_("karaoke id not found in the database"))
