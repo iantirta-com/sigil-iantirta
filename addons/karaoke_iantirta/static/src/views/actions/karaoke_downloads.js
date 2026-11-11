@@ -70,14 +70,15 @@ async function karaokeDownloads(env, records) {
 
         for (let r = 0; r < records.length; r++) {
             const record = records[r];
-            const targetTitle = record.data.title || 'karaoke_video';
+            const recordData = record.data ? record.data : record;
+            const targetTitle = recordData.title || 'karaoke_video';
 
             let fileName = null;
             let writableStream = null;
             let createdFile = false;
             
             try {
-                let metadata = record.data.download_uris;
+                let metadata = recordData.download_uris;
                 if (typeof metadata === 'string') metadata = JSON.parse(metadata);
 
                 const isLegacy = Array.isArray(metadata);
@@ -188,10 +189,14 @@ async function karaokeDownloads(env, records) {
 
 export function useKaraokeDownloads(env, model) {
     async function getRecords(records = []) {
-        let resIds;
         if (!records.length) {
-            resIds = await model.root.getResIds(true);
-            records = model.root.records.filter((r) => resIds.includes(r.resId));
+            const root = model.root;
+            records = await root.model.orm.searchRead(root.resModel, root.domain, [
+                "title", "download_uris"
+            ], {
+                limit: root.model.activeIdsLimit,
+                context: root.context,
+            });
         }
         return records
     }
